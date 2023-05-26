@@ -6,16 +6,16 @@ import "../../assets/index.css";
 const AppNavbar = () => {
   return (
     <Navbar className="app-navbar" expand="md">
-      <NavbarBrand href="/" className="navbar-brand">Clínica </NavbarBrand>
+      <NavbarBrand href="/" className="navbar-brand">Hospital </NavbarBrand>
       <Nav className="mr-auto" navbar>
         <NavItem>
           <NavLink href="/">Inicio</NavLink>
         </NavItem>
         <NavItem>
-          <NavLink href="/productos">Productos</NavLink>
+          <NavLink href="/productos">Servicios</NavLink>
         </NavItem>
         <NavItem>
-          <NavLink href="/servicios">Servicios</NavLink>
+          <NavLink href="/signin">Inicio de Sesión</NavLink>
         </NavItem>
         <NavItem>
           <NavLink href="/contacto">Contacto</NavLink>

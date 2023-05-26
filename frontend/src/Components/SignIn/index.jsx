@@ -1,5 +1,6 @@
 import React from "react";
 import { useForm } from "react-hook-form";
+import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.css";
 import {
   Container,
@@ -72,6 +73,9 @@ const SignIn = () => {
               Aceptar
             </Button>
           </Form>
+          <div className="text-center mt-3">
+            ¿No tienes cuenta? <Link to="/signup">Crear cuenta</Link>
+          </div>
         </Col>
       </Row>
     </Container>

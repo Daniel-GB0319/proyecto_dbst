@@ -1,4 +1,5 @@
 import React from "react";
+import { useForm } from "react-hook-form";
 import 'bootstrap/dist/css/bootstrap.css';
 import {
   Container,
@@ -13,6 +14,28 @@ import {
 import "../../assets/index.css";
 
 const SignUp = () => {
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = (data) => {
+    console.log(data);
+    // Realiza la solicitud POST utilizando Axios
+    axios
+      .post("URL", data)
+      .then((response) => {
+        console.log(response.data);
+        // Realiza las acciones necesarias con la respuesta
+      })
+      .catch((error) => {
+        console.error(error);
+        // Maneja el error de la solicitud
+      });
+  };
+
   return (
     <Container fluid className="sign-up-container">
       <Row className="justify-content-center align-items-center">
