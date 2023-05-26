@@ -13,6 +13,12 @@ const AppNavbar = () => {
           <NavLink href="/">Inicio</NavLink>
         </NavItem>
         <NavItem>
+          <NavLink href="/productos">Servicios</NavLink>
+        </NavItem>
+        <NavItem>
+          <NavLink href="/contacto">Contacto</NavLink>
+        </NavItem>
+        <NavItem>
           <NavLink href="/signin">Iniciar Sesión</NavLink>
         </NavItem>
       </Nav>
