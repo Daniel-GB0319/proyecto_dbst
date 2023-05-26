@@ -1,5 +1,6 @@
 import React from "react";
 import { useForm } from "react-hook-form";
+import axios from "axios";
 import 'bootstrap/dist/css/bootstrap.css';
 import {
   Container,
@@ -14,7 +15,6 @@ import {
 import "../../assets/index.css";
 
 const SignUp = () => {
-
   const {
     register,
     handleSubmit,
@@ -41,18 +41,33 @@ const SignUp = () => {
       <Row className="justify-content-center align-items-center">
         <Col md={6} lg={4}>
           <h2 className="text-center mb-4">Crear cuenta</h2>
-          <Form>
+          <Form onSubmit={handleSubmit(onSubmit)}>
             <FormGroup>
               <Label for="name">Nombre</Label>
-              <Input type="text" id="name" placeholder="Nombre" />
+              <Input
+                type="text"
+                id="name"
+                placeholder="Nombre"
+                {...register("name")}
+              />
             </FormGroup>
             <FormGroup>
               <Label for="email">Correo electrónico</Label>
-              <Input type="email" id="email" placeholder="Correo electrónico" />
+              <Input
+                type="email"
+                id="email"
+                placeholder="Correo electrónico"
+                {...register("email")}
+              />
             </FormGroup>
             <FormGroup>
               <Label for="password">Contraseña</Label>
-              <Input type="password" id="password" placeholder="Contraseña" />
+              <Input
+                type="password"
+                id="password"
+                placeholder="Contraseña"
+                {...register("password")}
+              />
             </FormGroup>
             <FormGroup>
               <Label for="confirmPassword">Confirmar contraseña</Label>
@@ -60,13 +75,14 @@ const SignUp = () => {
                 type="password"
                 id="confirmPassword"
                 placeholder="Confirmar contraseña"
+                {...register("confirmPassword")}
               />
             </FormGroup>
             <Button
               color="success"
               block
               className="custom-button"
-              onClick={handleSubmit(onSubmit)}
+              type="submit"
             >
               Crear cuenta
             </Button>
