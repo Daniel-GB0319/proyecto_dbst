@@ -27,16 +27,14 @@
 /* NAVEGADOR */
 
 .app-navbar {
-  background-color: #26a69a !important;
-  padding: 50px;
-  display: flex;
-  justify-content: space-between;
+  background-color: #26a69a;
+  padding: 20px;
 }
 
 .app-navbar .navbar-brand {
   color: #ffffff;
   font-weight: bold;
-  font-size: 30px; /* Aumenta el tamaño de la letra aquí */
+  font-size: 40px; /* Aumenta el tamaño de la letra aquí */
 }
 
 .app-navbar .nav-link {
@@ -57,4 +55,13 @@
   .app-navbar {
     padding: 10px;
   }
+}
+
+/* Boton Sign */
+.custom-button {
+  background-color: #26a69a;
+}
+
+.custom-button:hover {
+  background-color: #1e7d7a;
 }

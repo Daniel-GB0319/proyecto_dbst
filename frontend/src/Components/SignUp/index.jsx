@@ -39,7 +39,12 @@ const SignUp = () => {
                 placeholder="Confirmar contraseña"
               />
             </FormGroup>
-            <Button color="success" block>
+            <Button
+              color="success"
+              block
+              className="custom-button"
+              onClick={handleSubmit(onSubmit)}
+            >
               Crear cuenta
             </Button>
           </Form>
