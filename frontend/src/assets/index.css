@@ -1,19 +1,10 @@
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+  box-sizing: border-box;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-text-size-adjust: 100%;
 }
 
+/* SIGNUP */
 .sign-up-container {
   background-color: #e0f2f1;
   padding: 40px;
@@ -30,5 +21,40 @@
     height: auto;
     padding-top: 80px;
     padding-bottom: 80px;
+  }
+}
+
+/* NAVEGADOR */
+
+.app-navbar {
+  background-color: #26a69a !important;
+  padding: 50px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.app-navbar .navbar-brand {
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 30px; /* Aumenta el tamaño de la letra aquí */
+}
+
+.app-navbar .nav-link {
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 24px; /* Aumenta el tamaño de la letra aquí */
+}
+
+.app-navbar .nav-link:hover {
+  color: #ffffff;
+}
+
+.app-navbar .nav-link.active {
+  color: #ffffff;
+}
+
+@media (max-width: 767px) {
+  .app-navbar {
+    padding: 10px;
   }
 }
