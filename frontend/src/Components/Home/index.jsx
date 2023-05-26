@@ -1,9 +1,9 @@
 import React from "react";
 import { Container, Row, Col, Button } from "reactstrap";
 import bannerImage from "../../assets/Images/banner.webp";
-import doctorImage from "../../assets/Images/banner.webp";
-import nurseImage from "../../assets/Images/banner.webp";
-import appointmentImage from "../../assets/Images/banner.webp";
+import doctorImage from "../../assets/Images/medico.jpg";
+import nurseImage from "../../assets/Images/enfermera.jpg";
+import appointmentImage from "../../assets/Images/citas.jpg";
 import "../../assets/index.css";
 
 const Home = () => {

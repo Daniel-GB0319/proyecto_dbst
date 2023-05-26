@@ -210,3 +210,16 @@
   font-size: 14px;
   color: #888;
 }
+
+/* Enlaces personalizados */
+/* Enlaces personalizados */
+.custom-link {
+  color: #26a69a;
+  text-decoration: none;
+}
+
+.custom-link:hover {
+  color: #1e7d7a;
+  text-decoration: none;
+}
+

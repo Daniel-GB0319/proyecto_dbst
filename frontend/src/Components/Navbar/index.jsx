@@ -2,11 +2,12 @@ import React from "react";
 import { Navbar, Nav, NavItem, NavLink, NavbarBrand } from "reactstrap";
 import "../../assets/index.css";
 
-
 const AppNavbar = () => {
   return (
     <Navbar className="app-navbar" expand="md">
-      <NavbarBrand href="/" className="navbar-brand">Hospital </NavbarBrand>
+      <NavbarBrand href="/" className="navbar-brand">
+        Hospital{" "}
+      </NavbarBrand>
       <Nav className="mr-auto" navbar>
         <NavItem>
           <NavLink href="/">Inicio</NavLink>
@@ -15,10 +16,10 @@ const AppNavbar = () => {
           <NavLink href="/productos">Servicios</NavLink>
         </NavItem>
         <NavItem>
-          <NavLink href="/signin">Inicio de Sesión</NavLink>
+          <NavLink href="/contacto">Contacto</NavLink>
         </NavItem>
         <NavItem>
-          <NavLink href="/contacto">Contacto</NavLink>
+          <NavLink href="/signin">Iniciar Sesión</NavLink>
         </NavItem>
       </Nav>
     </Navbar>

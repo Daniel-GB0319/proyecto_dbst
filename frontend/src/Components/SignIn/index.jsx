@@ -74,7 +74,10 @@ const SignIn = () => {
             </Button>
           </Form>
           <div className="text-center mt-3">
-            ¿No tienes cuenta? <Link to="/signup">Crear cuenta</Link>
+            ¿No tienes cuenta?{" "}
+            <Link to="/signup" className="custom-link">
+              Crear cuenta
+            </Link>
           </div>
         </Col>
       </Row>
