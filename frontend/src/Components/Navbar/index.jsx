@@ -6,17 +6,11 @@ const AppNavbar = () => {
   return (
     <Navbar className="app-navbar" expand="md">
       <NavbarBrand href="/" className="navbar-brand">
-        Hospital{" "}
+        Hospital XYZ{" "}
       </NavbarBrand>
       <Nav className="mr-auto" navbar>
         <NavItem>
           <NavLink href="/">Inicio</NavLink>
-        </NavItem>
-        <NavItem>
-          <NavLink href="/productos">Servicios</NavLink>
-        </NavItem>
-        <NavItem>
-          <NavLink href="/contacto">Contacto</NavLink>
         </NavItem>
         <NavItem>
           <NavLink href="/signin">Iniciar Sesión</NavLink>

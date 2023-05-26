@@ -13,7 +13,7 @@ const Home = () => {
       <div className="banner">
         <img src={bannerImage} alt="Hospital Banner" className="banner-image" />
         <div className="banner-content">
-          <h1>Bienvenido al Hospital</h1>
+          <h1>Bienvenido al Hospital XYZ</h1>
           <p>Brindando atención médica de calidad</p>
           {/* <Button color="primary">Saber más</Button> */}
         </div>
@@ -53,7 +53,7 @@ const Home = () => {
                 Nuestro equipo médico altamente capacitado y nuestro personal de enfermería brindan atención
                 compasiva y profesional a todos nuestros pacientes.
               </p>
-              <Button color="primary">Conócenos</Button>
+              <Button color="success" className="custom-button">Conócenos</Button>
             </Col>
             <Col md={6}>
               <h2>Nuestros Servicios</h2>
@@ -64,7 +64,7 @@ const Home = () => {
                 <li>Atención de emergencias</li>
                 <li>Terapia física</li>
               </ul>
-              <Button color="primary">Explora Nuestros Servicios</Button>
+              <Button color="success" className="custom-button">Explora Nuestros Servicios</Button>
             </Col>
           </Row>
         </Container>

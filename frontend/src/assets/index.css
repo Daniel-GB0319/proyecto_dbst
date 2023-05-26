@@ -223,3 +223,13 @@
   text-decoration: none;
 }
 
+/* Estilos del botón HOME */
+.custom-button {
+  background-color: #26a69a;
+  color: #ffffff;
+}
+
+.custom-button:hover {
+  background-color: #1e7d7a;
+}
+
