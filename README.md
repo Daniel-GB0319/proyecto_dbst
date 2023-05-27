@@ -5,9 +5,9 @@ Proyecto de la materia Data Base Selected Topics
 
 Asegúrate de tener los siguientes requisitos instalados en tu sistema:
 
-Node JS: A partir de la versión 18.16.0 LTS
-
 NPM: No especifica, pero yo tengo la versión 9.6.7
+
+Node JS: A partir de la versión 18.16.0 LTS
 
 Sigue estos pasos para poner en marcha el proyecto:
 
