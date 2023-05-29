@@ -6,7 +6,8 @@ create table db_usuario(
     id_usuario varchar2(10) primary key,
     tipo_usuario varchar2(15) not null,
     correo varchar2(20) not null,  
-    password varchar2(64) not null
+    password varchar2(64) not null,
+    ultimo_acceso datetime
 );
 
 create table db_administrador(
@@ -155,6 +156,16 @@ create table db_receta(
     references db_medicamento(id_medicamento)    
 );
 
+create table db_receta_medicamento(
+    -- jalar id de receta y medicamento como foranea y agregar columna cantidad
+    receta_id_receta varchar2(10) not null,
+    medicamento_id_medicamento varchar2(10) not null,
+    constraint fk_receta foreign key (receta_id_receta)
+    references db_receta(id_receta), 
+    constraint fk_medicamento foreign key (medicamento_id_medicamento)
+    references db_medicamento(id_medicamento)   
+);
+
 create table db_proveedor(
     id_proveedor varchar2(10) primary key,
     nombre varchar2(15) not null,
@@ -181,6 +192,138 @@ create table db_dias_surtido(
     references db_proveedor(id_proveedor)   
 );
 
--- aqui van las funciones
+-- Bitacoras activadas por triggers
 
--- aqui van los script
+-- Guarda el registro del momento en que se registra un usuario
+CREATE TABLE db_registro_usuarios (
+    id_registro INT PRIMARY KEY,
+    id_usuario VARCHAR(10),
+    fecha_registro DATE,
+    hora_registro TIME,
+    FOREIGN KEY (id_usuario) REFERENCES db_usuario(id_usuario)
+);
+
+-- Guarda el registro de todas las consultas y recetas que pertenecen a un paciente
+CREATE TABLE db_historial_medico (
+    paciente_id_paciente VARCHAR(10) PRIMARY KEY,
+    fecha_registro DATE,
+    hora_registro TIME
+);
+
+CREATE TABLE db_historial_consulta (
+    historial_id_paciente VARCHAR(10),
+    consulta_id_consulta VARCHAR(10),
+    FOREIGN KEY (historial_id_paciente) REFERENCES db_historial_medico(paciente_id_paciente),
+    FOREIGN KEY (consulta_id_consulta) REFERENCES db_consulta(id_consulta)
+);
+
+CREATE TABLE db_historial_receta (
+    historial_id_paciente VARCHAR(10),
+    receta_id_receta VARCHAR(10),
+    FOREIGN KEY (historial_id_paciente) REFERENCES db_historial_medico(paciente_id_paciente),
+    FOREIGN KEY (receta_id_receta) REFERENCES db_receta(id_receta)
+);
+
+
+
+-- ### Funciones Disponibles ##
+
+-- Calcula el precio total de la receta
+CREATE FUNCTION CalcularPrecioTotal(@id_receta VARCHAR(10))
+RETURNS FLOAT
+AS
+BEGIN
+    DECLARE @total FLOAT;
+
+    SELECT @total = SUM(m.precio)
+    FROM db_receta_medicamento rm
+    INNER JOIN db_medicamento m ON rm.medicamento_id_medicamento = m.id_medicamento
+    WHERE rm.receta_id_receta = @id_receta;
+
+    RETURN @total;
+END;
+
+-- Obtiene el historial medico de un paciente por su id
+CREATE FUNCTION ObtenerHistorialMedico(@id_paciente VARCHAR(10))
+RETURNS TABLE
+AS
+RETURN
+    SELECT HM.fecha_registro, HM.hora_registro, C.id_consulta, R.id_receta
+    FROM db_historial_medico HM
+    LEFT JOIN db_historial_consulta HC ON HM.id_historial_medico = HC.historial_id_paciente
+    LEFT JOIN db_consulta C ON HC.consulta_id_consulta = C.id_consulta
+    LEFT JOIN db_historial_receta HR ON HM.id_historial_medico = HR.historial_id_paciente
+    LEFT JOIN db_receta R ON HR.receta_id_receta = R.id_receta
+    WHERE HM.paciente_id_paciente = @id_paciente;
+
+
+-- ### Script Stored Procedures ###
+
+-- Busca los doctores disponibles por dia y horario
+CREATE PROCEDURE DoctoresDisponiblesPorHorario
+    @dia VARCHAR(10),
+    @horario TIME
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT D.ap_paterno, D.ap_materno, D.nombre, H.hora_entrada, H.hora_salida
+    FROM db_doctor D
+    INNER JOIN db_horario H ON D.horario_id_horario = H.id_horario
+    WHERE H.dia = @dia
+        AND @horario >= H.hora_entrada
+        AND @horario <= H.hora_salida;
+END;
+
+
+-- Procedure para obtener medicamento e id de pedido que trajo un proveedor
+CREATE PROCEDURE ObtenerMedicamentosPorProveedor
+    @nombre_proveedor VARCHAR(15)
+AS
+BEGIN
+    SELECT p.id_pedido, m.nombre AS nombre_medicamento
+    FROM db_pedido p
+    INNER JOIN db_proveedor pr ON p.proveedor_id_proveedor = pr.id_proveedor
+    INNER JOIN db_medicamento m ON p.medicamento_id_medicamento = m.id_medicamento
+    WHERE pr.nombre = @nombre_proveedor;
+END;
+
+
+-- ## Triggers ##
+
+-- Registra la fecha y hora en la bitacora cuando se registra un nuevo usuario al sistema
+CREATE TRIGGER RegistroNuevoUsuario
+AFTER INSERT
+ON db_usuario
+AS
+BEGIN
+    DECLARE @id_usuario VARCHAR(10);
+    SET @id_usuario = (SELECT id_usuario FROM inserted);
+
+    INSERT INTO db_bitacora (id_usuario, fecha_registro, hora_registro)
+    VALUES (@id_usuario, GETDATE(), GETDATE());
+END;
+
+-- Actualiza el historial cuando un paciente tiene una nueva consulta
+CREATE TRIGGER ActualizarHistorialMedico
+AFTER INSERT ON db_consulta
+FOR EACH ROW
+BEGIN
+    INSERT INTO db_historial_medico (paciente_id_paciente, fecha_registro, hora_registro)
+    VALUES (NEW.paciente_id_paciente, CURRENT_DATE(), CURRENT_TIME());
+    
+    INSERT INTO db_historial_consulta (historial_id_paciente, consulta_id_consulta)
+    VALUES (NEW.paciente_id_paciente, NEW.id_consulta);
+END;
+
+-- Actualiza el historial cuando un paciente tiene una nueva receta
+CREATE TRIGGER ActualizarHistorialMedicoReceta
+AFTER INSERT ON db_receta
+FOR EACH ROW
+BEGIN
+    INSERT INTO db_historial_medico (paciente_id_paciente, fecha_registro, hora_registro)
+    VALUES (NEW.paciente_id_paciente, CURRENT_DATE(), CURRENT_TIME());
+    
+    INSERT INTO db_historial_receta (historial_id_paciente, receta_id_receta)
+    VALUES (NEW.paciente_id_paciente, NEW.id_receta);
+END;
