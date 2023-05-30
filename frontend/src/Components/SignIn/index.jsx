@@ -1,6 +1,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.css";
 import {
@@ -23,19 +24,36 @@ const SignIn = () => {
   } = useForm();
 
   const onSubmit = (data) => {
-    console.log(data);
-    // Realiza la solicitud POST utilizando Axios
+    const { email, password } = data; // Extraer el email y la contraseña del objeto data
+    const requestBody = {
+      email: email,
+      password: password
+    };
+  
     axios
-      .post("URL", data)
+      .post("URL", requestBody)
       .then((response) => {
+        // Mostrar mensaje de éxito con SweetAlert
+        Swal.fire({
+          icon: "success",
+          title: "¡Éxito!",
+          text: "La solicitud se completó correctamente."
+        });
         console.log(response.data);
-        // Realiza las acciones necesarias con la respuesta
+        // Realizar las acciones necesarias con la respuesta
       })
       .catch((error) => {
+        // Mostrar mensaje de error con SweetAlert
+        Swal.fire({
+          icon: "error",
+          title: "¡Error!",
+          text: "Hubo un problema al realizar la solicitud."
+        });
         console.error(error);
-        // Maneja el error de la solicitud
+        // Manejar el error de la solicitud
       });
   };
+  
 
   return (
     <Container fluid className="sign-up-container">
