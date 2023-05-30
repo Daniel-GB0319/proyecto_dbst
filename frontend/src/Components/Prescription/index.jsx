@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { Container, Row, Col, Form, FormGroup, Label, Input, Button } from "reactstrap";
+import "../../assets/index.css";
 
 const CreateRecipe = () => {
   const {
@@ -30,66 +31,72 @@ const CreateRecipe = () => {
   };
 
   return (
-    <Container>
-      <Row>
+    <Container fluid className="sign-up-container">
+      <Row className="justify-content-center align-items-center">
         <Col md={6} lg={4}>
-          <h2>Crear Receta</h2>
+          <h2 className="text-center mb-4">Crear Receta</h2>
           <Form onSubmit={handleSubmit(onSubmit)}>
             <FormGroup>
               <Label for="medication">Medicamento</Label>
               <Input
                 type="text"
                 id="medication"
+                className="custom-input"
                 {...register("medication", { required: true })}
               />
-              {errors.medication && <span>Este campo es requerido</span>}
+              {errors.medication && <span className="error-message">Este campo es requerido</span>}
             </FormGroup>
             <FormGroup>
               <Label for="doctorName">Nombre del Doctor</Label>
               <Input
                 type="text"
                 id="doctorName"
+                className="custom-input"
                 {...register("doctorName", { required: true })}
               />
-              {errors.doctorName && <span>Este campo es requerido</span>}
+              {errors.doctorName && <span className="error-message">Este campo es requerido</span>}
             </FormGroup>
             <FormGroup>
               <Label for="medicationCost">Costo del Medicamento</Label>
               <Input
                 type="number"
                 id="medicationCost"
+                className="custom-input"
                 {...register("medicationCost", { required: true })}
               />
-              {errors.medicationCost && <span>Este campo es requerido</span>}
+              {errors.medicationCost && <span className="error-message">Este campo es requerido</span>}
             </FormGroup>
             <FormGroup>
               <Label for="diagnosis">Diagnóstico</Label>
               <Input
                 type="text"
                 id="diagnosis"
+                className="custom-input"
                 {...register("diagnosis", { required: true })}
               />
-              {errors.diagnosis && <span>Este campo es requerido</span>}
+              {errors.diagnosis && <span className="error-message">Este campo es requerido</span>}
             </FormGroup>
             <FormGroup>
               <Label for="observations">Observaciones</Label>
               <Input
                 type="text"
                 id="observations"
+                className="custom-input"
                 {...register("observations", { required: true })}
               />
-              {errors.observations && <span>Este campo es requerido</span>}
+              {errors.observations && <span className="error-message">Este campo es requerido</span>}
             </FormGroup>
             <FormGroup>
               <Label for="expeditionDate">Fecha de Expedición</Label>
               <Input
                 type="date"
                 id="expeditionDate"
+                className="custom-input"
                 {...register("expeditionDate", { required: true })}
               />
-              {errors.expeditionDate && <span>Este campo es requerido</span>}
+              {errors.expeditionDate && <span className="error-message">Este campo es requerido</span>}
             </FormGroup>
-            <Button type="submit">Crear Receta</Button>
+            <Button color="success" block className="custom-button" type="submit">Crear Receta</Button>
           </Form>
         </Col>
       </Row>
@@ -97,4 +104,4 @@ const CreateRecipe = () => {
   );
 };
 
-export default CreateRecipe;
+export default CreateRecipe; 
