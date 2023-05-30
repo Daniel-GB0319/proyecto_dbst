@@ -1,3 +1,5 @@
+-- VERSION 1.1
+
 create database proyecto_dbst;
 
 use proyecto_dbst;
@@ -157,7 +159,6 @@ create table db_receta(
 );
 
 create table db_receta_medicamento(
-    -- jalar id de receta y medicamento como foranea y agregar columna cantidad
     receta_id_receta varchar2(10) not null,
     medicamento_id_medicamento varchar2(10) not null,
     constraint fk_receta foreign key (receta_id_receta)
@@ -205,22 +206,24 @@ CREATE TABLE db_registro_usuarios (
 
 -- Guarda el registro de todas las consultas y recetas que pertenecen a un paciente
 CREATE TABLE db_historial_medico (
-    paciente_id_paciente VARCHAR(10) PRIMARY KEY,
+    id_historial varchar2(10) primary key,
+    paciente_id_paciente VARCHAR(10) not null,
     fecha_registro DATE,
-    hora_registro TIME
+    hora_registro TIME,
+    FOREIGN KEY (paciente_id_paciente) REFERENCES db_paciente(id_paciente)
 );
 
 CREATE TABLE db_historial_consulta (
-    historial_id_paciente VARCHAR(10),
+    historial_id_historial VARCHAR(10),
     consulta_id_consulta VARCHAR(10),
-    FOREIGN KEY (historial_id_paciente) REFERENCES db_historial_medico(paciente_id_paciente),
+    FOREIGN KEY (historial_id_historial) REFERENCES db_historial_medico(id_historial),
     FOREIGN KEY (consulta_id_consulta) REFERENCES db_consulta(id_consulta)
 );
 
 CREATE TABLE db_historial_receta (
-    historial_id_paciente VARCHAR(10),
+    historial_id_historial VARCHAR(10),
     receta_id_receta VARCHAR(10),
-    FOREIGN KEY (historial_id_paciente) REFERENCES db_historial_medico(paciente_id_paciente),
+    FOREIGN KEY (historial_id_historial) REFERENCES db_historial_medico(id_historial),
     FOREIGN KEY (receta_id_receta) REFERENCES db_receta(id_receta)
 );
 

@@ -37,9 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'tasks',
+    'corsheaders',
     'rest_framework',
-    'corsheaders'
+    'tasks'
 ]
 
 MIDDLEWARE = [
@@ -79,9 +79,15 @@ WSGI_APPLICATION = 'proyecto_dbst.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+        'ENGINE': 'sql_server.pyodbc',
+        'NAME': 'proyecto_dbst',
+        'HOST': 'nombre_del_servidor',
+        'USER': 'usuario',
+        'PASSWORD': 'contraseña',
+        'OPTIONS': {
+            'driver': 'ODBC Driver 17 for SQL Server',
+        },
+    },
 }
 
 
@@ -128,5 +134,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # cors authorization
 CORS_ALLOWED_ORIGINS = [
-
+    'http://localhost:'
 ]
