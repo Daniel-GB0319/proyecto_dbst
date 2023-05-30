@@ -4,6 +4,7 @@ import SignIn from "./Components/SignIn";
 import SignUp from "./Components/SignUp";
 import Home from "./Components/Home";
 import Prescription from "./Components/Prescription";
+import Doctors from "./Components/Doctors";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/receta" element={<Prescription />} />
+          <Route path="/doctors" element={<Doctors/>} />
         </Routes>
     </BrowserRouter>
   );
