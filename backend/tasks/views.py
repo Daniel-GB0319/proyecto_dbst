@@ -2,10 +2,12 @@ from rest_framework import viewsets
 from .serializer import *
 from .models import *
 
+
 # Create your views here.
 class UsuarioView(viewsets.ModelViewSet):
     usuario_class = UsuarioSerializer
     queryset = Usuario.objects.all()
+
 
 class AdministradorView(viewsets.ModelViewSet):
     administrador_class = AdministradorSerializer
@@ -62,9 +64,9 @@ class RecetaView(viewsets.ModelViewSet):
     queryset = Receta.objects.all()
 
 
-class Receta_MedicamentoView(viewsets.ModelViewSet):
-    receta_medicamento_class = Receta_MedicamentoSerializer
-    queryset = Receta_Medicamento.objects.all()
+class RecetaMedicamentoView(viewsets.ModelViewSet):
+    receta_medicamento_class = RecetaMedicamentoSerializer
+    queryset = RecetaMedicamento.objects.all()
 
 
 class ProveedorView(viewsets.ModelViewSet):

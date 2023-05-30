@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Usuario(models.Model):
     id_usuario = models.CharField(max_length=10, primary_key=True)
     tipo_usuario = models.CharField(max_length=15)
@@ -7,12 +8,14 @@ class Usuario(models.Model):
     password = models.CharField(max_length=64)
     ultimo_acceso = models.DateTimeField(null=True)
 
+
 class Administrador(models.Model):
     id_administrador = models.CharField(max_length=10, primary_key=True)
     nombre = models.CharField(max_length=15)
     ap_paterno = models.CharField(max_length=15)
     ap_materno = models.CharField(max_length=15)
     usuario_id_usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+
 
 class Paciente(models.Model):
     id_paciente = models.CharField(max_length=10, primary_key=True)
@@ -93,6 +96,7 @@ class Consulta(models.Model):
     paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE)
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
 
+
 class Recepcionista(models.Model):
     id_recepcionista = models.CharField(max_length=10, primary_key=True)
     nombre = models.CharField(max_length=15)
@@ -122,9 +126,11 @@ class Receta(models.Model):
     doctor_id_doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
     medicamento_id_medicamento = models.ForeignKey(Medicamento, on_delete=models.CASCADE)
 
-class Receta_Medicamento(models.Model):
+
+class RecetaMedicamento(models.Model):
     receta_id_receta = models.ForeignKey(Receta, on_delete=models.CASCADE)
     medicamento_id_medicamento = models.ForeignKey(Medicamento, on_delete=models.CASCADE)
+
 
 class Proveedor(models.Model):
     id_proveedor = models.CharField(max_length=10, primary_key=True)
@@ -132,10 +138,12 @@ class Proveedor(models.Model):
     telefono = models.CharField(max_length=10)
     correo = models.CharField(max_length=20)
 
+
 class Pedido(models.Model):
     id_pedido = models.CharField(max_length=10, primary_key=True)
     medicamento_id_medicamento = models.ForeignKey(Medicamento, on_delete=models.CASCADE)
     proveedor_id_proveedor = models.ForeignKey(Proveedor, on_delete=models.CASCADE)
+
 
 class DiasSurtido(models.Model):
     id_surtido = models.CharField(max_length=5, primary_key=True)
@@ -143,11 +151,13 @@ class DiasSurtido(models.Model):
     hora = models.TimeField(null=True)
     proveedor_id_proveedor = models.ForeignKey(Proveedor, on_delete=models.CASCADE)
 
+
 class RegistroUsuarios(models.Model):
     id_registro = models.IntegerField(primary_key=True)
     usuario_id_usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     fecha_registro = models.DateField()
     hora_registro = models.TimeField()
+
 
 class HistorialMedico(models.Model):
     id_historial = models.CharField(max_length=10, primary_key=True)
@@ -155,9 +165,11 @@ class HistorialMedico(models.Model):
     fecha_registro = models.DateField()
     hora_registro = models.TimeField()
 
+
 class HistorialConsulta(models.Model):
     historial_id_historial = models.ForeignKey(HistorialMedico, on_delete=models.CASCADE)
     consulta_id_consulta = models.ForeignKey(Consulta, on_delete=models.CASCADE)
+
 
 class HistorialReceta(models.Model):
     historial_id_historial = models.ForeignKey(HistorialMedico, on_delete=models.CASCADE)
