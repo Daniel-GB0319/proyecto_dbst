@@ -1,0 +1,235 @@
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  box-sizing: border-box;
+
+}
+
+/* SIGNUP */
+.sign-up-container {
+  background-color: #e0f2f1;
+  padding: 40px;
+  height: 100vh;
+}
+
+.sign-up-container h2 {
+  color: #26a69a;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+  .sign-up-container {
+    height: auto;
+    padding-top: 80px;
+    padding-bottom: 80px;
+  }
+}
+
+/* NAVEGADOR */
+
+.app-navbar {
+  background-color: #26a69a;
+  padding: 20px;
+}
+
+.app-navbar .navbar-brand {
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 40px; /* Aumenta el tamaño de la letra aquí */
+}
+
+.app-navbar .nav-link {
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 24px; /* Aumenta el tamaño de la letra aquí */
+}
+
+.app-navbar .nav-link:hover {
+  color: #ffffff;
+}
+
+.app-navbar .nav-link.active {
+  color: #ffffff;
+}
+
+@media (max-width: 767px) {
+  .app-navbar {
+    padding: 10px;
+  }
+}
+
+/* Boton Sign */
+.custom-button {
+  background-color: #26a69a;
+}
+
+.custom-button:hover {
+  background-color: #1e7d7a;
+}
+
+
+/* HOME */
+.banner {
+  position: relative;
+  height: 500px;
+}
+
+.banner-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.banner-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: #fff;
+}
+
+.banner-content h1 {
+  font-size: 40px;
+  margin-bottom: 20px;
+}
+
+.banner-content p {
+  font-size: 18px;
+  margin-bottom: 40px;
+}
+
+.section {
+  padding: 80px 0;
+  text-align: center;
+}
+
+.section h2 {
+  font-size: 32px;
+  margin-bottom: 30px;
+}
+
+.service-image {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  margin-bottom: 20px;
+}
+
+.info-section {
+  background-color: #f8f8f8;
+}
+
+.info-section ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.info-section ul li {
+  margin-bottom: 10px;
+}
+
+@media (max-width: 767px) {
+  .banner {
+    height: 300px;
+  }
+
+  .banner-content h1 {
+    font-size: 30px;
+  }
+
+  .banner-content p {
+    font-size: 16px;
+  }
+
+  .service-image {
+    width: 150px;
+    height: 150px;
+  }
+
+  .info-section h2 {
+    font-size: 28px;
+  }
+}
+
+
+/* FOOTER */
+.footer {
+  background-color: #f8f8f8;
+  padding: 40px 0;
+  color: #555;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.footer-section {
+  margin-bottom: 30px;
+}
+
+.footer-heading {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.footer-contact-list,
+.footer-links-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-contact-list li,
+.footer-links-list li {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.footer-icon {
+  margin-right: 10px;
+}
+
+.footer-links-list a {
+  color: #555;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.footer-links-list a:hover {
+  color: #26a69a;
+}
+
+.footer-bottom {
+  margin-top: 40px;
+  text-align: center;
+  font-size: 14px;
+  color: #888;
+}
+
+/* Enlaces personalizados */
+/* Enlaces personalizados */
+.custom-link {
+  color: #26a69a;
+  text-decoration: none;
+}
+
+.custom-link:hover {
+  color: #1e7d7a;
+  text-decoration: none;
+}
+
+/* Estilos del botón HOME */
+.custom-button {
+  background-color: #26a69a;
+  color: #ffffff;
+}
+
+.custom-button:hover {
+  background-color: #1e7d7a;
+}
+

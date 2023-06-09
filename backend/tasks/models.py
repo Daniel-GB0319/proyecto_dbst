@@ -56,7 +56,6 @@ class Especialidad(models.Model):
     nombre = models.CharField(max_length=20)
     descripcion = models.TextField(max_length=30)
 
-
 class Horario(models.Model):
     id_horario = models.CharField(max_length=10, primary_key=True)
     turno = models.CharField(max_length=10)
@@ -64,7 +63,15 @@ class Horario(models.Model):
     hora_entrada = models.TimeField()
     hora_salida = models.TimeField()
     hora_ini_receso = models.TimeField()
-    hora__fin_receso = models.TimeField()
+    hora_fin_receso = models.TimeField()
+""" class Horario(models.Model):
+    id_horario = models.CharField(max_length=10, primary_key=True)
+    turno = models.CharField(max_length=10)
+    dia_semana = models.CharField(max_length=10)
+    hora_entrada = models.TimeField()
+    hora_salida = models.TimeField()
+    hora_ini_receso = models.TimeField()
+    hora__fin_receso = models.TimeField() """
 
 
 class Doctor(models.Model):
@@ -159,11 +166,17 @@ class RegistroUsuarios(models.Model):
     hora_registro = models.TimeField()
 
 
-class HistorialMedico(models.Model):
+""" class HistorialMedico(models.Model):
     id_historial = models.CharField(max_length=10, primary_key=True)
     paciente_id_paciente = models.ForeignKey(Paciente, primary_key=True, on_delete=models.CASCADE)
     fecha_registro = models.DateField()
+    hora_registro = models.TimeField() """
+class HistorialMedico(models.Model):
+    id_historial = models.CharField(max_length=10, primary_key=True)
+    paciente_id_paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE)
+    fecha_registro = models.DateField()
     hora_registro = models.TimeField()
+
 
 
 class HistorialConsulta(models.Model):
