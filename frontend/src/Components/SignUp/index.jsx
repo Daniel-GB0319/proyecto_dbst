@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from 'react';
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import Swal from "sweetalert2";
@@ -21,23 +21,27 @@ const SignUp = () => {
     handleSubmit,
     formState: { errors },
     watch,
+    reset,
   } = useForm();
 
-  const onSubmit = (data) => {
-    // Realiza la solicitud POST utilizando Axios
-    axios
-      .post("URL", data)
-      .then((response) => {
-        console.log(response.data);
-        // Realiza las acciones necesarias con la respuesta
-        Swal.fire("¡Cuenta creada!", "Tu cuenta se ha creado exitosamente.", "success");
-        reset();
-      })
-      .catch((error) => {
-        console.error(error);
-        // Maneja el error de la solicitud
-        Swal.fire("Error", "Hubo un error al crear la cuenta.", "error");
-      });
+  const [submitting, setSubmitting] = useState(false);
+
+  const onSubmit = async (data) => {
+    setSubmitting(true);
+    try {
+      // Realiza la solicitud POST utilizando Axios
+      const response = await axios.post("http://127.0.0.1:8000/Admin", data);
+      console.log(response.data);
+      // Realiza las acciones necesarias con la respuesta
+      Swal.fire("¡Cuenta creada!", "Tu cuenta se ha creado exitosamente.", "success");
+      reset();
+    } catch (error) {
+      console.error(error);
+      // Maneja el error de la solicitud
+      Swal.fire("Error", "Hubo un error al crear la cuenta.", "error");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const password = watch("password");
@@ -54,9 +58,8 @@ const SignUp = () => {
                 type="text"
                 id="firstName"
                 placeholder="Nombre(s)"
-                {...register("firstName", { required: true })}
+                {...register("firstName")}
               />
-              {errors.firstName && <span>Este campo es requerido</span>}
             </FormGroup>
             <FormGroup>
               <Label for="lastName">Apellido Paterno</Label>
@@ -64,9 +67,8 @@ const SignUp = () => {
                 type="text"
                 id="lastName"
                 placeholder="Apellido Paterno"
-                {...register("lastName", { required: true })}
+                {...register("lastName")}
               />
-              {errors.lastName && <span>Este campo es requerido</span>}
             </FormGroup>
             <FormGroup>
               <Label for="middleName">Apellido Materno</Label>
@@ -74,9 +76,8 @@ const SignUp = () => {
                 type="text"
                 id="middleName"
                 placeholder="Apellido Materno"
-                {...register("middleName", { required: true })}
+                {...register("middleName")}
               />
-              {errors.middleName && <span>Este campo es requerido</span>}
             </FormGroup>
             <FormGroup>
               <Label for="email">Correo electrónico</Label>
@@ -84,9 +85,8 @@ const SignUp = () => {
                 type="email"
                 id="email"
                 placeholder="Correo electrónico"
-                {...register("email", { required: true })}
+                {...register("email")}
               />
-              {errors.email && <span>Este campo es requerido</span>}
             </FormGroup>
             <FormGroup>
               <Label for="password">Contraseña</Label>
@@ -94,9 +94,8 @@ const SignUp = () => {
                 type="password"
                 id="password"
                 placeholder="Contraseña"
-                {...register("password", { required: true })}
+                {...register("password")}
               />
-              {errors.password && <span>Este campo es requerido</span>}
             </FormGroup>
             <FormGroup>
               <Label for="confirmPassword">Repetir contraseña</Label>
@@ -104,15 +103,11 @@ const SignUp = () => {
                 type="password"
                 id="confirmPassword"
                 placeholder="Repetir contraseña"
-                {...register("confirmPassword", {
-                  required: true,
-                  validate: (value) => value === password || "Las contraseñas no coinciden",
-                })}
+                {...register("confirmPassword")}
               />
-              {errors.confirmPassword && <span>{errors.confirmPassword.message}</span>}
             </FormGroup>
-            <Button color="success" block className="custom-button" type="submit">
-              Crear cuenta
+            <Button color="success" block className="custom-button" type="submit" disabled={submitting}>
+              {submitting ? "Creando cuenta..." : "Crear cuenta"}
             </Button>
           </Form>
         </Col>
@@ -122,3 +117,4 @@ const SignUp = () => {
 };
 
 export default SignUp;
+

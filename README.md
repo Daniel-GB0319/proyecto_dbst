@@ -23,3 +23,25 @@ Sigue estos pasos para poner en marcha el proyecto:
 
    ```shell
    http://localhost:3000
+
+## Backend
+
+Sigue estos pasos para poner en marcha el proyecto:
+
+1. Ejecuta el siguiente comando dentro de la carpeta "backend" para instalar las dependencias del proyecto:
+
+   ```shell
+   npm install
+2. Iniciar la aplicación en modo de desarrollo con el siguiente comando:
+
+   ```shell
+   npm run back
+3. Abre tu navegador web y visita la siguiente URL para ver la aplicación en ejecución:
+
+   ```shell
+   http://localhost:8000
+
+## Database
+
+WORKBENCH
+
