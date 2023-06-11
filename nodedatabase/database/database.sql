@@ -3,6 +3,8 @@
 
 use proyecto_dbst; */
 
+
+
 CREATE TABLE db_usuario (
     id_usuario VARCHAR(10) PRIMARY KEY,
     tipo_usuario VARCHAR(15) NOT NULL,
@@ -221,3 +223,8 @@ CREATE TABLE db_historial_receta (
     FOREIGN KEY (historial_id_historial) REFERENCES db_historial_medico(id_historial),
     FOREIGN KEY (receta_id_receta) REFERENCES db_receta(id_receta)
 );
+
+
+/* Store Procedures */
+
+
