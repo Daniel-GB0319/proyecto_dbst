@@ -7,26 +7,23 @@ export const login = async (req, res) => {
 
     // Verificar las credenciales del usuario en la tabla db_usuario
     const [user] = await pool.query(
-      "SELECT * FROM db_usuario WHERE correo = ?",
-      [correo]
+      "SELECT * FROM db_usuario WHERE correo = ? AND password = ?",
+      [correo, password]
     );
 
-    // Comprobar si el usuario existe y si la contraseña es válida
-    if (user.length === 0 || user[0].password !== password) {
-      return res.status(401).json({ message: "Credenciales inválidas" });
+    // Comprobar si el usuario existe y si las credenciales son válidas
+    if (!user) {
+      return res.status(401).json({ message: "Correo electrónico o contraseña incorrectos" });
     }
 
-    // Generar un token de acceso utilizando JWT
-    const token = jwt.sign({ userId: user[0].id_usuario }, "secretKey", {
-      expiresIn: "3h",
-    });
+    // Si las credenciales son válidas, puedes devolver un mensaje de éxito o cualquier otra información
 
-    // Devolver el token al cliente
-    res.json({ token });
+    return res.status(200).json({ message: "Credenciales válidas" });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
 };
+
 
 export const createAdminUser = async (req, res) => {
   const { firstName, lastName, email, password } = req.body;
