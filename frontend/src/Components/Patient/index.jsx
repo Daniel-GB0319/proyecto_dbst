@@ -78,7 +78,7 @@ const Patient = () => {
               type="text"
               id="nombre"
               placeholder="Nombre"
-              {...register('nombre', { required: 'Este campo es requerido' })}
+              /* {...register('nombre', { required: 'Este campo es requerido' })} */
               onChange={(e) => setValue('nombre', e.target.value)}
             />
             {errors.nombre && (
@@ -93,7 +93,7 @@ const Patient = () => {
               type="text"
               id="ap_paterno"
               placeholder="Apellido Paterno"
-              {...register('ap_paterno', { required: 'Este campo es requerido' })}
+              /* {...register('ap_paterno', { required: 'Este campo es requerido' })} */
               onChange={(e) => setValue('ap_paterno', e.target.value)}
             />
             {errors.ap_paterno && (
@@ -110,7 +110,7 @@ const Patient = () => {
               type="text"
               id="ap_materno"
               placeholder="Apellido Materno"
-              {...register('ap_materno', { required: 'Este campo es requerido' })}
+             /*  {...register('ap_materno', { required: 'Este campo es requerido' })} */
               onChange={(e) => setValue('ap_materno', e.target.value)}
             />
             {errors.ap_materno && (
@@ -125,7 +125,7 @@ const Patient = () => {
               type="number"
               id="edad"
               placeholder="Edad"
-              {...register('edad', { required: 'Este campo es requerido' })}
+              /* {...register('edad', { required: 'Este campo es requerido' })} */
               onChange={(e) => setValue('edad', e.target.value)}
             />
             {errors.edad && (
@@ -142,7 +142,7 @@ const Patient = () => {
               type="text"
               id="tipo_sangre"
               placeholder="Tipo de Sangre"
-              {...register('tipo_sangre', { required: 'Este campo es requerido' })}
+              /* {...register('tipo_sangre', { required: 'Este campo es requerido' })} */
               onChange={(e) => setValue('tipo_sangre', e.target.value)}
             />
             {errors.tipo_sangre && (
@@ -157,7 +157,7 @@ const Patient = () => {
               type="text"
               id="calle"
               placeholder="Calle"
-              {...register('calle', { required: 'Este campo es requerido' })}
+              /* {...register('calle', { required: 'Este campo es requerido' })} */
               onChange={(e) => setValue('calle', e.target.value)}
             />
             {errors.calle && (
@@ -200,7 +200,7 @@ const Patient = () => {
               type="text"
               id="colonia"
               placeholder="Colonia"
-              {...register('colonia', { required: 'Este campo es requerido' })}
+              /* {...register('colonia', { required: 'Este campo es requerido' })} */
               onChange={(e) => setValue('colonia', e.target.value)}
             />
             {errors.colonia && (
@@ -215,7 +215,7 @@ const Patient = () => {
               type="text"
               id="delegacion"
               placeholder="Delegación"
-              {...register('delegacion', { required: 'Este campo es requerido' })}
+              /* {...register('delegacion', { required: 'Este campo es requerido' })} */
               onChange={(e) => setValue('delegacion', e.target.value)}
             />
             {errors.delegacion && (
@@ -232,7 +232,7 @@ const Patient = () => {
               type="text"
               id="entidad_federativa"
               placeholder="Entidad Federativa"
-              {...register('entidad_federativa', { required: 'Este campo es requerido' })}
+              /* {...register('entidad_federativa', { required: 'Este campo es requerido' })} */
               onChange={(e) => setValue('entidad_federativa', e.target.value)}
             />
             {errors.entidad_federativa && (
@@ -247,7 +247,7 @@ const Patient = () => {
               type="date"
               id="fecha_nac"
               placeholder="Fecha de Nacimiento"
-              {...register('fecha_nac', { required: 'Este campo es requerido' })}
+              /* {...register('fecha_nac', { required: 'Este campo es requerido' })} */
               onChange={(e) => setValue('fecha_nac', e.target.value)}
             />
             {errors.fecha_nac && (
@@ -265,7 +265,7 @@ const Patient = () => {
               id="peso"
               placeholder="Peso"
               step="0.01"
-              {...register('peso', { required: 'Este campo es requerido' })}
+             /*  {...register('peso', { required: 'Este campo es requerido' })} */
               onChange={(e) => setValue('peso', e.target.value)}
             />
             {errors.peso && (
@@ -281,7 +281,7 @@ const Patient = () => {
               id="altura"
               placeholder="Altura"
               step="0.01"
-              {...register('altura', { required: 'Este campo es requerido' })}
+              /* {...register('altura', { required: 'Este campo es requerido' })} */
               onChange={(e) => setValue('altura', e.target.value)}
             />
             {errors.altura && (
@@ -298,7 +298,7 @@ const Patient = () => {
               type="text"
               id="sexo"
               placeholder="Sexo"
-              {...register('sexo', { required: 'Este campo es requerido' })}
+              /* {...register('sexo', { required: 'Este campo es requerido' })} */
               onChange={(e) => setValue('sexo', e.target.value)}
             />
             {errors.sexo && (
