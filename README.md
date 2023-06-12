@@ -43,5 +43,7 @@ Sigue estos pasos para poner en marcha el proyecto:
 
 ## Database
 
-WORKBENCH
+Descargar un gestor de base de datos, de preferencia WORKBENCH
+
+1. En db.js (está dentro de la carpeta backend) poner sus credenciales del WORKBENCH
 
