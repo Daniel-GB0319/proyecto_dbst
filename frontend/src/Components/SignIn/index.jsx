@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import axios from "axios";
+import { API_URL } from "../../../constants.js";
 import "bootstrap/dist/css/bootstrap.css";
 import {
   Container,
@@ -18,26 +19,27 @@ import "../../assets/index.css";
 
 const SignIn = () => {
   const {
-    register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    const { email, password } = data; // Extraer el email y la contraseña del objeto data
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const onSubmit = () => {
     const requestBody = {
       email: email,
-      password: password
+      password: password,
     };
-  
+
     axios
-      .post("URL", requestBody)
+      .post(API_URL + "/login", requestBody)
       .then((response) => {
         // Mostrar mensaje de éxito con SweetAlert
         Swal.fire({
           icon: "success",
           title: "¡Éxito!",
-          text: "La solicitud se completó correctamente."
+          text: "La solicitud se completó correctamente.",
         });
         console.log(response.data);
         // Realizar las acciones necesarias con la respuesta
@@ -47,13 +49,12 @@ const SignIn = () => {
         Swal.fire({
           icon: "error",
           title: "¡Error!",
-          text: "Hubo un problema al realizar la solicitud."
+          text: "Hubo un problema al realizar la solicitud.",
         });
         console.error(error);
         // Manejar el error de la solicitud
       });
   };
-  
 
   return (
     <Container fluid className="sign-up-container">
@@ -67,7 +68,8 @@ const SignIn = () => {
                 type="email"
                 id="email"
                 placeholder="Correo electrónico"
-                {...register("email", { required: "Este campo es requerido" })}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
               {errors.email && <span>{errors.email.message}</span>}
             </FormGroup>
@@ -77,9 +79,8 @@ const SignIn = () => {
                 type="password"
                 id="password"
                 placeholder="Contraseña"
-                {...register("password", {
-                  required: "Este campo es requerido",
-                })}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
               {errors.password && <span>{errors.password.message}</span>}
             </FormGroup>
@@ -87,7 +88,7 @@ const SignIn = () => {
               color="success"
               block
               className="custom-button"
-              onClick={handleSubmit(onSubmit)}
+              type="submit"
             >
               Aceptar
             </Button>

@@ -20,7 +20,7 @@
     "react-hook-form": "^7.43.9",
     "react-router-dom": "^6.11.2",
     "reactstrap": "^9.1.10",
-    "sweetalert2": "^11.4.8"
+    "sweetalert2": "^11.7.12"
   },
   "devDependencies": {
     "@types/react": "^18.0.28",
