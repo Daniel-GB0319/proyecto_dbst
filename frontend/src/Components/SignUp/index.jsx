@@ -25,11 +25,25 @@ const SignUp = () => {
     try {
       const response = await axios.post(API_URL + '/Admin', data);
       console.log(response.data);
-      Swal.fire('¡Cuenta creada!', 'Tu cuenta se ha creado exitosamente.', 'success');
+      Swal.fire({
+        icon: "success",
+        title: "¡Cuenta creada!",
+        text: "Tu cuenta se ha creado exitosamente.",
+        customClass: {
+          confirmButton: "custom-confirm-button",
+        },
+      });
       reset();
     } catch (error) {
       console.error(error);
-      Swal.fire('Error', 'Hubo un error al crear la cuenta.', 'error');
+      Swal.fire({
+        icon: "error",
+        title: "¡Error!",
+        text: "Hubo un error al crear la cuenta",
+        customClass: {
+          confirmButton: "custom-confirm-button",
+        },
+      });
     } finally {
       setSubmitting(false);
     }
