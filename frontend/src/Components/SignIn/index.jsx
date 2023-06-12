@@ -50,7 +50,7 @@ const SignIn = () => {
         Swal.fire({
           icon: "error",
           title: "¡Error!",
-          text: "Hubo un problema al realizar la solicitud.",
+          text: "Correo o contraseña no válidos",
           customClass: {
             confirmButton: "custom-confirm-button"
           }
