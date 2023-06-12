@@ -16,7 +16,7 @@ export const login = async (req, res) => {
       return res.status(401).json({ message: "Correo electrónico o contraseña incorrectos" });
     }
 
-    // Si las credenciales son válidas, puedes devolver un mensaje de éxito o cualquier otra información
+    // Si las credenciales son válidas
 
     return res.status(200).json({ message: "Credenciales válidas" });
   } catch (error) {

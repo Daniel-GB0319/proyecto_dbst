@@ -241,3 +241,8 @@
 .error-message {
   color: red;
 }
+
+/* Paciente */
+.patient-container {
+  margin: 30px;
+}
