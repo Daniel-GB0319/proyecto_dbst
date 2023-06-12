@@ -1,7 +1,17 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
-import { FormGroup, Label, Input, Button, Row, Col } from 'reactstrap';
+import {
+  Container,
+  Row,
+  Col,
+  FormGroup,
+  Label,
+  Input,
+  Button,
+} from "reactstrap";
+import "../../assets/index.css";
+import "bootstrap/dist/css/bootstrap.css";
 
 const Patient = () => {
   const {
@@ -68,9 +78,9 @@ const Patient = () => {
 
 
   return (
-    <div className="patient-container">
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Row>
+    <Container fluid className="patient-container">
+      <form onSubmit={handleSubmit(onSubmit)}>
+      <Row className="justify-content-center align-items-center">
         <Col md={6}>
           <FormGroup>
             <Label for="nombre">Nombre</Label>
@@ -323,7 +333,7 @@ const Patient = () => {
         Guardar
       </Button>
     </form>
-    </div>
+    </Container>
   );
 };
 
