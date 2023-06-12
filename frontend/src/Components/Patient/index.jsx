@@ -332,6 +332,9 @@ const Patient = () => {
       <Button color="success" block className="custom-button" type="submit">
         Guardar
       </Button>
+      <Button color="success" block className="custom-button" type="submit">
+        Eliminar Paciente
+      </Button>
     </form>
     </Container>
   );
