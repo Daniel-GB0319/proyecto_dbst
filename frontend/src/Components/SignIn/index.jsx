@@ -1,10 +1,10 @@
-import React from "react";
+/* import React from "react"; */
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-import Swal from 'sweetalert2';
-import 'sweetalert2/dist/sweetalert2.min.css';
+import Swal from "sweetalert2";
+import "sweetalert2/dist/sweetalert2.min.css";
 import axios from "axios";
-import { API_URL } from '../../../constants.js';
+import { API_URL } from "../../../constants.js";
 import "bootstrap/dist/css/bootstrap.css";
 import {
   Container,
@@ -30,20 +30,20 @@ const SignIn = () => {
     const { email, password } = data;
     const requestBody = {
       email: email,
-      password: password
+      password: password,
     };
-  
+
     axios
-      .post(API_URL + '/login', requestBody)
+      .post(API_URL + "/login", requestBody)
       .then((response) => {
         Swal.fire({
           icon: "success",
           title: "¡Éxito!",
           text: "La solicitud se completó correctamente.",
           customClass: {
-            confirmButton: "custom-confirm-button"
-          }
-        });        
+            confirmButton: "custom-confirm-button",
+          },
+        });
         console.log(response.data);
       })
       .catch((error) => {
@@ -52,8 +52,8 @@ const SignIn = () => {
           title: "¡Error!",
           text: "Correo o contraseña no válidos",
           customClass: {
-            confirmButton: "custom-confirm-button"
-          }
+            confirmButton: "custom-confirm-button",
+          },
         });
         console.error(error);
       });
@@ -74,7 +74,9 @@ const SignIn = () => {
                 {...register("email", { required: "Este campo es requerido" })}
                 onChange={(e) => setValue("email", e.target.value)}
               />
-              {errors.email && <span>{errors.email.message}</span>}
+              {errors.email && (
+                <span className="error-message">{errors.email.message}</span>
+              )}
             </FormGroup>
             <FormGroup>
               <Label for="password">Contraseña</Label>
@@ -87,7 +89,9 @@ const SignIn = () => {
                 })}
                 onChange={(e) => setValue("password", e.target.value)}
               />
-              {errors.password && <span>{errors.password.message}</span>}
+              {errors.password && (
+                <span className="error-message">{errors.password.message}</span>
+              )}
             </FormGroup>
             <Button
               color="success"
@@ -111,5 +115,3 @@ const SignIn = () => {
 };
 
 export default SignIn;
-
-

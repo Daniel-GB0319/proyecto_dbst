@@ -1,26 +1,19 @@
 import React, { useState } from 'react';
-import { useForm } from "react-hook-form";
-import axios from "axios";
-import Swal from "sweetalert2";
+import { useForm } from 'react-hook-form';
+import axios from 'axios';
+import Swal from 'sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
 import { API_URL } from '../../../constants.js';
 import 'bootstrap/dist/css/bootstrap.css';
-import {
-  Container,
-  Row,
-  Col,
-  Form,
-  FormGroup,
-  Label,
-  Input,
-  Button,
-} from "reactstrap";
-import "../../assets/index.css";
+import { Container, Row, Col, Form, FormGroup, Label, Input, Button } from 'reactstrap';
+import '../../assets/index.css';
 
 const SignUp = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
     watch,
     reset,
   } = useForm();
@@ -30,22 +23,20 @@ const SignUp = () => {
   const onSubmit = async (data) => {
     setSubmitting(true);
     try {
-      // Realiza la solicitud POST utilizando Axios
       const response = await axios.post(API_URL + '/Admin', data);
       console.log(response.data);
-      // Realiza las acciones necesarias con la respuesta
-      Swal.fire("¡Cuenta creada!", "Tu cuenta se ha creado exitosamente.", "success");
+      Swal.fire('¡Cuenta creada!', 'Tu cuenta se ha creado exitosamente.', 'success');
       reset();
     } catch (error) {
       console.error(error);
-      // Maneja el error de la solicitud
-      Swal.fire("Error", "Hubo un error al crear la cuenta.", "error");
+      Swal.fire('Error', 'Hubo un error al crear la cuenta.', 'error');
     } finally {
       setSubmitting(false);
     }
   };
 
-  const password = watch("password");
+  const password = watch('password');
+  const confirmPassword = watch('confirmPassword');
 
   return (
     <Container fluid className="sign-up-container">
@@ -59,8 +50,12 @@ const SignUp = () => {
                 type="text"
                 id="firstName"
                 placeholder="Nombre(s)"
-                {...register("firstName")}
+                {...register('firstName', { required: 'Este campo es requerido' })}
+                onChange={(e) => setValue('firstName', e.target.value)}
               />
+              {errors.firstName && (
+                <span className="error-message">{errors.firstName.message}</span>
+              )}
             </FormGroup>
             <FormGroup>
               <Label for="lastName">Apellido Paterno</Label>
@@ -68,8 +63,12 @@ const SignUp = () => {
                 type="text"
                 id="lastName"
                 placeholder="Apellido Paterno"
-                {...register("lastName")}
+                {...register('lastName', { required: 'Este campo es requerido' })}
+                onChange={(e) => setValue('lastName', e.target.value)}
               />
+              {errors.lastName && (
+                <span className="error-message">{errors.lastName.message}</span>
+              )}
             </FormGroup>
             <FormGroup>
               <Label for="middleName">Apellido Materno</Label>
@@ -77,8 +76,12 @@ const SignUp = () => {
                 type="text"
                 id="middleName"
                 placeholder="Apellido Materno"
-                {...register("middleName")}
+                {...register('middleName', { required: 'Este campo es requerido' })}
+                onChange={(e) => setValue('middleName', e.target.value)}
               />
+              {errors.middleName && (
+                <span className="error-message">{errors.middleName.message}</span>
+              )}
             </FormGroup>
             <FormGroup>
               <Label for="email">Correo electrónico</Label>
@@ -86,8 +89,12 @@ const SignUp = () => {
                 type="email"
                 id="email"
                 placeholder="Correo electrónico"
-                {...register("email")}
+                {...register('email', { required: 'Este campo es requerido' })}
+                onChange={(e) => setValue('email', e.target.value)}
               />
+              {errors.email && (
+                <span className="error-message">{errors.email.message}</span>
+              )}
             </FormGroup>
             <FormGroup>
               <Label for="password">Contraseña</Label>
@@ -95,8 +102,12 @@ const SignUp = () => {
                 type="password"
                 id="password"
                 placeholder="Contraseña"
-                {...register("password")}
+                {...register('password', { required: 'Este campo es requerido' })}
+                onChange={(e) => setValue('password', e.target.value)}
               />
+              {errors.password && (
+                <span className="error-message">{errors.password.message}</span>
+              )}
             </FormGroup>
             <FormGroup>
               <Label for="confirmPassword">Repetir contraseña</Label>
@@ -104,11 +115,27 @@ const SignUp = () => {
                 type="password"
                 id="confirmPassword"
                 placeholder="Repetir contraseña"
-                {...register("confirmPassword")}
+                {...register('confirmPassword', {
+                  required: 'Este campo es requerido',
+                  validate: (value) => value === password || 'Las contraseñas no coinciden',
+                })}
+                onChange={(e) => setValue('confirmPassword', e.target.value)}
               />
+              {errors.confirmPassword && (
+                <span className="error-message">{errors.confirmPassword.message}</span>
+              )}
+              {confirmPassword !== password && !errors.confirmPassword && (
+                <span className="error-message">Las contraseñas no coinciden</span>
+              )}
             </FormGroup>
-            <Button color="success" block className="custom-button" type="submit" disabled={submitting}>
-              {submitting ? "Creando cuenta..." : "Crear cuenta"}
+            <Button
+              color="success"
+              block
+              className="custom-button"
+              type="submit"
+              disabled={submitting}
+            >
+              {submitting ? 'Creando cuenta...' : 'Crear cuenta'}
             </Button>
           </Form>
         </Col>
@@ -118,4 +145,3 @@ const SignUp = () => {
 };
 
 export default SignUp;
-

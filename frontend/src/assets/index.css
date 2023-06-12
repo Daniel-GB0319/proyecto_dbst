@@ -237,3 +237,7 @@
 .custom-confirm-button {
   background-color: #26a69a !important;
 }
+
+.error-message {
+  color: red;
+}
