@@ -1,7 +1,8 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-import Swal from "sweetalert2/dist/sweetalert2.css";
+import Swal from 'sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
 import axios from "axios";
 import { API_URL } from '../../../constants.js';
 import "bootstrap/dist/css/bootstrap.css";
@@ -38,15 +39,21 @@ const SignIn = () => {
         Swal.fire({
           icon: "success",
           title: "¡Éxito!",
-          text: "La solicitud se completó correctamente."
-        });
+          text: "La solicitud se completó correctamente.",
+          customClass: {
+            confirmButton: "custom-confirm-button"
+          }
+        });        
         console.log(response.data);
       })
       .catch((error) => {
         Swal.fire({
           icon: "error",
           title: "¡Error!",
-          text: "Hubo un problema al realizar la solicitud."
+          text: "Hubo un problema al realizar la solicitud.",
+          customClass: {
+            confirmButton: "custom-confirm-button"
+          }
         });
         console.error(error);
       });
