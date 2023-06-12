@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { API_URL } from '../../assets/constants.js';
 import 'bootstrap/dist/css/bootstrap.css';
 import {
   Container,
@@ -30,7 +31,7 @@ const SignUp = () => {
     setSubmitting(true);
     try {
       // Realiza la solicitud POST utilizando Axios
-      const response = await axios.post("http://127.0.0.1:8000/Admin", data);
+      const response = await axios.post(API_URL + '/Admin', data);
       console.log(response.data);
       // Realiza las acciones necesarias con la respuesta
       Swal.fire("¡Cuenta creada!", "Tu cuenta se ha creado exitosamente.", "success");
