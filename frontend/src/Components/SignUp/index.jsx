@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import Swal from "sweetalert2";
-import { API_URL } from '../../assets/constants.js';
+import { API_URL } from '../../../constants.js';
 import 'bootstrap/dist/css/bootstrap.css';
 import {
   Container,
