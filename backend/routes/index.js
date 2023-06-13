@@ -9,6 +9,9 @@ const router = Router();
 // Ruta para el inicio de sesión
 router.post("/login", login);
 router.post("/Admin", createAdminUser);
+
+
+// Ruta para pacientes
 router.post("/queryPacienteDatos", queryDatosPersonales);
 router.post("/updatePacienteDireccion", updateDireccion);
 router.post("/updatePacienteSeguro", updateSeguro);
