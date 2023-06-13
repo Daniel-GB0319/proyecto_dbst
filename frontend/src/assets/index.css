@@ -233,3 +233,18 @@
   background-color: #1e7d7a;
 }
 
+/* Botón Sweet Alert */
+.custom-confirm-button {
+  background-color: #26a69a !important;
+}
+
+.error-message {
+  color: red;
+}
+
+/* Paciente */
+.patient-container {
+  background-color: #e0f2f1;
+  padding: 40px;
+  height: 100vh;
+}

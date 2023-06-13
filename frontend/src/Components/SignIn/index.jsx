@@ -1,7 +1,10 @@
-import React from "react";
+import React from 'react';
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
+import "sweetalert2/dist/sweetalert2.min.css";
 import axios from "axios";
+import { API_URL } from "../../../constants.js";
 import "bootstrap/dist/css/bootstrap.css";
 import {
   Container,
@@ -20,20 +23,39 @@ const SignIn = () => {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm();
 
   const onSubmit = (data) => {
-    console.log(data);
-    // Realiza la solicitud POST utilizando Axios
+    const { email, password } = data;
+    const requestBody = {
+      email: email,
+      password: password,
+    };
+
     axios
-      .post("URL", data)
+      .post(API_URL + "/login", requestBody)
       .then((response) => {
+        Swal.fire({
+          icon: "success",
+          title: "¡Éxito!",
+          text: "La solicitud se completó correctamente.",
+          customClass: {
+            confirmButton: "custom-confirm-button",
+          },
+        });
         console.log(response.data);
-        // Realiza las acciones necesarias con la respuesta
       })
       .catch((error) => {
+        Swal.fire({
+          icon: "error",
+          title: "¡Error!",
+          text: "Correo o contraseña no válidos",
+          customClass: {
+            confirmButton: "custom-confirm-button",
+          },
+        });
         console.error(error);
-        // Maneja el error de la solicitud
       });
   };
 
@@ -50,8 +72,11 @@ const SignIn = () => {
                 id="email"
                 placeholder="Correo electrónico"
                 {...register("email", { required: "Este campo es requerido" })}
+                onChange={(e) => setValue("email", e.target.value)}
               />
-              {errors.email && <span>{errors.email.message}</span>}
+              {errors.email && (
+                <span className="error-message">{errors.email.message}</span>
+              )}
             </FormGroup>
             <FormGroup>
               <Label for="password">Contraseña</Label>
@@ -62,14 +87,17 @@ const SignIn = () => {
                 {...register("password", {
                   required: "Este campo es requerido",
                 })}
+                onChange={(e) => setValue("password", e.target.value)}
               />
-              {errors.password && <span>{errors.password.message}</span>}
+              {errors.password && (
+                <span className="error-message">{errors.password.message}</span>
+              )}
             </FormGroup>
             <Button
               color="success"
               block
               className="custom-button"
-              onClick={handleSubmit(onSubmit)}
+              type="submit"
             >
               Aceptar
             </Button>

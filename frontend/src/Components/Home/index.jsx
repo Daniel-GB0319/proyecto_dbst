@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import { Container, Row, Col, Button } from "reactstrap";
 import bannerImage from "../../assets/Images/banner.webp";
 import doctorImage from "../../assets/Images/medico.jpg";
