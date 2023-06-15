@@ -477,7 +477,7 @@ CREATE TABLE db_pedido (
     REFERENCES db_proveedor(id_proveedor)
 );
 
-/* Inserts y select */
+/* Inserts y select a db pedido*/
 INSERT INTO db_pedido (id_pedido, medicamento_id_medicamento, proveedor_id_proveedor)
 VALUES
 ('PED1', '1', 'PROV1'),
