@@ -1,6 +1,7 @@
 import { pool } from "../db.js";
 import jwt from "jsonwebtoken";
 
+
 export const login = async (req, res) => {
   try {
     const { correo, password } = req.body;
@@ -23,6 +24,27 @@ export const login = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
+
+///EJEMPLO DE INSERTAR EN TABLA
+export const crearTipoUsuario = async (req, res) => {
+  try {
+    const { id_tipoUsuario, nombre_tipoUsuario } = req.body;
+
+    // Insertar el nuevo tipo de usuario en la tabla tipo_usuario
+    await pool.query(
+      "INSERT INTO tipo_usuario (id_tipoUsuario, nombre_tipoUsuario) VALUES (?, ?)",
+      [id_tipoUsuario, nombre_tipoUsuario]
+    );
+
+    return res.status(201).json({ message: "Tipo de usuario creado exitosamente" });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+
+
 
 
 export const createAdminUser = async (req, res) => {
