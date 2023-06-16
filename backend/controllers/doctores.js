@@ -86,7 +86,7 @@ export const deleteDoctor = async (req, res) => {
   }
 };
 
-export const updateConsultorio = async (req, res) => {
+export const updateConsultorioDoctor = async (req, res) => {
   const { id_doctor, consultorio_id_consultorio } = req.body;
 
   if (!id_doctor || !consultorio_id_consultorio) {
@@ -107,7 +107,7 @@ export const updateConsultorio = async (req, res) => {
   }
 };
 
-export const updateEspecialidad = async (req, res) => {
+export const updateEspecialidadDoctor = async (req, res) => {
   const { id_doctor, especialidad_id_especialidad } = req.body;
 
   if (!id_doctor || !especialidad_id_especialidad) {

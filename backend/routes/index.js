@@ -2,7 +2,7 @@ import { Router } from "express";
 import { login, createAdminUser, crearTipoUsuario } from "../controllers/auth.js";
 import {queryDatosPersonales, updateDireccion, updateSeguro, deletePaciente, insertPaciente} from "../controllers/pacientes.js";
 import {queryDatosPersonales as queryDoctorDatosPersonales, updateDireccion as updateDoctorDireccion, updateDatosPersonales, deleteDoctor,
-  updateConsultorio, updateEspecialidad, insertDoctor} from "../controllers/doctores.js";
+  updateConsultorioDoctor, updateEspecialidadDoctor, insertDoctor} from "../controllers/doctores.js";
 import {insertMedicamento, updateMedicamento, deleteMedicamento, updateCantidadMedicamento, updatePrecioMedicamento, queryMedicamentos} from "../controllers/medicamentos.js";
 import {insertProveedor, updateProveedor, deleteProveedor} from "../controllers/proveedores.js";
 import {createConsultorio, updateConsultorio, deleteConsultorio, queryConsultorio} from "../controllers/consultorios.js";
@@ -29,8 +29,8 @@ router.post("/queryDatosPersonales", queryDoctorDatosPersonales);
 router.post("/updateDireccion", updateDoctorDireccion);
 router.post("/updateDatosPersonales", updateDatosPersonales);
 router.post("/deleteDoctor", deleteDoctor);
-router.post("/updateConsultorio", updateConsultorio);
-router.post("/updateEspecialidad", updateEspecialidad);
+router.post("/updateConsultorioDoctor", updateConsultorioDoctor);
+router.post("/updateEspecialidad", updateEspecialidadDoctor);
 router.post("/insertDoctor", insertDoctor);
 
 // Rutas para medicamentos
