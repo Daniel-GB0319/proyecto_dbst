@@ -96,3 +96,18 @@ export const updatePrecioMedicamento = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
+export const queryMedicamentos = async (req, res) => {
+  try {
+    const result = await pool.query("SELECT * FROM db_medicamento");
+    const medicamentos = result[0];
+
+    if (medicamentos.length === 0) {
+      return res.status(404).json({ message: "No se encontraron medicamentos" });
+    }
+
+    return res.status(200).json(medicamentos);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};

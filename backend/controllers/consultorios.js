@@ -56,3 +56,25 @@ export const deleteConsultorio = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
+// Consultar los datos de un consultorio
+export const queryConsultorio = async (req, res) => {
+  const { id_consultorio } = req.body;
+
+  if (!id_consultorio) {
+    return res.status(400).json({ message: "Falta el ID del consultorio a consultar" });
+  }
+
+  try {
+    const result = await pool.query("SELECT * FROM db_consultorio WHERE id_consultorio = ?", [id_consultorio]);
+    const consultorio = result[0];
+
+    if (!consultorio) {
+      return res.status(404).json({ message: "No se encontró el consultorio" });
+    }
+
+    return res.status(200).json(consultorio);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};

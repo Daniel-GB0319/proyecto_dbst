@@ -3,10 +3,13 @@ import { login, createAdminUser, crearTipoUsuario } from "../controllers/auth.js
 import {queryDatosPersonales, updateDireccion, updateSeguro, deletePaciente} from "../controllers/pacientes.js";
 import {queryDatosPersonales as queryDoctorDatosPersonales, updateDireccion as updateDoctorDireccion, updateDatosPersonales, deleteDoctor,
   updateConsultorio, updateEspecialidad, insertDoctor} from "../controllers/doctores.js";
-import {insertMedicamento, updateMedicamento, deleteMedicamento, updateCantidadMedicamento, updatePrecioMedicamento} from "../controllers/medicamentos.js";
+import {insertMedicamento, updateMedicamento, deleteMedicamento, updateCantidadMedicamento, updatePrecioMedicamento, queryMedicamentos} from "../controllers/medicamentos.js";
 import {insertProveedor, updateProveedor, deleteProveedor} from "../controllers/proveedores.js";
-import {createConsultorio, updateConsultorio, deleteConsultorio} from "../controllers/consultorios.js";
+import {createConsultorio, updateConsultorio, deleteConsultorio, queryConsultorio} from "../controllers/consultorios.js";
+import {createEspecialidad, queryEspecialidad, updateEspecialidad, deleteEspecialidad} from "../controllers/especialidades.js";  
+import {createHorario, queryHorario, updateHorario, deleteHorario} from "../controllers/horarios.js";
   
+
 const router = Router();
 
 // Ruta para el inicio de sesión
@@ -30,6 +33,7 @@ router.post("/updateEspecialidad", updateEspecialidad);
 router.post("/insertDoctor", insertDoctor);
 
 // Rutas para medicamentos
+router.post("/queryMedicamento", queryMedicamentos);
 router.post("/insertMedicamento", insertMedicamento);
 router.post("/updateMedicamento", updateMedicamento);
 router.post("/deleteMedicamento", deleteMedicamento);
@@ -45,6 +49,18 @@ router.post("/deleteProveedor", deleteProveedor);
 router.post("/createConsultorio", createConsultorio);
 router.post("/updateConsultorio", updateConsultorio);
 router.post("/deleteConsultorio", deleteConsultorio);
+router.post("/queryConsultorio", queryConsultorio);
 
+// Rutas para especialidades
+router.post("/createEspecialidad", createEspecialidad);
+router.post("/queryEspecialidad", queryEspecialidad);
+router.post("/updateEspecialidad", updateEspecialidad);
+router.post("/deleteEspecialidad", deleteEspecialidad);
+
+// Rutas para horarios
+router.post("/createHorario", createHorario);
+router.post("/queryHorario", queryHorario);
+router.post("/updateHorario", updateHorario);
+router.post("/deleteHorario", deleteHorario);
 
 export default router;
