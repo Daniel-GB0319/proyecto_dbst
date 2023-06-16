@@ -4,7 +4,7 @@ create database proyecto_dbst;
 use proyecto_dbst;
 
 CREATE TABLE tipo_usuario (
-    id_tipoUsuario int PRIMARY KEY,
+    id_tipoUsuario int AUTO_INCREMENT PRIMARY KEY,
     nombre_tipoUsuario VARCHAR(15) NOT NULL
 );
 
@@ -190,6 +190,7 @@ CREATE TABLE db_receta_medicamento (
     CONSTRAINT fk_medicamento_rm FOREIGN KEY (medicamento_id_medicamento)
     REFERENCES db_medicamento(id_medicamento)
 );
+
 
 CREATE TABLE db_proveedor (
     id_proveedor int AUTO_INCREMENT PRIMARY KEY,

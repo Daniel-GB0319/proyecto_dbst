@@ -129,16 +129,16 @@ export const updateEspecialidadDoctor = async (req, res) => {
 };
 
 export const insertDoctor = async (req, res) => {
-  const { id_doctor, nombre, ap_paterno, ap_materno, edad, calle, num_ext, num_int, colonia, delegacion, entidad_federativa, fecha_nac, peso, altura, sexo, aseguradora, usuario_id_usuario, consultorio_id_consultorio, horario_id_horario, especialidad_id_especialidad } = req.body;
+  const { curp, nombre, ap_paterno, ap_materno, edad, calle, num_ext, num_int, colonia, delegacion, entidad_federativa, fecha_nac, peso, altura, sexo, aseguradora, usuario_id_usuario, consultorio_id_consultorio, horario_id_horario, especialidad_id_especialidad } = req.body;
 
-  if (!id_doctor || !nombre || !ap_paterno || !ap_materno || !edad || !calle || !colonia || !delegacion || !entidad_federativa || !fecha_nac || !peso || !altura || !sexo || !usuario_id_usuario || !consultorio_id_consultorio || !horario_id_horario || !especialidad_id_especialidad) {
+  if (!curp || !nombre || !ap_paterno || !ap_materno || !edad || !calle || !colonia || !delegacion || !entidad_federativa || !fecha_nac || !peso || !altura || !sexo || !usuario_id_usuario || !consultorio_id_consultorio || !horario_id_horario || !especialidad_id_especialidad) {
     return res.status(400).json({ message: "Faltan campos requeridos para registrar el doctor" });
   }
 
   try {
     await pool.query(
-      "INSERT INTO db_doctor (id_doctor, nombre, ap_paterno, ap_materno, edad, calle, num_ext, num_int, colonia, delegacion, entidad_federativa, fecha_nac, peso, altura, sexo, aseguradora, usuario_id_usuario, consultorio_id_consultorio, horario_id_horario, especialidad_id_especialidad) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-      [id_doctor, nombre, ap_paterno, ap_materno, edad, calle, num_ext, num_int, colonia, delegacion, entidad_federativa, fecha_nac, peso, altura, sexo, aseguradora, usuario_id_usuario, consultorio_id_consultorio, horario_id_horario, especialidad_id_especialidad]
+      "INSERT INTO db_doctor (CURP, nombre, ap_paterno, ap_materno, edad, calle, num_ext, num_int, colonia, delegacion, entidad_federativa, fecha_nac, peso, altura, sexo, aseguradora, usuario_id_usuario, consultorio_id_consultorio, horario_id_horario, especialidad_id_especialidad) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      [curp, nombre, ap_paterno, ap_materno, edad, calle, num_ext, num_int, colonia, delegacion, entidad_federativa, fecha_nac, peso, altura, sexo, aseguradora, usuario_id_usuario, consultorio_id_consultorio, horario_id_horario, especialidad_id_especialidad]
     );
 
     return res.status(200).json({ message: "Doctor registrado con éxito" });
