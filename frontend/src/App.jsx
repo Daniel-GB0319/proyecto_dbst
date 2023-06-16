@@ -6,6 +6,7 @@ import Home from "./Components/Home";
 import Prescription from "./Components/Prescription";
 import Doctors from "./Components/Doctors";
 import Patient from "./Components/Patient";
+import Appointment from "./Components/Appointment";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/receta" element={<Prescription />} />
           <Route path="/doctors" element={<Doctors/>} />
           <Route path="/patient" element={<Patient/>} />
+          <Route path="/Appointment" element={<Appointment/>} />
         </Routes>
     </BrowserRouter>
   );
