@@ -78,3 +78,15 @@ export const queryConsultorio = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
+// Consultar todos los consultorios
+export const getAllConsultorios = async (req, res) => {
+  try {
+    const consultorios = await pool.query("SELECT * FROM db_consultorio");
+
+    return res.status(200).json(consultorios);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+

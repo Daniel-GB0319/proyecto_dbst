@@ -99,3 +99,14 @@ export const deleteConsulta = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
+// Consultar todas las consultas
+export const getAllConsultas = async (req, res) => {
+  try {
+    const consultas = await pool.query("SELECT * FROM db_consulta");
+
+    return res.status(200).json(consultas);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};

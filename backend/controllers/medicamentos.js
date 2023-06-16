@@ -111,3 +111,13 @@ export const queryMedicamentos = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
+export const getAllMedicamentos = async (req, res) => {
+  try {
+    const medicamentos = await pool.query("SELECT * FROM db_medicamento");
+
+    return res.status(200).json(medicamentos);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
