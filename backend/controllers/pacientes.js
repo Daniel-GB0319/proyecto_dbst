@@ -92,3 +92,35 @@ export const deletePaciente = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
+// Agrega un paciente
+export const insertPaciente = async (req, res) => {
+  try {
+    const {id_paciente, nombre, ap_paterno, ap_materno, edad, tipo_sangre, calle, num_ext, num_int, colonia, delegacion, entidad_federativa, fecha_nac, peso, altura, sexo, aseguradora, usuario_id_usuario
+    } = req.body;
+
+    // Verificar si el paciente ya existe en la base de datos
+    const [existingPaciente] = await pool.query(
+      "SELECT * FROM db_paciente WHERE id_paciente = ?",
+      [id_paciente]
+    );
+
+    if (existingPaciente.length > 0) {
+      return res.status(400).json({ message: "El paciente ya existe" });
+    }
+
+    // Insertar el nuevo paciente en la base de datos
+    await pool.query(
+      `INSERT INTO db_paciente (id_paciente, nombre, ap_paterno, ap_materno, edad, tipo_sangre, calle, num_ext, num_int, colonia, delegacion, entidad_federativa,
+        fecha_nac, peso, altura, sexo, aseguradora, usuario_id_usuario
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [id_paciente, nombre, ap_paterno, ap_materno, edad, tipo_sangre, calle, num_ext, num_int, colonia, delegacion, entidad_federativa, fecha_nac, peso, altura, sexo,
+        aseguradora, usuario_id_usuario
+      ]
+    );
+
+    return res.status(200).json({ message: "Nuevo paciente agregado con éxito" });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
