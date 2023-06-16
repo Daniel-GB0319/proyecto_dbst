@@ -52,7 +52,6 @@ CREATE TABLE db_paciente (
     REFERENCES db_usuario(id_usuario)
 );
 
-
 CREATE TABLE catalogo_alergia (
     id_alergia int AUTO_INCREMENT PRIMARY KEY,
     nombre_alergia VARCHAR(15) NOT NULL
@@ -358,3 +357,66 @@ BEGIN
     VALUES (NEW.paciente_id_paciente, NEW.id_receta);
 END //
 DELIMITER ;
+
+
+
+-- CALL sp_InsertarPaciente('CURP1', 'Paciente1', 'Apellido1', 'Apellido2', 25, 'O+', 'Calle1', 123, NULL, 'Colonia1', 'Delegacion1', 'Entidad1', '1998-01-01', 70.5, 170.2, 'M', 'Aseguradora1', 7);
+-- CALL sp_InsertarPaciente('CURPX', 'Paciente8', 'Apellido1', 'Apellido2', 25, 'O+', 'Calle1', 123, NULL, 'Colonia1', 'Delegacion1', 'Entidad1', '1998-01-01', 70.5, 170.2, 'M', 'Aseguradora1', 9);
+-- Para verificar que no exista el paciente antes de insertar
+DELIMITER //
+CREATE PROCEDURE sp_InsertarPaciente(
+    p_CURP VARCHAR(18),
+    p_nombre VARCHAR(15),
+    p_ap_paterno VARCHAR(15),
+    p_ap_materno VARCHAR(15),
+    p_edad INT,
+    p_tipo_sangre VARCHAR(3),
+    p_calle VARCHAR(20),
+    p_num_ext INT,
+    p_num_int INT,
+    p_colonia VARCHAR(20),
+    p_delegacion VARCHAR(20),
+    p_entidad_federativa VARCHAR(20),
+    p_fecha_nac DATE,
+    p_peso FLOAT,
+    p_altura FLOAT,
+    p_sexo VARCHAR(1),
+    p_aseguradora VARCHAR(15),
+    p_usuario_id_usuario INT
+)
+BEGIN
+    -- Verificamos si existe el paciente
+    IF EXISTS (
+        SELECT 1
+        FROM db_paciente
+        WHERE CURP = p_CURP
+    )
+    THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El paciente ya existe';
+    ELSE
+        -- Insertar el paciente
+        INSERT INTO db_paciente (
+            CURP, nombre, ap_paterno, ap_materno, edad, tipo_sangre, calle, num_ext,
+            num_int, colonia, delegacion, entidad_federativa, fecha_nac, peso, altura,
+            sexo, aseguradora, usuario_id_usuario
+        ) VALUES (
+            p_CURP, p_nombre, p_ap_paterno, p_ap_materno, p_edad, p_tipo_sangre, p_calle, p_num_ext,
+            p_num_int, p_colonia, p_delegacion, p_entidad_federativa, p_fecha_nac, p_peso, p_altura,
+            p_sexo, p_aseguradora, p_usuario_id_usuario
+        );
+    END IF;
+END //
+DELIMITER ;
+
+-- CALL sp_InsertarPaciente('CURP1', 'Paciente1', 'Apellido1', 'Apellido2', 25, 'O+', 'Calle1', 123, NULL, 'Colonia1', 'Delegacion1', 'Entidad1', '1998-01-01', 70.5, 170.2, 'M', 'Aseguradora1', 7);
+-- CALL sp_InsertarPaciente('CURPX', 'Paciente8', 'Apellido1', 'Apellido2', 25, 'O+', 'Calle1', 123, NULL, 'Colonia1', 'Delegacion1', 'Entidad1', '1998-01-01', 70.5, 170.2, 'M', 'Aseguradora1', 9);
+
+-- Store procedure al que se le pase el ID usuario y te diga qué tipo de usuario es
+DELIMITER //
+CREATE PROCEDURE VerificarTipoUsuario(id_usuario int)
+BEGIN
+	SELECT id_tipoUsuario from db_usuario AS U JOIN tipo_Usuario AS T ON U.tipo_usuario = T.id_tipoUsuario
+    WHERE id_usuario = U.id_usuario;
+END //
+DELIMITER ;
+
+-- CALL VerificarTipoUsuario('6');
