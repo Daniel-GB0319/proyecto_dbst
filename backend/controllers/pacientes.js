@@ -49,7 +49,6 @@ export const updateDireccion = async (req, res) => {
 };
 
 
-
 export const updateSeguro = async (req, res) => {
   const {id_paciente, seguro } = req.body;
 
@@ -96,13 +95,13 @@ export const deletePaciente = async (req, res) => {
 // Agrega un paciente
 export const insertPaciente = async (req, res) => {
   try {
-    const {id_paciente, nombre, ap_paterno, ap_materno, edad, tipo_sangre, calle, num_ext, num_int, colonia, delegacion, entidad_federativa, fecha_nac, peso, altura, sexo, aseguradora, usuario_id_usuario
+    const {curp, nombre, ap_paterno, ap_materno, edad, tipo_sangre, calle, num_ext, num_int, colonia, delegacion, entidad_federativa, fecha_nac, peso, altura, sexo, aseguradora, usuario_id_usuario
     } = req.body;
 
     // Verificar si el paciente ya existe en la base de datos
     const [existingPaciente] = await pool.query(
-      "SELECT * FROM db_paciente WHERE id_paciente = ?",
-      [id_paciente]
+      "SELECT * FROM db_paciente WHERE CURP = ?",
+      [curp]
     );
 
     if (existingPaciente.length > 0) {
@@ -111,10 +110,10 @@ export const insertPaciente = async (req, res) => {
 
     // Insertar el nuevo paciente en la base de datos
     await pool.query(
-      `INSERT INTO db_paciente (id_paciente, nombre, ap_paterno, ap_materno, edad, tipo_sangre, calle, num_ext, num_int, colonia, delegacion, entidad_federativa,
+      `INSERT INTO db_paciente (CURP, nombre, ap_paterno, ap_materno, edad, tipo_sangre, calle, num_ext, num_int, colonia, delegacion, entidad_federativa,
         fecha_nac, peso, altura, sexo, aseguradora, usuario_id_usuario
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [id_paciente, nombre, ap_paterno, ap_materno, edad, tipo_sangre, calle, num_ext, num_int, colonia, delegacion, entidad_federativa, fecha_nac, peso, altura, sexo,
+      [curp, nombre, ap_paterno, ap_materno, edad, tipo_sangre, calle, num_ext, num_int, colonia, delegacion, entidad_federativa, fecha_nac, peso, altura, sexo,
         aseguradora, usuario_id_usuario
       ]
     );
