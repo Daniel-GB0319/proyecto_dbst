@@ -2,16 +2,16 @@ import { pool } from "../db.js";
 
 // Crear una nueva especialidad
 export const createEspecialidad = async (req, res) => {
-  const { id_especialidad, nombre, descripcion } = req.body;
+  const {nombre, descripcion } = req.body;
 
-  if (!id_especialidad || !nombre) {
+  if (!nombre) {
     return res.status(400).json({ message: "Faltan campos requeridos para crear la especialidad" });
   }
 
   try {
     await pool.query(
-      "INSERT INTO db_especialidad (id_especialidad, nombre, descripcion) VALUES (?, ?, ?)",
-      [id_especialidad, nombre, descripcion]
+      "INSERT INTO db_especialidad (nombre, descripcion) VALUES (?, ?)",
+      [nombre, descripcion]
     );
 
     return res.status(200).json({ message: "Especialidad creada con éxito" });

@@ -2,16 +2,16 @@ import { pool } from "../db.js";
 
 // Crear un nuevo consultorio
 export const createConsultorio = async (req, res) => {
-  const { id_consultorio, numero, estado, descripcion } = req.body;
+  const {numero, estado, descripcion } = req.body;
 
-  if (!id_consultorio || !numero || !estado) {
+  if (!numero || !estado) {
     return res.status(400).json({ message: "Faltan campos requeridos para crear el consultorio" });
   }
 
   try {
     await pool.query(
-      "INSERT INTO db_consultorio (id_consultorio, numero, estado, descripcion) VALUES (?, ?, ?, ?)",
-      [id_consultorio, numero, estado, descripcion]
+      "INSERT INTO db_consultorio (numero, estado, descripcion) VALUES (?, ?, ?)",
+      [numero, estado, descripcion]
     );
 
     return res.status(200).json({ message: "Consultorio creado con éxito" });

@@ -2,16 +2,16 @@ import { pool } from "../db.js";
 
 // Registrar un nuevo proveedor
 export const insertProveedor = async (req, res) => {
-  const { id_proveedor, nombre, telefono, correo } = req.body;
+  const {nombre, telefono, correo } = req.body;
 
-  if (!id_proveedor || !nombre || !correo) {
+  if (!nombre || !correo) {
     return res.status(400).json({ message: "Faltan campos requeridos para registrar el proveedor" });
   }
 
   try {
     await pool.query(
-      "INSERT INTO db_proveedor (id_proveedor, nombre, telefono, correo) VALUES (?, ?, ?, ?)",
-      [id_proveedor, nombre, telefono, correo]
+      "INSERT INTO db_proveedor (nombre, telefono, correo) VALUES (?, ?, ?)",
+      [nombre, telefono, correo]
     );
 
     return res.status(200).json({ message: "Proveedor registrado con éxito" });

@@ -2,16 +2,16 @@ import { pool } from "../db.js";
 
 // Registrar un nuevo medicamento
 export const insertMedicamento = async (req, res) => {
-  const { id_medicamento, nombre, compuesto, descripcion, farmaceutica, cantidad, precio, req_receta } = req.body;
+  const {nombre, compuesto, descripcion, farmaceutica, cantidad, precio, req_receta } = req.body;
 
-  if (!id_medicamento || !nombre || !compuesto || !farmaceutica || !cantidad || !precio) {
+  if (!nombre || !compuesto || !farmaceutica || !cantidad || !precio) {
     return res.status(400).json({ message: "Faltan campos requeridos para registrar el medicamento" });
   }
 
   try {
     await pool.query(
-      "INSERT INTO db_medicamento (id_medicamento, nombre, compuesto, descripcion, farmaceutica, cantidad, precio, req_receta) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-      [id_medicamento, nombre, compuesto, descripcion, farmaceutica, cantidad, precio, req_receta]
+      "INSERT INTO db_medicamento (nombre, compuesto, descripcion, farmaceutica, cantidad, precio, req_receta) VALUES (?, ?, ?, ?, ?, ?, ?)",
+      [nombre, compuesto, descripcion, farmaceutica, cantidad, precio, req_receta]
     );
 
     return res.status(200).json({ message: "Medicamento registrado con éxito" });

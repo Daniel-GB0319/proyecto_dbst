@@ -2,16 +2,16 @@ import { pool } from "../db.js";
 
 // Crear un nuevo horario
 export const createHorario = async (req, res) => {
-  const { id_horario, turno, dia, hora_entrada, hora_salida, hora_ini_receso, hora_fin_receso } = req.body;
+  const {turno, dia, hora_entrada, hora_salida, hora_ini_receso, hora_fin_receso } = req.body;
 
-  if (!id_horario || !turno || !dia || !hora_entrada || !hora_salida || !hora_ini_receso || !hora_fin_receso) {
+  if (!turno || !dia || !hora_entrada || !hora_salida || !hora_ini_receso || !hora_fin_receso) {
     return res.status(400).json({ message: "Faltan campos requeridos para crear el horario" });
   }
 
   try {
     await pool.query(
-      "INSERT INTO db_horario (id_horario, turno, dia, hora_entrada, hora_salida, hora_ini_receso, hora_fin_receso) VALUES (?, ?, ?, ?, ?, ?, ?)",
-      [id_horario, turno, dia, hora_entrada, hora_salida, hora_ini_receso, hora_fin_receso]
+      "INSERT INTO db_horario (turno, dia, hora_entrada, hora_salida, hora_ini_receso, hora_fin_receso) VALUES (?, ?, ?, ?, ?, ?)",
+      [turno, dia, hora_entrada, hora_salida, hora_ini_receso, hora_fin_receso]
     );
 
     return res.status(200).json({ message: "Horario creado con éxito" });
