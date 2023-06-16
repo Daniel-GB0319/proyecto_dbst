@@ -5,7 +5,8 @@ import {queryDatosPersonales as queryDoctorDatosPersonales, updateDireccion as u
   updateConsultorio, updateEspecialidad, insertDoctor} from "../controllers/doctores.js";
 import {insertMedicamento, updateMedicamento, deleteMedicamento, updateCantidadMedicamento, updatePrecioMedicamento} from "../controllers/medicamentos.js";
 import {insertProveedor, updateProveedor, deleteProveedor} from "../controllers/proveedores.js";
-
+import {createConsultorio, updateConsultorio, deleteConsultorio} from "../controllers/consultorios.js";
+  
 const router = Router();
 
 // Ruta para el inicio de sesión
@@ -39,5 +40,11 @@ router.post("/updatePrecioMedicamento", updatePrecioMedicamento);
 router.post("/insertProveedor", insertProveedor);
 router.post("/updateProveedor", updateProveedor);
 router.post("/deleteProveedor", deleteProveedor);
+
+// Rutas para consultorios
+router.post("/createConsultorio", createConsultorio);
+router.post("/updateConsultorio", updateConsultorio);
+router.post("/deleteConsultorio", deleteConsultorio);
+
 
 export default router;
