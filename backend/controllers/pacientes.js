@@ -123,3 +123,14 @@ export const insertPaciente = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
+export const getAllPacientes = async (req, res) => {
+  try {
+    // Consultar todos los pacientes
+    const pacientes = await pool.query("SELECT * FROM db_paciente");
+
+    return res.status(200).json({ pacientes });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};

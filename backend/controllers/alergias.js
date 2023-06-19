@@ -56,3 +56,15 @@ export const deleteAlergia = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
+// Consultar todas las alergias
+export const getAllAlergias = async (req, res) => {
+    try {
+      const alergias = await pool.query("SELECT * FROM catalogo_alergia");
+  
+      return res.status(200).json(alergias);
+    } catch (error) {
+      return res.status(500).json({ message: error.message });
+    }
+  };
+  

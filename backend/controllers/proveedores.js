@@ -56,3 +56,14 @@ export const deleteProveedor = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
+export const getAllProveedores = async (req, res) => {
+  try {
+    // Consultar todos los proveedores
+    const proveedores = await pool.query("SELECT * FROM db_proveedor");
+
+    return res.status(200).json({ proveedores });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
