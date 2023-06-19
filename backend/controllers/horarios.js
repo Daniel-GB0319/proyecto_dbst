@@ -78,3 +78,13 @@ export const deleteHorario = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
+export const getAllHorarios = async (req, res) => {
+  try {
+    const horarios = await pool.query("SELECT * FROM db_horario");
+
+    return res.status(200).json(horarios);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};

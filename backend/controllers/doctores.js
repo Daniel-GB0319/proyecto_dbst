@@ -146,3 +146,13 @@ export const insertDoctor = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
+export const getAllDoctores = async (req, res) => {
+  try {
+    const doctores = await pool.query("SELECT * FROM db_doctor");
+
+    return res.status(200).json(doctores);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};

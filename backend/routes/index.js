@@ -1,81 +1,92 @@
 import { Router } from "express";
-import { login, createAdminUser, crearTipoUsuario } from "../controllers/auth.js";
-import {queryDatosPersonales, updateDireccion, updateSeguro, deletePaciente, insertPaciente} from "../controllers/pacientes.js";
-import {queryDatosPersonales as queryDoctorDatosPersonales, updateDireccion as updateDoctorDireccion, updateDatosPersonales, deleteDoctor,
-  updateConsultorioDoctor, updateEspecialidadDoctor, insertDoctor} from "../controllers/doctores.js";
-import {insertMedicamento, updateMedicamento, deleteMedicamento, updateCantidadMedicamento, updatePrecioMedicamento, queryMedicamentos} from "../controllers/medicamentos.js";
-import {insertProveedor, updateProveedor, deleteProveedor} from "../controllers/proveedores.js";
-import {createConsultorio, updateConsultorio, deleteConsultorio, queryConsultorio} from "../controllers/consultorios.js";
-import {createEspecialidad, queryEspecialidad, updateEspecialidad, deleteEspecialidad} from "../controllers/especialidades.js";  
-import {createHorario, queryHorario, updateHorario, deleteHorario} from "../controllers/horarios.js";
-import {createConsulta, updateConsulta, queryConsulta, deleteConsulta
-} from "../controllers/consultas.js";
-import { insertAlergia, updateAlergia, deleteAlergia } from "../controllers/alergias.js";
+import * as authController from "../controllers/auth.js";
+import * as pacientesController from "../controllers/pacientes.js";
+import * as doctoresController from "../controllers/doctores.js";
+import * as medicamentosController from "../controllers/medicamentos.js";
+import * as proveedoresController from "../controllers/proveedores.js";
+import * as consultoriosController from "../controllers/consultorios.js";
+import * as especialidadesController from "../controllers/especialidades.js";
+import * as horariosController from "../controllers/horarios.js";
+import * as consultasController from "../controllers/consultas.js";
+import * as alergiasController from "../controllers/alergias.js";
+import * as usuariosController from "../controllers/usuarios.js"; // Importar controladores de usuarios
+
 
 
 const router = Router();
 
+// Rutas para usuarios
+router.post("/insertUsuario", usuariosController.insertUsuario);
+router.post("/updateUsuario", usuariosController.updateUsuario);
+router.post("/deleteUsuario", usuariosController.deleteUsuario);
+router.get("/queryUsuario/:id_usuario", usuariosController.queryUsuario);
+router.get("/getAllUsuarios", usuariosController.getAllUsuarios);
+router.post("/loginUsuarios", usuariosController.loginUsuarios);
+
+
 // Ruta para el inicio de sesión
-router.post("/login", login);
-router.post("/Admin", createAdminUser);
-router.post("/crearTipoUsuario", crearTipoUsuario);
+// PROBABLEMENTE SE ELIMINE ESTA SECCION YA QUE RUTAS PARA USUARIOS
+// PUEDEN SUSTITUIR SU FUNCION
+router.post("/login", authController.login);
+router.post("/Admin", authController.createAdminUser);
+router.post("/crearTipoUsuario", authController.crearTipoUsuario);
 
 // Ruta para pacientes
-router.post("/insertPaciente", insertPaciente);
-router.post("/queryPacienteDatos", queryDatosPersonales);
-router.post("/updatePacienteDireccion", updateDireccion);
-router.post("/updatePacienteSeguro", updateSeguro);
-router.post("/deletePaciente", deletePaciente);
+router.post("/insertPaciente", pacientesController.insertPaciente);
+router.post("/queryPacienteDatos", pacientesController.queryDatosPersonales);
+router.post("/updatePacienteDireccion", pacientesController.updateDireccion);
+router.post("/updatePacienteSeguro", pacientesController.updateSeguro);
+router.post("/deletePaciente", pacientesController.deletePaciente);
 
-// Rutas Doctores
-router.post("/queryDatosPersonales", queryDoctorDatosPersonales);
-router.post("/updateDireccion", updateDoctorDireccion);
-router.post("/updateDatosPersonales", updateDatosPersonales);
-router.post("/deleteDoctor", deleteDoctor);
-router.post("/updateConsultorioDoctor", updateConsultorioDoctor);
-router.post("/updateEspecialidad", updateEspecialidadDoctor);
-router.post("/insertDoctor", insertDoctor);
+// Rutas para doctores
+router.post("/queryDatosPersonales", doctoresController.queryDatosPersonales);
+router.post("/updateDireccion", doctoresController.updateDireccion);
+router.post("/updateDatosPersonales", doctoresController.updateDatosPersonales);
+router.post("/deleteDoctor", doctoresController.deleteDoctor);
+router.post("/updateConsultorioDoctor", doctoresController.updateConsultorioDoctor);
+router.post("/updateEspecialidad", doctoresController.updateEspecialidadDoctor);
+router.post("/insertDoctor", doctoresController.insertDoctor);
 
 // Rutas para medicamentos
-router.post("/queryMedicamento", queryMedicamentos);
-router.post("/insertMedicamento", insertMedicamento);
-router.post("/updateMedicamento", updateMedicamento);
-router.post("/deleteMedicamento", deleteMedicamento);
-router.post("/updateCantidadMedicamento", updateCantidadMedicamento);
-router.post("/updatePrecioMedicamento", updatePrecioMedicamento);
+router.post("/queryMedicamento", medicamentosController.queryMedicamentos);
+router.post("/insertMedicamento", medicamentosController.insertMedicamento);
+router.post("/updateMedicamento", medicamentosController.updateMedicamento);
+router.post("/deleteMedicamento", medicamentosController.deleteMedicamento);
+router.post("/updateCantidadMedicamento", medicamentosController.updateCantidadMedicamento);
+router.post("/updatePrecioMedicamento", medicamentosController.updatePrecioMedicamento);
 
 // Rutas para proveedores
-router.post("/insertProveedor", insertProveedor);
-router.post("/updateProveedor", updateProveedor);
-router.post("/deleteProveedor", deleteProveedor);
+router.post("/insertProveedor", proveedoresController.insertProveedor);
+router.post("/updateProveedor", proveedoresController.updateProveedor);
+router.post("/deleteProveedor", proveedoresController.deleteProveedor);
 
 // Rutas para consultorios
-router.post("/createConsultorio", createConsultorio);
-router.post("/updateConsultorio", updateConsultorio);
-router.post("/deleteConsultorio", deleteConsultorio);
-router.post("/queryConsultorio", queryConsultorio);
+router.post("/createConsultorio", consultoriosController.createConsultorio);
+router.post("/updateConsultorio", consultoriosController.updateConsultorio);
+router.post("/deleteConsultorio", consultoriosController.deleteConsultorio);
+router.post("/queryConsultorio", consultoriosController.queryConsultorio);
 
 // Rutas para especialidades
-router.post("/createEspecialidad", createEspecialidad);
-router.post("/queryEspecialidad", queryEspecialidad);
-router.post("/updateEspecialidad", updateEspecialidad);
-router.post("/deleteEspecialidad", deleteEspecialidad);
+router.post("/createEspecialidad", especialidadesController.createEspecialidad);
+router.post("/queryEspecialidad", especialidadesController.queryEspecialidad);
+router.post("/updateEspecialidad", especialidadesController.updateEspecialidad);
+router.post("/deleteEspecialidad", especialidadesController.deleteEspecialidad);
 
 // Rutas para horarios
-router.post("/createHorario", createHorario);
-router.post("/queryHorario", queryHorario);
-router.post("/updateHorario", updateHorario);
-router.post("/deleteHorario", deleteHorario);
+router.post("/createHorario", horariosController.createHorario);
+router.post("/queryHorario", horariosController.queryHorario);
+router.post("/updateHorario", horariosController.updateHorario);
+router.post("/deleteHorario", horariosController.deleteHorario);
 
 // Rutas para consultas
-router.post("/createConsulta", createConsulta);
-router.post("/updateConsulta", updateConsulta);
-router.get("/queryConsulta/:id_consulta", queryConsulta);
-router.post("/deleteConsulta", deleteConsulta);
+router.post("/createConsulta", consultasController.createConsulta);
+router.post("/updateConsulta", consultasController.updateConsulta);
+router.get("/queryConsulta/:id_consulta", consultasController.queryConsulta);
+router.post("/deleteConsulta", consultasController.deleteConsulta);
 
 // Ruta para alergias
-router.post("/insertAlergia", insertAlergia);
-router.post("/updateAlergia", updateAlergia);
-router.post("/deleteAlergia", deleteAlergia);
+router.post("/insertAlergia", alergiasController.insertAlergia);
+router.post("/updateAlergia", alergiasController.updateAlergia);
+router.post("/deleteAlergia", alergiasController.deleteAlergia);
 
 export default router;

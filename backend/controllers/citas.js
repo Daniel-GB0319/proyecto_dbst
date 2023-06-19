@@ -92,9 +92,42 @@ export const deleteConsulta = async (req, res) => {
   const { id_consulta } = req.body;
 
   try {
+    // Obtener la fecha y hora actual
+    const currentDateTime = moment();
+
+    // Obtener la fecha y hora de la consulta
+    const consulta = await pool.query(
+      "SELECT fecha, hora FROM db_consulta WHERE id_consulta = ?",
+      [id_consulta]
+    );
+
+    if (consulta.length > 0) {
+      const { fecha, hora } = consulta[0];
+
+      // Calcular la diferencia de tiempo entre la fecha y hora actual y la fecha y hora de la consulta
+      const timeDiff = moment(fecha + ' ' + hora).diff(currentDateTime, 'hours');
+
+      if (timeDiff < 24) {
+        return res.status(400).json({ message: "No se puede eliminar la consulta con menos de 24 horas de antelación" });
+      }
+    } else {
+      return res.status(404).json({ message: "Consulta no encontrada" });
+    }
+
     await pool.query("DELETE FROM db_consulta WHERE id_consulta = ?", [id_consulta]);
 
     return res.status(200).json({ message: "Consulta eliminada con éxito" });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+// Consultar todas las consultas
+export const getAllConsultas = async (req, res) => {
+  try {
+    const consultas = await pool.query("SELECT * FROM db_consulta");
+
+    return res.status(200).json(consultas);
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }

@@ -78,3 +78,13 @@ export const deleteEspecialidad = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
+export const getAllEspecialidades = async (req, res) => {
+  try {
+    const especialidades = await pool.query("SELECT * FROM db_especialidad");
+
+    return res.status(200).json(especialidades);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
