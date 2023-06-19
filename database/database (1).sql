@@ -4,7 +4,7 @@ create database proyecto_dbst;
 use proyecto_dbst;
 
 CREATE TABLE tipo_usuario (
-    id_tipoUsuario int AUTO_INCREMENT PRIMARY KEY,
+    id_tipoUsuario int PRIMARY KEY,
     nombre_tipoUsuario VARCHAR(15) NOT NULL
 );
 
@@ -75,7 +75,6 @@ CREATE TABLE db_consultorio (
     descripcion VARCHAR(30)
 );
 
-
 CREATE TABLE db_especialidad (
     id_especialidad int AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(20) NOT NULL,
@@ -122,7 +121,6 @@ CREATE TABLE db_doctor (
     REFERENCES db_especialidad(id_especialidad)
 );
 
-
 CREATE TABLE db_horario_consulta (
     id_horario_consulta int AUTO_INCREMENT PRIMARY KEY,
 	inicio_consulta TIME NOT NULL,
@@ -158,11 +156,10 @@ CREATE TABLE db_recepcionista (
     REFERENCES db_horario(id_horario)
 );
 
-
 CREATE TABLE db_medicamento (
     id_medicamento int AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(15) NOT NULL,
-    compuesto VARCHAR(15) NOT NULL,
+    nombre VARCHAR(25) NOT NULL,
+    compuesto VARCHAR(25) NOT NULL,
     descripcion VARCHAR(30),
     farmaceutica VARCHAR(20) NOT NULL,
     cantidad INT NOT NULL,
@@ -190,7 +187,6 @@ CREATE TABLE db_receta_medicamento (
     CONSTRAINT fk_medicamento_rm FOREIGN KEY (medicamento_id_medicamento)
     REFERENCES db_medicamento(id_medicamento)
 );
-
 
 CREATE TABLE db_proveedor (
     id_proveedor int AUTO_INCREMENT PRIMARY KEY,
@@ -248,6 +244,48 @@ CREATE TABLE db_historial_receta (
     FOREIGN KEY (receta_id_receta) REFERENCES db_receta(id_receta)
 );
 
+-- ## Triggers ##
+-- Registra la fecha y hora en la bitacora cuando se registra un nuevo usuario al sistema
+DELIMITER //
+CREATE TRIGGER RegistroNuevoUsuario
+AFTER INSERT
+ON db_usuario
+FOR EACH ROW
+BEGIN
+    DECLARE id_usuario VARCHAR(10);
+    SET id_usuario = NEW.id_usuario;
+    INSERT INTO db_registro_usuarios (id_usuario, fecha_registro, hora_registro)
+    VALUES (id_usuario, CURRENT_DATE(), CURRENT_TIME());
+END //
+DELIMITER ;
+
+-- Actualiza el historial cuando un paciente tiene una nueva consulta
+DELIMITER //
+CREATE TRIGGER ActualizarHistorialMedico
+AFTER INSERT ON db_consulta
+FOR EACH ROW
+BEGIN
+    INSERT INTO db_historial_medico (paciente_id_paciente, fecha_registro, hora_registro)
+    VALUES (NEW.paciente_id_paciente, CURDATE(), CURTIME());
+    
+    INSERT INTO db_historial_consulta (historial_id_paciente, consulta_id_consulta)
+    VALUES (NEW.paciente_id_paciente, NEW.id_consulta);
+END //
+DELIMITER ;
+
+-- Actualiza el historial cuando un paciente tiene una nueva receta
+DELIMITER //
+CREATE TRIGGER ActualizarHistorialMedicoReceta
+AFTER INSERT ON db_receta
+FOR EACH ROW
+BEGIN
+    INSERT INTO db_historial_medico (paciente_id_paciente, fecha_registro, hora_registro)
+    VALUES (NEW.paciente_id_paciente, CURDATE(), CURTIME());
+    
+    INSERT INTO db_historial_receta (historial_id_paciente, receta_id_receta)
+    VALUES (NEW.paciente_id_paciente, NEW.id_receta);
+END //
+DELIMITER ;
 
 -- ### Funciones Disponibles ##
 -- Calcula el precio total de la receta
@@ -315,54 +353,8 @@ BEGIN
 END //
 DELIMITER ;
 
--- ## Triggers ##
--- Registra la fecha y hora en la bitacora cuando se registra un nuevo usuario al sistema
-DELIMITER //
-CREATE TRIGGER RegistroNuevoUsuario
-AFTER INSERT
-ON db_usuario
-FOR EACH ROW
-BEGIN
-    DECLARE id_usuario VARCHAR(10);
-    SET id_usuario = NEW.id_usuario;
-    INSERT INTO db_registro_usuarios (id_usuario, fecha_registro, hora_registro)
-    VALUES (id_usuario, CURRENT_DATE(), CURRENT_TIME());
-END //
-DELIMITER ;
+/* --------------------------------------------------------------------------------------- */
 
--- Actualiza el historial cuando un paciente tiene una nueva consulta
-DELIMITER //
-CREATE TRIGGER ActualizarHistorialMedico
-AFTER INSERT ON db_consulta
-FOR EACH ROW
-BEGIN
-    INSERT INTO db_historial_medico (paciente_id_paciente, fecha_registro, hora_registro)
-    VALUES (NEW.paciente_id_paciente, CURDATE(), CURTIME());
-    
-    INSERT INTO db_historial_consulta (historial_id_paciente, consulta_id_consulta)
-    VALUES (NEW.paciente_id_paciente, NEW.id_consulta);
-END //
-DELIMITER ;
-
-
--- Actualiza el historial cuando un paciente tiene una nueva receta
-DELIMITER //
-CREATE TRIGGER ActualizarHistorialMedicoReceta
-AFTER INSERT ON db_receta
-FOR EACH ROW
-BEGIN
-    INSERT INTO db_historial_medico (paciente_id_paciente, fecha_registro, hora_registro)
-    VALUES (NEW.paciente_id_paciente, CURDATE(), CURTIME());
-    
-    INSERT INTO db_historial_receta (historial_id_paciente, receta_id_receta)
-    VALUES (NEW.paciente_id_paciente, NEW.id_receta);
-END //
-DELIMITER ;
-
-
-
--- CALL sp_InsertarPaciente('CURP1', 'Paciente1', 'Apellido1', 'Apellido2', 25, 'O+', 'Calle1', 123, NULL, 'Colonia1', 'Delegacion1', 'Entidad1', '1998-01-01', 70.5, 170.2, 'M', 'Aseguradora1', 7);
--- CALL sp_InsertarPaciente('CURPX', 'Paciente8', 'Apellido1', 'Apellido2', 25, 'O+', 'Calle1', 123, NULL, 'Colonia1', 'Delegacion1', 'Entidad1', '1998-01-01', 70.5, 170.2, 'M', 'Aseguradora1', 9);
 -- Para verificar que no exista el paciente antes de insertar
 DELIMITER //
 CREATE PROCEDURE sp_InsertarPaciente(
@@ -408,9 +400,6 @@ BEGIN
 END //
 DELIMITER ;
 
--- CALL sp_InsertarPaciente('CURP1', 'Paciente1', 'Apellido1', 'Apellido2', 25, 'O+', 'Calle1', 123, NULL, 'Colonia1', 'Delegacion1', 'Entidad1', '1998-01-01', 70.5, 170.2, 'M', 'Aseguradora1', 7);
--- CALL sp_InsertarPaciente('CURPX', 'Paciente8', 'Apellido1', 'Apellido2', 25, 'O+', 'Calle1', 123, NULL, 'Colonia1', 'Delegacion1', 'Entidad1', '1998-01-01', 70.5, 170.2, 'M', 'Aseguradora1', 9);
-
 -- Store procedure al que se le pase el ID usuario y te diga qué tipo de usuario es
 DELIMITER //
 CREATE PROCEDURE VerificarTipoUsuario(id_usuario int)
@@ -420,4 +409,9 @@ BEGIN
 END //
 DELIMITER ;
 
--- CALL VerificarTipoUsuario('6');
+
+
+
+
+
+
