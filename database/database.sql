@@ -162,7 +162,7 @@ CREATE TABLE db_medicamento (
     descripcion VARCHAR(30),
     farmaceutica VARCHAR(20) NOT NULL,
     cantidad INT NOT NULL,
-    precio FLOAT NOT NULL,
+    precio double NOT NULL,
     req_receta CHAR(2)
 );
 
@@ -220,24 +220,43 @@ CREATE TABLE db_registro_usuarios (
     FOREIGN KEY (id_usuario) REFERENCES db_usuario(id_usuario)
 );
 
-CREATE TABLE db_historial_medico (
-    id_historial INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
-    paciente_id_paciente INT NOT NULL NOT NULL,
+CREATE TABLE db_historial_consulta (
+    id_historial int AUTO_INCREMENT primary key,
     fecha_registro DATE NOT NULL,
     hora_registro TIME NOT NULL,
-    FOREIGN KEY (paciente_id_paciente) REFERENCES db_paciente(id_paciente)
-);
-
-CREATE TABLE db_historial_consulta (
-    historial_id_historial int AUTO_INCREMENT primary key,
     consulta_id_consulta int,
-    FOREIGN KEY (historial_id_historial) REFERENCES db_historial_medico(id_historial),
-    FOREIGN KEY (consulta_id_consulta) REFERENCES db_consulta(id_consulta)
+    paciente_id_paciente int NOT NULL,
+    doctor_id_doctor int NOT NULL,
+    costo_consulta double NOT NULL,
+    fecha_consulta DATE NOT NULL,
+    hora_inicio TIME NOT NULL,
+    hora_fin TIME NOT NULL,
+    FOREIGN KEY (consulta_id_consulta) REFERENCES db_consulta(id_consulta),
+    FOREIGN KEY (paciente_id_paciente) REFERENCES db_paciente(id_paciente),
+    FOREIGN KEY (doctor_id_doctor) REFERENCES db_doctor(id_doctor)
 );
 
-CREATE TABLE db_historial_receta (
-    historial_id_historial int AUTO_INCREMENT,
+/*CREATE TABLE db_historial_receta (
+    id_historial int AUTO_INCREMENT,
+    fecha_registro DATE NOT NULL,
+    hora_registro TIME NOT NULL,
     receta_id_receta int,
-    FOREIGN KEY (historial_id_historial) REFERENCES db_historial_medico(id_historial),
-    FOREIGN KEY (receta_id_receta) REFERENCES db_receta(id_receta)
+	doctor_id_doctor int NOT NULL,
+    FOREIGN KEY (receta_id_receta) REFERENCES db_receta(id_receta),
+    FOREIGN KEY (doctor_id_doctor) REFERENCES db_doctor(id_doctor)
+);*/
+
+CREATE TABLE db_historial_medico (
+	id_historial int AUTO_INCREMENT primary key,
+    fecha_registro DATE NOT NULL,
+    hora_registro TIME NOT NULL,
+    consulta_id_consulta int,
+    receta_id_receta int,
+    curp_doctor VARCHAR (18) NOT NULL,
+    curp_paciente VARCHAR (18) NOT NULL,
+    observaciones VARCHAR(30),
+    diagnostico VARCHAR(30) NOT NULL,
+    total_servicio DOUBLE NOT NULL,
+    FOREIGN KEY (receta_id_receta) REFERENCES db_receta(id_receta),
+    FOREIGN KEY (consulta_id_consulta) REFERENCES db_historial_consulta(consulta_id_consulta)
 );
