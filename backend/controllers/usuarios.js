@@ -98,14 +98,14 @@ export const loginUsuarios = async (req, res) => {
   }
 
   try {
-    const usuario = await pool.query("SELECT * FROM usuarios WHERE correo = ? AND password = ?", [correo, password]);
+    const usuario = await pool.query("SELECT * FROM db_usuario WHERE correo = ? AND password = ?", [correo, password]);
 
     if (usuario.length === 0) {
       return res.status(401).json({ message: "Credenciales inválidas" });
     }
 
     // Actualizar la fecha de último acceso
-    await pool.query("UPDATE usuarios SET fecha_ultimo_acceso = NOW() WHERE correo = ?", [correo]);
+    await pool.query("UPDATE db_usuario SET ultimo_acceso = NOW() WHERE correo = ?", [correo]);
 
     return res.status(200).json({ message: "Credenciales válidas, fecha de último acceso actualizada" });
   } catch (error) {

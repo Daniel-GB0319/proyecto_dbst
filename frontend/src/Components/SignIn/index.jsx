@@ -29,7 +29,7 @@ const SignIn = () => {
   const onSubmit = (data) => {
     const { email, password } = data;
     const requestBody = {
-      email: email,
+      correo: email,
       password: password,
     };
 
