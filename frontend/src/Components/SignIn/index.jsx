@@ -34,7 +34,7 @@ const SignIn = () => {
     };
 
     axios
-      .post(API_URL + "/login", requestBody)
+      .post(API_URL + "/loginUsuarios", requestBody)
       .then((response) => {
         Swal.fire({
           icon: "success",
