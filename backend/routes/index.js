@@ -7,7 +7,7 @@ import * as proveedoresController from "../controllers/proveedores.js";
 import * as consultoriosController from "../controllers/consultorios.js";
 import * as especialidadesController from "../controllers/especialidades.js";
 import * as horariosController from "../controllers/horarios.js";
-import * as consultasController from "../controllers/consultas.js";
+/* import * as consultasController from "../controllers/consultas.js"; */
 import * as alergiasController from "../controllers/alergias.js";
 import * as usuariosController from "../controllers/usuarios.js"; // Importar controladores de usuarios
 
@@ -79,10 +79,10 @@ router.post("/updateHorario", horariosController.updateHorario);
 router.post("/deleteHorario", horariosController.deleteHorario);
 
 // Rutas para consultas
-router.post("/createConsulta", consultasController.createConsulta);
+/* router.post("/createConsulta", consultasController.createConsulta);
 router.post("/updateConsulta", consultasController.updateConsulta);
 router.get("/queryConsulta/:id_consulta", consultasController.queryConsulta);
-router.post("/deleteConsulta", consultasController.deleteConsulta);
+router.post("/deleteConsulta", consultasController.deleteConsulta); */
 
 // Ruta para alergias
 router.post("/insertAlergia", alergiasController.insertAlergia);
