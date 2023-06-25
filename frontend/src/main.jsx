@@ -4,11 +4,16 @@ import App from './App';
 import './assets/index.css';
 import AppNavbar from './Components/Navbar/index';
 import AppFooter from './Components/Footer';
+import { UserProvider } from "./Contexts/UserContext.jsx";
+
+
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <AppNavbar />
-    <App />
-    <AppFooter />
+    <UserProvider>
+      <AppNavbar />
+      <App />
+      <AppFooter />
+    </UserProvider>
   </React.StrictMode>
 );

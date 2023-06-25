@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -17,8 +17,13 @@ import {
   Button,
 } from "reactstrap";
 import "../../assets/index.css";
+import { useContext } from "react";
+import { UserContext } from "../../Contexts/UserContext.jsx";
 
 const SignIn = () => {
+  const { updateUserContext } = useContext(UserContext);
+  const [isLoading, setIsLoading] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -33,9 +38,12 @@ const SignIn = () => {
       password: password,
     };
 
+    setIsLoading(true); 
+
     axios
       .post(API_URL + "/loginUsuarios", requestBody)
       .then((response) => {
+        const { tipoUsuario, nombreTipoUsuario } = response.data;
         Swal.fire({
           icon: "success",
           title: "¡Éxito!",
@@ -44,7 +52,7 @@ const SignIn = () => {
             confirmButton: "custom-confirm-button",
           },
         });
-        console.log(response.data);
+        updateUserContext(tipoUsuario, nombreTipoUsuario);
       })
       .catch((error) => {
         Swal.fire({
@@ -56,12 +64,22 @@ const SignIn = () => {
           },
         });
         console.error(error);
+      })
+      .finally(() => {
+        setIsLoading(false); 
       });
   };
 
   return (
     <Container fluid className="sign-up-container">
       <Row className="justify-content-center align-items-center">
+        {isLoading && (
+          <div className="overlay">
+            <div className="spinner-container">
+              <div className="spinner"></div>
+            </div>
+          </div>
+        )}
         <Col md={6} lg={4}>
           <h2 className="text-center mb-4">Iniciar Sesión</h2>
           <Form onSubmit={handleSubmit(onSubmit)}>
@@ -98,8 +116,9 @@ const SignIn = () => {
               block
               className="custom-button"
               type="submit"
+              disabled={isLoading} 
             >
-              Aceptar
+              {isLoading ? "Cargando..." : "Aceptar"}
             </Button>
           </Form>
           <div className="text-center mt-3">
@@ -115,3 +134,5 @@ const SignIn = () => {
 };
 
 export default SignIn;
+
+
