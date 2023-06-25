@@ -32,18 +32,6 @@ BEGIN
 END //
 DELIMITER ;
 
--- Actualiza el historial cuando un paciente tiene una nueva receta
-DELIMITER //
-CREATE TRIGGER ActualizarHistorialRecetas
-AFTER INSERT ON db_receta
-FOR EACH ROW
-BEGIN
-    
-    
-    
-END //
-DELIMITER ;
-
 -- Actualiza el historial cuando un paciente tiene una nueva consulta
 DELIMITER //
 CREATE TRIGGER ActualizarHistorialMedico
@@ -61,8 +49,32 @@ BEGIN
 END //
 DELIMITER ;
 
+/*-- Actualiza el historial cuando un paciente tiene una nueva receta
+DELIMITER //
+CREATE TRIGGER ActualizarHistorialRecetas
+AFTER INSERT ON db_receta
+FOR EACH ROW
+BEGIN
+    
+    
+    
+END //
+DELIMITER ;*/
 
 /*			Funciones			*/
+
+-- Obtiene el tipo de usuario
+DELIMITER //
+CREATE FUNCTION MostrarNombreTipoUsuario(id_usuario int)
+RETURNS VARCHAR(15)
+READS SQL DATA
+BEGIN
+	DECLARE tipo VARCHAR(15);
+	SET tipo = (SELECT nombre_tipoUsuario FROM db_usuario AS U JOIN tipo_Usuario AS T ON U.tipo_usuario = T.id_tipoUsuario
+    WHERE id_usuario = U.id_usuario);
+    RETURN tipo;
+END //
+DELIMITER ;
 
 -- Calcula la edad
 DELIMITER //
@@ -90,7 +102,26 @@ BEGIN
     DECLARE estado INT;
     DECLARE ult_consulta DATE;
     
-    SET ult_consulta = (SELECT fecha FROM db_paciente p INNER JOIN db_consulta c ON p.id_paciente = c.paciente_id_paciente WHERE 'CURP1' = p.CURP ORDER BY fecha DESC LIMIT 1);
+    SET ult_consulta = (SELECT fecha FROM db_paciente p INNER JOIN db_consulta c ON p.id_paciente = c.paciente_id_paciente WHERE curp = p.CURP ORDER BY fecha DESC LIMIT 1);
+    
+    IF ult_consulta >= CURDATE() THEN SET estado = 1;
+    ELSE SET estado = 0;
+    END IF;
+    
+    RETURN estado;
+END //
+DELIMITER ;
+
+-- Verifica que el doctor no tenga citas , para baja de doctor
+DELIMITER //
+CREATE FUNCTION ComprobarCitasDoctor(curp VARCHAR (18))
+RETURNS INT
+READS SQL DATA
+BEGIN
+    DECLARE estado INT;
+    DECLARE ult_consulta DATE;
+    
+    SET ult_consulta = (SELECT fecha FROM db_doctor d INNER JOIN db_consulta c ON d.id_doctor = c.doctor_id_doctor WHERE curp = d.CURP ORDER BY fecha DESC LIMIT 1);
     
     IF ult_consulta >= CURDATE() THEN SET estado = 1;
     ELSE SET estado = 0;
@@ -103,15 +134,15 @@ DELIMITER ;
 -- Calcula el precio total de la receta
 DELIMITER //
 CREATE FUNCTION CalcularPrecioTotal(id_receta VARCHAR(10))
-RETURNS FLOAT
+RETURNS DOUBLE
 READS SQL DATA
 BEGIN
-    DECLARE total FLOAT;
-
-    SELECT SUM(m.precio) INTO total
-    FROM db_receta_medicamento rm
-    INNER JOIN db_medicamento m ON rm.medicamento_id_medicamento = m.id_medicamento
-    WHERE rm.receta_id_receta = id_receta;
+    DECLARE total DOUBLE;
+	
+    SELECT SUM(cantidad_medicamento*precio) INTO total
+    FROM db_medicamento
+    INNER JOIN db_receta_medicamento ON id_medicamento = medicamento_id_medicamento
+    WHERE receta_id_receta = id_receta;
 
     RETURN total;
 END //
@@ -119,6 +150,15 @@ DELIMITER ;
 
 
 /*			Stored Procedures			*/
+
+-- Store procedure al que se le pase el ID usuario y te diga qué tipo de usuario es
+DELIMITER //
+CREATE PROCEDURE VerificarTipoUsuario(id_usuario int)
+BEGIN
+	SELECT id_tipoUsuario from db_usuario AS U JOIN tipo_Usuario AS T ON U.tipo_usuario = T.id_tipoUsuario
+    WHERE id_usuario = U.id_usuario;
+END //
+DELIMITER ;
 
 -- Para verificar que no exista el paciente antes de insertar
 DELIMITER //
@@ -151,7 +191,7 @@ BEGIN
     )
     THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El paciente ya existe';
     ELSE
-        -- Insertar el paciente
+        -- Insertar paciente
         INSERT INTO db_paciente (
             CURP, nombre, ap_paterno, ap_materno, edad, tipo_sangre, calle, num_ext,
             num_int, colonia, delegacion, entidad_federativa, fecha_nac, peso, altura,
@@ -165,22 +205,165 @@ BEGIN
 END //
 DELIMITER ;
 
--- Visualizar historial de citas por parte del paciente
+-- Para verificar que no exista doctor antes de insertar
 DELIMITER //
-CREATE PROCEDURE sp_VerHistorialCitasPaciente(
-    id_paciente INT
+CREATE PROCEDURE sp_InsertarDoctor(
+	d_CURP VARCHAR (18),
+    d_nombre VARCHAR(15),
+    d_ap_paterno VARCHAR(15),
+    d_ap_materno VARCHAR(15),
+    d_edad INT,
+    d_calle VARCHAR(20),
+    d_num_ext INT,
+    d_num_int INT,
+    d_colonia VARCHAR(20),
+    d_delegacion VARCHAR(20),
+    d_entidad_federativa VARCHAR(20),
+    d_fecha_nac DATE,
+    d_sexo VARCHAR(1),
+    d_aseguradora VARCHAR(15),
+    d_usuario_id_usuario INT,
+    d_consultorio_id_consultorio INT,
+    d_horario_id_horario INT,
+    d_especialidad_id_especialidad INT
 )
 BEGIN
-	DECLARE curp_paciente VARCHAR (18);
-	-- Doctor, fecha, dia , hora, 
-    SELECT CURP INTO curp_paciente FROM db_paciente p WHERE id_paciente = p.id_paciente;
-    SELECT * FROM db_historial_medico hm WHERE curp_paciente = hm.curp_paciente;
+    -- Verificamos si existe doctor
+    IF EXISTS (
+        SELECT 1
+        FROM db_doctor
+        WHERE CURP = d_CURP
+    )
+    THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El doctor ya existe';
+    ELSE
+        -- Insertar doctor
+        INSERT INTO db_doctor (
+            CURP, nombre, ap_paterno, ap_materno, edad, calle, num_ext, num_int, colonia,
+            delegacion, entidad_federativa, fecha_nac, sexo, aseguradora, usuario_id_usuario,
+            consultorio_id_consultorio, horario_id_horario, especialidad_id_especialidad            
+        ) VALUES (
+			d_CURP, d_nombre, d_ap_paterno, d_ap_materno, d_edad, d_calle, d_num_ext, d_num_int, d_colonia,
+            d_delegacion, d_entidad_federativa, d_fecha_nac, d_sexo, d_aseguradora, d_usuario_id_usuario,
+            d_consultorio_id_consultorio, d_horario_id_horario, d_especialidad_id_especialidad
+        );
+    END IF;
 END //
 DELIMITER ;
 
+-- Para verificar que no exista recepcionista antes de insertar
+DELIMITER //
+CREATE PROCEDURE sp_InsertarRecepcionista
+(
+	r_nombre VARCHAR(15),
+    r_ap_paterno VARCHAR(15),
+    r_ap_materno VARCHAR(15),
+    r_usuario_id_usuario INT,
+    r_horario_id_horario INT
+)
+BEGIN
+    -- Verificamos si existe recepcionista
+    IF EXISTS (
+        SELECT 1
+        FROM db_recepcionsita
+        WHERE r_nombre = nombre AND r_ap_paterno = ap_paterno AND r_ap_materno = ap_materno
+    )
+    THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'La recepcionista ya existe';
+    ELSE
+        -- Insertar recepcionista
+        INSERT INTO db_recepcionista (
+            nombre, ap_paterno, ap_materno, usuario_id_usuario, horario_id_horario
+        ) VALUES (
+			r_nombre, r_ap_paterno, r_ap_materno, r_usuario_id_usuario, r_horario_id_horario
+        );
+    END IF;
+END //
+DELIMITER ;
 
+-- Visualizar historial de citas por parte del doctor
+DELIMITER //
+CREATE PROCEDURE sp_VerHistorialCitasDoctor(
+    d_id_doctor INT, d_nombre VARCHAR(15), d_ap_paterno VARCHAR(15), d_ap_materno VARCHAR(15)
+)
+BEGIN
+	SELECT consulta_id_consulta, CONCAT(D.nombre, ' ', D.ap_paterno, ' ', D.ap_materno) AS nombre_doctor, CONCAT(P.nombre, ' ', P.ap_paterno, ' ', P.ap_materno) AS nombre_paciente,fecha_consulta, hora_inicio, hora_fin, numero AS consultorio
+	FROM db_historial_consulta INNER JOIN db_doctor D ON doctor_id_doctor = D.id_doctor
+    INNER JOIN db_paciente P ON  paciente_id_paciente = P.id_paciente
+    INNER JOIN db_consultorio ON consultorio_id_consultorio = id_consultorio
+    WHERE d_id_doctor = D.id_doctor AND d_nombre = D.nombre AND d_ap_paterno = D.ap_paterno AND d_ap_materno = D.ap_materno;
+END //
+DELIMITER ;
 
+-- Visualizar citas proximas del doctor
+DELIMITER //
+CREATE PROCEDURE sp_VerCitasProximasDoctor(
+    id_doctor INT
+)
+BEGIN
+	SELECT consulta_id_consulta, CONCAT(D.nombre, ' ', D.ap_paterno, ' ', D.ap_materno) AS nombre_doctor, CONCAT(P.nombre, ' ', P.ap_paterno, ' ', P.ap_materno) AS nombre_paciente,fecha_consulta, hora_inicio, hora_fin, numero AS consultorio
+	FROM db_historial_consulta INNER JOIN db_doctor D ON doctor_id_doctor = D.id_doctor
+    INNER JOIN db_paciente P ON  paciente_id_paciente = P.id_paciente
+    INNER JOIN db_consultorio ON consultorio_id_consultorio = id_consultorio
+    WHERE id_doctor = D.id_doctor AND fecha_consulta >= CURDATE();
+END //
+DELIMITER ;
 
+-- Visualizar historial de citas por parte del paciente
+DELIMITER //
+CREATE PROCEDURE sp_VerHistorialCitasPaciente(
+    d_id_paciente INT
+)
+BEGIN
+    SELECT consulta_id_consulta, CONCAT(D.nombre, ' ', D.ap_paterno, ' ', D.ap_materno) AS nombre_doctor, CONCAT(P.nombre, ' ', P.ap_paterno, ' ', P.ap_materno) AS nombre_paciente,fecha_consulta, hora_inicio, hora_fin, costo_consulta, numero AS consultorio
+	FROM db_historial_consulta INNER JOIN db_doctor D ON doctor_id_doctor = D.id_doctor
+    INNER JOIN db_paciente P ON  paciente_id_paciente = P.id_paciente
+    INNER JOIN db_consultorio ON consultorio_id_consultorio = id_consultorio
+    WHERE d_id_paciente = P.id_paciente;
+END //
+DELIMITER ;
+
+-- Visualizar citas proximas
+DELIMITER //
+CREATE PROCEDURE sp_VerCitasProximasPaciente(
+    d_id_paciente INT
+)
+BEGIN
+	SELECT consulta_id_consulta, CONCAT(D.nombre, ' ', D.ap_paterno, ' ', D.ap_materno) AS nombre_doctor, CONCAT(P.nombre, ' ', P.ap_paterno, ' ', P.ap_materno) AS nombre_paciente,fecha_consulta, hora_inicio, hora_fin, costo_consulta, numero AS consultorio
+	FROM db_historial_consulta INNER JOIN db_doctor D ON doctor_id_doctor = D.id_doctor
+    INNER JOIN db_paciente P ON  paciente_id_paciente = P.id_paciente
+    INNER JOIN db_consultorio ON consultorio_id_consultorio = id_consultorio
+    WHERE d_id_paciente = P.id_paciente AND fecha_consulta >= CURDATE();
+END //
+DELIMITER ;
+
+-- Visualizar recetas emitidas por el doctor
+DELIMITER //
+CREATE PROCEDURE sp_VerRecetasDoctor(
+    r_id_receta INT
+)
+BEGIN
+	SELECT R.id_receta, DATE(R.fecha_expedicion) AS fecha, CONCAT(D.nombre, ' ', D.ap_paterno, ' ', D.ap_materno) AS nombre_doctor, CONCAT(P.nombre, ' ', P.ap_paterno, ' ', P.ap_materno) AS nombre_paciente, R.diagnostico, R.observaciones, M.nombre AS Medicamento, RM.cantidad_medicamento
+    FROM db_receta R INNER JOIN db_receta_medicamento RM ON R.id_receta = RM.receta_id_receta
+    INNER JOIN db_medicamento M ON RM.medicamento_id_medicamento = M.id_medicamento
+    INNER JOIN db_doctor D ON R.doctor_id_doctor = D.id_doctor
+    INNER JOIN db_historial_medico HM ON R.id_receta = HM.receta_id_receta
+    INNER JOIN db_paciente P ON HM.curp_paciente = P.CURP
+    WHERE r_id_receta = R.id_receta;
+END //
+DELIMITER ;
+
+-- Visualizar historial medico de paciente
+DELIMITER //
+CREATE PROCEDURE sp_VerHistorialMedicoPaciente(
+    p_id_paciente INT
+)
+BEGIN
+	SELECT HM.id_historial, HM.fecha_registro, CONCAT(D.nombre, ' ', D.ap_paterno, ' ', D.ap_materno) AS nombre_doctor, CONCAT(P.nombre, ' ', P.ap_paterno, ' ', P.ap_materno) AS nombre_paciente, HM.diagnostico, C.numero, HM.total_servicio
+    FROM db_historial_medico HM INNER JOIN db_doctor D ON HM.curp_doctor = D.CURP
+    INNER JOIN db_consultorio C ON D.consultorio_id_consultorio = C.id_consultorio
+    INNER JOIN db_paciente P ON HM.curp_paciente = P.CURP 
+    WHERE p_id_paciente = P.id_paciente;
+END //
+DELIMITER ;
 
 
 -- Busca los doctores disponibles por dia y horario
@@ -208,18 +391,5 @@ BEGIN
     INNER JOIN db_proveedor pr ON p.proveedor_id_proveedor = pr.id_proveedor
     INNER JOIN db_medicamento m ON p.medicamento_id_medicamento = m.id_medicamento
     WHERE pr.nombre = nombre_proveedor;
-END //
-DELIMITER ;
-
-/* --------------------------------------------------------------------------------------- */
-
-
-
--- Store procedure al que se le pase el ID usuario y te diga qué tipo de usuario es
-DELIMITER //
-CREATE PROCEDURE VerificarTipoUsuario(id_usuario int)
-BEGIN
-	SELECT id_tipoUsuario from db_usuario AS U JOIN tipo_Usuario AS T ON U.tipo_usuario = T.id_tipoUsuario
-    WHERE id_usuario = U.id_usuario;
 END //
 DELIMITER ;
