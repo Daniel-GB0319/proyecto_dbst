@@ -89,7 +89,7 @@ export const getAllUsuarios = async (req, res) => {
   }
 };
 
-// Validar correo y contraseña de un usuario y actualizar la fecha de último acceso
+// Validar correo y contraseña de un usuario y actualizar la fecha de último acceso (CORREGIDA)
 export const loginUsuarios = async (req, res) => {
   const { correo, password } = req.body;
 
@@ -114,6 +114,10 @@ export const loginUsuarios = async (req, res) => {
       tipoUsuario: rows[0].id_tipoUsuario,
       nombreTipoUsuario: rows[0].nombre_tipoUsuario
     };
+
+    // Actualizar la fecha de último acceso
+    const updateQuery = `UPDATE db_usuario SET ultimo_acceso = NOW() WHERE correo = ?`;
+    await pool.execute(updateQuery, [correo]);
 
     return res.status(200).json({ message: "Credenciales válidas", ...tipoUsuario });
   } catch (error) {
