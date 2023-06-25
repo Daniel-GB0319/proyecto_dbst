@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import "sweetalert2/dist/sweetalert2.min.css";
 import axios from "axios";
@@ -121,12 +120,6 @@ const SignIn = () => {
               {isLoading ? "Cargando..." : "Aceptar"}
             </Button>
           </Form>
-          <div className="text-center mt-3">
-            ¿No tienes cuenta?{" "}
-            <Link to="/signup" className="custom-link">
-              Crear cuenta
-            </Link>
-          </div>
         </Col>
       </Row>
     </Container>
