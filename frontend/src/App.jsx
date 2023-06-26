@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Home from "./Components/Home";
 import SignIn from "./Components/SignIn";
 import Admin from "./Components/Admin";
-
+import AppNavbar from './Components/Navbar/index';
 
 
 import SignUp from "./Components/SignUp";
@@ -15,6 +15,7 @@ import Appointment from "./Components/Appointment";
 function App() {
   return (
     <BrowserRouter>
+    <AppNavbar /> 
         <Routes>
           <Route path="/" element={<Navigate to="/home" />} />
           <Route path="/home" element={<Home />} />
