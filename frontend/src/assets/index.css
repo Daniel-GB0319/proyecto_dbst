@@ -32,7 +32,7 @@
 }
 
 .app-navbar .navbar-brand {
-  color: #ffffff;
+  color: #ffffff !important; 
   font-weight: bold;
   font-size: 40px; /* Aumenta el tamaño de la letra aquí */
 }
@@ -283,4 +283,12 @@
     transform: rotate(360deg);
   }
 }
+
+/* Tab Pane*/
+
+.nav-link:hover {
+  cursor: pointer;
+}
+
+
 

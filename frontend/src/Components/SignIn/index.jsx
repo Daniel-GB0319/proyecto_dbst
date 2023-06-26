@@ -5,6 +5,7 @@ import "sweetalert2/dist/sweetalert2.min.css";
 import axios from "axios";
 import { API_URL } from "../../../constants.js";
 import "bootstrap/dist/css/bootstrap.css";
+import { useNavigate } from "react-router-dom";
 import {
   Container,
   Row,
@@ -22,6 +23,7 @@ import { UserContext } from "../../Contexts/UserContext.jsx";
 const SignIn = () => {
   const { updateUserContext } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const {
     register,
@@ -29,6 +31,7 @@ const SignIn = () => {
     formState: { errors },
     setValue,
   } = useForm();
+  
 
   const onSubmit = (data) => {
     const { email, password } = data;
@@ -43,15 +46,11 @@ const SignIn = () => {
       .post(API_URL + "/loginUsuarios", requestBody)
       .then((response) => {
         const { tipoUsuario, nombreTipoUsuario } = response.data;
-        Swal.fire({
-          icon: "success",
-          title: "¡Éxito!",
-          text: "La solicitud se completó correctamente.",
-          customClass: {
-            confirmButton: "custom-confirm-button",
-          },
-        });
         updateUserContext(tipoUsuario, nombreTipoUsuario);
+
+        if (nombreTipoUsuario === "Administrador") {
+          navigate("/admin");
+        }
       })
       .catch((error) => {
         Swal.fire({
