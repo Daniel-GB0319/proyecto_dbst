@@ -10,7 +10,7 @@ export const insertUsuario = async (req, res) => {
 
   try {
     await pool.query(
-      "INSERT INTO usuarios (nombre, correo, password, fecha_ultimo_acceso) VALUES (?, ?, ?, NOW())",
+      "INSERT INTO db_usuario (nombre, correo, password, ultimo_acceso) VALUES (?, ?, ?, NOW())",
       [nombre, correo, password]
     );
 
@@ -30,7 +30,7 @@ export const updateUsuario = async (req, res) => {
 
   try {
     await pool.query(
-      "UPDATE usuarios SET nombre = ?, correo = ?, password = ?, fecha_ultimo_acceso = NOW() WHERE id_usuario = ?",
+      "UPDATE db_usuario SET nombre = ?, correo = ?, password = ?, ultimo_acceso = NOW() WHERE id_usuario = ?",
       [nombre, correo, password, id_usuario]
     );
 
@@ -49,7 +49,7 @@ export const deleteUsuario = async (req, res) => {
   }
 
   try {
-    await pool.query("DELETE FROM usuarios WHERE id_usuario = ?", [id_usuario]);
+    await pool.query("DELETE FROM db_usuario WHERE id_usuario = ?", [id_usuario]);
 
     return res.status(200).json({ message: "Usuario eliminado con éxito" });
   } catch (error) {
@@ -66,7 +66,7 @@ export const queryUsuario = async (req, res) => {
   }
 
   try {
-    const usuario = await pool.query("SELECT * FROM usuarios WHERE id_usuario = ?", [id_usuario]);
+    const usuario = await pool.query("SELECT * FROM db_usuario WHERE id_usuario = ?", [id_usuario]);
 
     if (usuario.length === 0) {
       return res.status(404).json({ message: "Usuario no encontrado" });
@@ -81,7 +81,7 @@ export const queryUsuario = async (req, res) => {
 // Consultar todos los usuarios
 export const getAllUsuarios = async (req, res) => {
   try {
-    const usuarios = await pool.query("SELECT * FROM usuarios");
+    const usuarios = await pool.query("SELECT * FROM db_usuario");
 
     return res.status(200).json({ usuarios });
   } catch (error) {

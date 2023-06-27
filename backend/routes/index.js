@@ -37,15 +37,20 @@ router.post("/queryPacienteDatos", pacientesController.queryDatosPersonales);
 router.post("/updatePacienteDireccion", pacientesController.updateDireccion);
 router.post("/updatePacienteSeguro", pacientesController.updateSeguro);
 router.post("/deletePaciente", pacientesController.deletePaciente);
+router.post("/getAllPacientes", pacientesController.getAllPacientes)
 
 // Rutas para doctores
-router.post("/queryDatosPersonales", doctoresController.queryDatosPersonales);
-router.post("/updateDireccion", doctoresController.updateDireccion);
-router.post("/updateDatosPersonales", doctoresController.updateDatosPersonales);
+router.post("/queryDoctorDatos", doctoresController.queryDatosPersonales);
+router.post("/updateDoctorDireccion", doctoresController.updateDireccion);
+router.post("/updateDoctorDatos", doctoresController.updateDatosPersonales);
 router.post("/deleteDoctor", doctoresController.deleteDoctor);
 router.post("/updateConsultorioDoctor", doctoresController.updateConsultorioDoctor);
 router.post("/updateEspecialidad", doctoresController.updateEspecialidadDoctor);
 router.post("/insertDoctor", doctoresController.insertDoctor);
+router.post("/getAllDoctores", doctoresController.getAllDoctores);
+router.post("/queryDoctorHistCitas", doctoresController.queryHistorialCitas);
+router.post("/queryDoctorCitasProx", doctoresController.queryCitasProximas);
+router.post("/queryDoctorRecetasEmi", doctoresController.queryRecetasEmitidas);
 
 // Rutas para medicamentos
 router.post("/queryMedicamento", medicamentosController.queryMedicamentos);
