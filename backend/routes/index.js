@@ -26,39 +26,39 @@ router.post("/loginUsuarios", usuariosController.loginUsuarios);
 
 // Ruta para pacientes
 router.post("/insertPaciente", pacientesController.insertPaciente);
-router.post("/queryPacienteDatos", pacientesController.queryDatosPersonales);
+router.get("/queryPacienteDatos", pacientesController.queryDatosPersonales);
 router.post("/updatePacienteDireccion", pacientesController.updateDireccion);
 router.post("/updatePacienteSeguro", pacientesController.updateSeguro);
 router.post("/deletePaciente", pacientesController.deletePaciente);
-router.post("/getAllPacientes", pacientesController.getAllPacientes);
-router.post("/queryPacienteHistCitas", pacientesController.queryHistorialCitas);
-router.post("/queryPacienteCitasProx", pacientesController.queryCitasProximas);
-router.post("/queryPacienteHistMedico", pacientesController.queryHistorialMedico);
+router.get("/getAllPacientes", pacientesController.getAllPacientes);
+router.get("/queryPacienteHistCitas", pacientesController.queryHistorialCitas);
+router.get("/queryPacienteCitasProx", pacientesController.queryCitasProximas);
+router.get("/queryPacienteHistMedico", pacientesController.queryHistorialMedico);
 
 // Rutas para doctores
-router.post("/queryDoctorDatos", doctoresController.queryDatosPersonales);
+router.get("/queryDoctorDatos", doctoresController.queryDatosPersonales);
 router.post("/updateDoctorDireccion", doctoresController.updateDireccion);
 router.post("/updateDoctorDatos", doctoresController.updateDatosPersonales);
 router.post("/deleteDoctor", doctoresController.deleteDoctor);
 router.post("/updateConsultorioDoctor", doctoresController.updateConsultorioDoctor);
 router.post("/updateEspecialidad", doctoresController.updateEspecialidadDoctor);
 router.post("/insertDoctor", doctoresController.insertDoctor);
-router.post("/getAllDoctores", doctoresController.getAllDoctores);
-router.post("/queryDoctorHistCitas", doctoresController.queryHistorialCitas);
-router.post("/queryDoctorCitasProx", doctoresController.queryCitasProximas);
-router.post("/queryDoctorRecetasEmi", doctoresController.queryRecetasEmitidas);
+router.get("/getAllDoctores", doctoresController.getAllDoctores);
+router.get("/queryDoctorHistCitas", doctoresController.queryHistorialCitas);
+router.get("/queryDoctorCitasProx", doctoresController.queryCitasProximas);
+router.get("/queryDoctorRecetasEmi", doctoresController.queryRecetasEmitidas);
 router.post("/updateDoctorHorario", doctoresController.updateHorario);
-router.post("/queryDoctorDispHorario", doctoresController.queryDoctoresDisponibles);
+router.get("/queryDoctorDispHorario", doctoresController.queryDoctoresDisponibles);
 
 // Rutas para medicamentos
-router.post("/queryMedicamento", medicamentosController.queryMedicamentos);
+router.get("/queryMedicamento", medicamentosController.queryMedicamentos);
 router.post("/insertMedicamento", medicamentosController.insertMedicamento);
 router.post("/updateMedicamento", medicamentosController.updateMedicamento);
 router.post("/deleteMedicamento", medicamentosController.deleteMedicamento);
 router.post("/updateCantidadMedicamento", medicamentosController.updateCantidadMedicamento);
 router.post("/updatePrecioMedicamento", medicamentosController.updatePrecioMedicamento);
-router.post("/getAllMedicamentos", medicamentosController.getAllMedicamentos);
-router.post("/queryMedicamentoXProveedor", medicamentosController.queryMedicamentosPorProveedor);
+router.get("/getAllMedicamentos", medicamentosController.getAllMedicamentos);
+router.get("/queryMedicamentoXProveedor", medicamentosController.queryMedicamentosPorProveedor);
 
 // Rutas para proveedores
 router.post("/insertProveedor", proveedoresController.insertProveedor);
@@ -69,17 +69,17 @@ router.post("/deleteProveedor", proveedoresController.deleteProveedor);
 router.post("/createConsultorio", consultoriosController.createConsultorio);
 router.post("/updateConsultorio", consultoriosController.updateConsultorio);
 router.post("/deleteConsultorio", consultoriosController.deleteConsultorio);
-router.post("/queryConsultorio", consultoriosController.queryConsultorio);
+router.get("/queryConsultorio", consultoriosController.queryConsultorio);
 
 // Rutas para especialidades
 router.post("/createEspecialidad", especialidadesController.createEspecialidad);
-router.post("/queryEspecialidad", especialidadesController.queryEspecialidad);
+router.get("/queryEspecialidad", especialidadesController.queryEspecialidad);
 router.post("/updateEspecialidad", especialidadesController.updateEspecialidad);
 router.post("/deleteEspecialidad", especialidadesController.deleteEspecialidad);
 
 // Rutas para horarios
 router.post("/createHorario", horariosController.createHorario);
-router.post("/queryHorario", horariosController.queryHorario);
+router.get("/queryHorario", horariosController.queryHorario);
 router.post("/updateHorario", horariosController.updateHorario);
 router.post("/deleteHorario", horariosController.deleteHorario);
 
@@ -91,25 +91,25 @@ router.post("/deleteAlergia", alergiasController.deleteAlergia);
 // Rutas para citas
 router.post("/insertCita", citasController.createCita);
 router.post("/updateCita", citasController.updateCita);
-router.post("/queryCita", citasController.queryCita);
-router.get("/deleteCita", citasController.deleteCita);
+router.get("/queryCita", citasController.queryCita);
+router.post("/deleteCita", citasController.deleteCita);
 router.get("/getAllCitas", citasController.getAllCitas);
 
 // Rutas para Recepcionistas
-router.get("/insertRecepcionista", recepcionistasController.insertRecepcionista);
-router.get("/updateRecepcionista", recepcionistasController.updateRecepcionista);
-router.get("/deleteRecepcionista", recepcionistasController.deleteRecepcionista);
+router.post("/insertRecepcionista", recepcionistasController.insertRecepcionista);
+router.post("/updateRecepcionista", recepcionistasController.updateRecepcionista);
+router.post("/deleteRecepcionista", recepcionistasController.deleteRecepcionista);
 router.get("/getAllRecepcionistas", recepcionistasController.getAllRecepcionistas);
 
 // Rutas para Administradores 
-router.post("/queryAdminDatos", administradoresController.queryDatos);
+router.get("/queryAdminDatos", administradoresController.queryDatos);
 router.post("/updateAdminDatos", administradoresController.updateDatosDatos);
 router.post("/deleteAdmin", administradoresController.deleteAdministrador);
 router.post("/insertAdmin", administradoresController.insertAdministrador);
-router.post("/getAllAdmin", administradoresController.getAllAdministradores);
+router.get("/getAllAdmin", administradoresController.getAllAdministradores);
 
 // Rutas para Recetas
-router.get("/insertReceta", recetasController.insertReceta);
+router.post("/insertReceta", recetasController.insertReceta);
 router.get("/queryReceta", recetasController.queryReceta);
 
 export default router;
