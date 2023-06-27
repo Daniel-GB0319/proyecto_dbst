@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import './assets/index.css';
-import AppFooter from './Components/Footer';
 import { UserProvider } from "./Contexts/UserContext.jsx";
 
 
@@ -11,7 +10,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <UserProvider>
       <App />
-      <AppFooter />
     </UserProvider>
   </React.StrictMode>
 );
