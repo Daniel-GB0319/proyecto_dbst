@@ -11,6 +11,7 @@ import * as citasController from "../controllers/citas.js";
 import * as alergiasController from "../controllers/alergias.js";
 import * as usuariosController from "../controllers/usuarios.js"; 
 import * as recepcionistasController from "../controllers/recepcionistas.js";
+import * as administradoresController from "../controllers/administradores.js";
 
 const router = Router();
 
@@ -98,5 +99,12 @@ router.get("/insertRecepcionista", recepcionistasController.insertRecepcionista)
 router.get("/updateRecepcionista", recepcionistasController.updateRecepcionista);
 router.get("/deleteRecepcionista", recepcionistasController.deleteRecepcionista);
 router.get("/getAllRecepcionistas", recepcionistasController.getAllRecepcionistas);
+
+// Rutas para Administradores 
+router.post("/queryAdminDatos", administradoresController.queryDatos);
+router.post("/updateAdminDatos", administradoresController.updateDatosDatos);
+router.post("/deleteAdmin", administradoresController.deleteAdministrador);
+router.post("/insertAdmin", administradoresController.insertAdministrador);
+router.post("/getAllAdmin", administradoresController.getAllAdministradores);
 
 export default router;
