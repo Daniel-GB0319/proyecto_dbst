@@ -12,6 +12,7 @@ import * as alergiasController from "../controllers/alergias.js";
 import * as usuariosController from "../controllers/usuarios.js"; 
 import * as recepcionistasController from "../controllers/recepcionistas.js";
 import * as administradoresController from "../controllers/administradores.js";
+import * as recetasController from "../controllers/recetas.js";
 
 const router = Router();
 
@@ -106,5 +107,9 @@ router.post("/updateAdminDatos", administradoresController.updateDatosDatos);
 router.post("/deleteAdmin", administradoresController.deleteAdministrador);
 router.post("/insertAdmin", administradoresController.insertAdministrador);
 router.post("/getAllAdmin", administradoresController.getAllAdministradores);
+
+// Rutas para Recetas
+router.get("/insertReceta", recetasController.insertReceta);
+router.get("/queryReceta", recetasController.queryReceta);
 
 export default router;
