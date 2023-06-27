@@ -1210,7 +1210,6 @@ const Admin = () => {
         </Col>
       </Row>
     </Container>
-    
   );
 };
 
