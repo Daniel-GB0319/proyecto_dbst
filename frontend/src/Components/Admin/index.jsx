@@ -225,7 +225,6 @@ const Admin = () => {
                       <Input
                         type="text"
                         id="firstName"
-                        placeholder="Nombre(s)"
                         {...register("firstName", {
                           required: "Este campo es requerido",
                         })}
@@ -242,7 +241,6 @@ const Admin = () => {
                       <Input
                         type="text"
                         id="lastName"
-                        placeholder="Apellido Paterno"
                         {...register("lastName", {
                           required: "Este campo es requerido",
                         })}
@@ -259,7 +257,6 @@ const Admin = () => {
                       <Input
                         type="text"
                         id="middleName"
-                        placeholder="Apellido Materno"
                         {...register("middleName", {
                           required: "Este campo es requerido",
                         })}
@@ -276,7 +273,6 @@ const Admin = () => {
                       <Input
                         type="email"
                         id="email"
-                        placeholder="Correo electrónico"
                         {...register("email", {
                           required: "Este campo es requerido",
                         })}
@@ -293,7 +289,6 @@ const Admin = () => {
                       <Input
                         type="password"
                         id="password"
-                        placeholder="Contraseña"
                         {...register("password", {
                           required: "Este campo es requerido",
                         })}
@@ -310,7 +305,6 @@ const Admin = () => {
                       <Input
                         type="password"
                         id="confirmPassword"
-                        placeholder="Repetir contraseña"
                         {...register("confirmPassword", {
                           required: "Este campo es requerido",
                           validate: (value) =>
@@ -667,6 +661,73 @@ const Admin = () => {
                         )}
                       </FormGroup>
                     </Col>
+                    <Col md={4}>
+                    <FormGroup>
+                      <Label for="email">Correo electrónico</Label>
+                      <Input
+                        type="email"
+                        id="email"
+                        {...register("email", {
+                          required: "Este campo es requerido",
+                        })}
+                        onChange={(e) => setValue("email", e.target.value)}
+                      />
+                      {errors.email && (
+                        <span className="error-message">
+                          {errors.email.message}
+                        </span>
+                      )}
+                    </FormGroup>
+                    </Col>
+                  </Row>
+                  <Row form>
+                    <Col md={4}>
+                    <FormGroup>
+                      <Label for="password">Contraseña</Label>
+                      <Input
+                        type="password"
+                        id="password"
+                        {...register("password", {
+                          required: "Este campo es requerido",
+                        })}
+                        onChange={(e) => setValue("password", e.target.value)}
+                      />
+                      {errors.password && (
+                        <span className="error-message">
+                          {errors.password.message}
+                        </span>
+                      )}
+                    </FormGroup>
+                    </Col>
+                    <Col md={4}>
+                    <FormGroup>
+                      <Label for="confirmPassword">Repetir contraseña</Label>
+                      <Input
+                        type="password"
+                        id="confirmPassword"
+                        {...register("confirmPassword", {
+                          required: "Este campo es requerido",
+                          validate: (value) =>
+                            value === password ||
+                            "Las contraseñas no coinciden",
+                        })}
+                        onChange={(e) =>
+                          setValue("confirmPassword", e.target.value)
+                        }
+                      />
+                      {errors.confirmPassword && (
+                        <span className="error-message">
+                          {errors.confirmPassword.message}
+                        </span>
+                      )}
+                      {confirmPassword !== password &&
+                        !errors.confirmPassword && (
+                          <span className="error-message">
+                            Las contraseñas no coinciden
+                          </span>
+                        )}
+                    </FormGroup>
+                    </Col>
                   </Row>
                   <Button
                     color="success"
@@ -688,7 +749,6 @@ const Admin = () => {
                       <Input
                         type="text"
                         id="firstName"
-                        placeholder="Nombre(s)"
                         {...register("firstName", {
                           required: "Este campo es requerido",
                         })}
@@ -705,7 +765,6 @@ const Admin = () => {
                       <Input
                         type="text"
                         id="lastName"
-                        placeholder="Apellido Paterno"
                         {...register("lastName", {
                           required: "Este campo es requerido",
                         })}
@@ -722,7 +781,6 @@ const Admin = () => {
                       <Input
                         type="text"
                         id="middleName"
-                        placeholder="Apellido Materno"
                         {...register("middleName", {
                           required: "Este campo es requerido",
                         })}
@@ -739,7 +797,6 @@ const Admin = () => {
                       <Input
                         type="email"
                         id="email"
-                        placeholder="Correo electrónico"
                         {...register("email", {
                           required: "Este campo es requerido",
                         })}
@@ -756,7 +813,6 @@ const Admin = () => {
                       <Input
                         type="password"
                         id="password"
-                        placeholder="Contraseña"
                         {...register("password", {
                           required: "Este campo es requerido",
                         })}
@@ -773,7 +829,6 @@ const Admin = () => {
                       <Input
                         type="password"
                         id="confirmPassword"
-                        placeholder="Repetir contraseña"
                         {...register("confirmPassword", {
                           required: "Este campo es requerido",
                           validate: (value) =>
@@ -1071,6 +1126,73 @@ const Admin = () => {
                           {...register("aseguradora")}
                         />
                       </FormGroup>
+                    </Col>
+                    <Col md={4}>
+                    <FormGroup>
+                      <Label for="email">Correo electrónico</Label>
+                      <Input
+                        type="email"
+                        id="email"
+                        {...register("email", {
+                          required: "Este campo es requerido",
+                        })}
+                        onChange={(e) => setValue("email", e.target.value)}
+                      />
+                      {errors.email && (
+                        <span className="error-message">
+                          {errors.email.message}
+                        </span>
+                      )}
+                    </FormGroup>
+                    </Col>
+                  </Row>
+                  <Row form>
+                    <Col md={4}>
+                    <FormGroup>
+                      <Label for="password">Contraseña</Label>
+                      <Input
+                        type="password"
+                        id="password"
+                        {...register("password", {
+                          required: "Este campo es requerido",
+                        })}
+                        onChange={(e) => setValue("password", e.target.value)}
+                      />
+                      {errors.password && (
+                        <span className="error-message">
+                          {errors.password.message}
+                        </span>
+                      )}
+                    </FormGroup>
+                    </Col>
+                    <Col md={4}>
+                    <FormGroup>
+                      <Label for="confirmPassword">Repetir contraseña</Label>
+                      <Input
+                        type="password"
+                        id="confirmPassword"
+                        {...register("confirmPassword", {
+                          required: "Este campo es requerido",
+                          validate: (value) =>
+                            value === password ||
+                            "Las contraseñas no coinciden",
+                        })}
+                        onChange={(e) =>
+                          setValue("confirmPassword", e.target.value)
+                        }
+                      />
+                      {errors.confirmPassword && (
+                        <span className="error-message">
+                          {errors.confirmPassword.message}
+                        </span>
+                      )}
+                      {confirmPassword !== password &&
+                        !errors.confirmPassword && (
+                          <span className="error-message">
+                            Las contraseñas no coinciden
+                          </span>
+                        )}
+                    </FormGroup>
                     </Col>
                   </Row>
                   <Button
