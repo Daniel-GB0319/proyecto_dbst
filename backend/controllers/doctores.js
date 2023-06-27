@@ -269,3 +269,39 @@ export const queryRecetasEmitidas = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
+// Actualizar horario de doctor
+export const updateHorario = async (req, res) => {
+  const { id_doctor, horario_id_horario } = req.body;
+
+  if (!id_doctor || !horario_id_horario) {
+    return res
+      .status(400)
+      .json({ message: "Faltan campos requeridos para actualizar el horario" });
+  }
+
+  try {
+    await pool.query(
+      "UPDATE db_doctor SET horario_id_horario = ? WHERE id_doctor = ?",
+      [horario_id_horario, id_doctor]
+    );
+
+    return res.status(200).json({ message: "Horario actualizado con éxito" });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+// Consulta los doctores disponibles segun un horario ingresado
+export const queryDoctoresDisponibles = async (req, res) => {
+  const { dia, horario } = req.body;
+
+  try {
+    const query = "CALL DoctoresDisponiblesPorHorario(?, ?)";
+    const [doctores] = await pool.query(query, [dia, horario]);
+
+    return res.status(200).json({ doctores });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};

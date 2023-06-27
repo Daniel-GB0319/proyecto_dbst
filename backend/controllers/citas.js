@@ -1,7 +1,7 @@
 import { pool } from "../db.js";
 
 // Crear una nueva consulta
-export const createConsulta = async (req, res) => {
+export const createCita = async (req, res) => {
   const { hora, fecha, costo, paciente_id, doctor_id, horario } = req.body;
 
   // Verificar que la fecha no sea pasada ni exceda los 3 meses
@@ -36,7 +36,7 @@ export const createConsulta = async (req, res) => {
 };
 
 // Modificar los datos de una consulta
-export const updateConsulta = async (req, res) => {
+export const updateCita = async (req, res) => {
   const { id_consulta, hora, fecha, costo, paciente_id, doctor_id, horario } = req.body;
 
   // Verificar que la fecha no sea pasada ni exceda los 3 meses
@@ -71,7 +71,7 @@ export const updateConsulta = async (req, res) => {
 };
 
 // Consultar los datos de una consulta
-export const queryConsulta = async (req, res) => {
+export const queryCita = async (req, res) => {
   const { id_consulta } = req.params;
 
   try {
@@ -88,7 +88,7 @@ export const queryConsulta = async (req, res) => {
 };
 
 // Eliminar una consulta
-export const deleteConsulta = async (req, res) => {
+export const deleteCita = async (req, res) => {
   const { id_consulta } = req.body;
 
   try {
@@ -123,7 +123,7 @@ export const deleteConsulta = async (req, res) => {
 };
 
 // Consultar todas las consultas
-export const getAllConsultas = async (req, res) => {
+export const getAllCitas = async (req, res) => {
   try {
     const consultas = await pool.query("SELECT * FROM db_consulta");
 

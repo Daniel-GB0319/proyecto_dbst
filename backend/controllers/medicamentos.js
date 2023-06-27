@@ -97,9 +97,22 @@ export const updatePrecioMedicamento = async (req, res) => {
   }
 };
 
+// Realiza una busqueda de un medicamento en especifico
 export const queryMedicamentos = async (req, res) => {
+  const { searchTerm } = req.query;
+
   try {
-    const result = await pool.query("SELECT * FROM db_medicamento");
+    let result;
+
+    if (searchTerm) {
+      result = await pool.query(
+        "SELECT * FROM db_medicamento WHERE nombre LIKE ? OR compuesto LIKE ?",
+        [`%${searchTerm}%`, `%${searchTerm}%`]
+      );
+    } else {
+      result = await pool.query("SELECT * FROM db_medicamento");
+    }
+
     const medicamentos = result[0];
 
     if (medicamentos.length === 0) {
@@ -112,6 +125,8 @@ export const queryMedicamentos = async (req, res) => {
   }
 };
 
+
+// Obtiene todos los registros de medicamentos existentes
 export const getAllMedicamentos = async (req, res) => {
   try {
     const medicamentos = await pool.query("SELECT * FROM db_medicamento");
@@ -119,5 +134,16 @@ export const getAllMedicamentos = async (req, res) => {
     return res.status(200).json(medicamentos);
   } catch (error) {
     return res.status(500).json({ message: error.message });
+  }
+};
+
+// Filtra todos los registros de medicamento por Proveedor
+export const queryMedicamentosPorProveedor = async (nombreProveedor) => {
+  try {
+    const result = await pool.query("CALL ObtenerMedicamentosPorProveedor(?)", [nombreProveedor]);
+    const medicamentosPorProveedor = result[0];
+    return medicamentosPorProveedor;
+  } catch (error) {
+    throw new Error(error.message);
   }
 };

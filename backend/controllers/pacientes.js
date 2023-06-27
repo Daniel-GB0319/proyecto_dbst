@@ -1,6 +1,7 @@
 import { pool } from "../db.js";
 import jwt from "jsonwebtoken";
 
+// Funcion para consultar todos los datos del paciente
 export const queryDatosPersonales = async (req, res) => {
   try {
     const { id_paciente } = req.body;
@@ -23,6 +24,7 @@ export const queryDatosPersonales = async (req, res) => {
   }
 };
 
+// Funcion para actualizar la direccion particular
 export const updateDireccion = async (req, res) => {
   const { id_paciente, calle, num_ext, num_int, colonia, delegacion, entidad_federativa } = req.body;
 
@@ -44,6 +46,7 @@ export const updateDireccion = async (req, res) => {
   }
 };
 
+// Funcion para cambiar el estado del seguro social
 export const updateSeguro = async (req, res) => {
   const { id_paciente, aseguradora } = req.body;
 
@@ -60,6 +63,7 @@ export const updateSeguro = async (req, res) => {
   }
 };
 
+// Funcion para borrar un paciente
 export const deletePaciente = async (req, res) => {
   try {
     const { id_paciente } = req.body;
@@ -90,6 +94,7 @@ export const deletePaciente = async (req, res) => {
   }
 };
 
+// Funcion para insertar pacientes
 export const insertPaciente = async (req, res) => {
   const {
     CURP,
@@ -181,6 +186,45 @@ export const getAllPacientes = async (req, res) => {
     const pacientes = await pool.query("SELECT * FROM db_paciente");
 
     return res.status(200).json({ pacientes });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+// Visualizar historial de citas por parte del paciente
+export const queryHistorialCitas = async (req, res) => {
+  try {
+    const { id_paciente } = req.body;
+
+    const citas = await pool.query("CALL sp_VerHistorialCitasPaciente(?)", [id_paciente]);
+
+    return res.status(200).json({ citas });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+// Visualizar citas próximas
+export const queryCitasProximas = async (req, res) => {
+  try {
+    const { id_paciente } = req.body;
+
+    const citas = await pool.query("CALL sp_VerCitasProximasPaciente(?)", [id_paciente]);
+
+    return res.status(200).json({ citas });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+// Visualizar historial médico de paciente
+export const queryHistorialMedico = async (req, res) => {
+  try {
+    const { id_paciente } = req.body;
+
+    const historial = await pool.query("CALL sp_VerHistorialMedicoPaciente(?)", [id_paciente]);
+
+    return res.status(200).json({ historial });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
