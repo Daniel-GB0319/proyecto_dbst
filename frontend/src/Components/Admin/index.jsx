@@ -180,7 +180,7 @@ const Admin = () => {
           </div>
         )}
         <Col md={6} lg={8}>
-          <h2 className="text-center mb-4">Acciones a realizar</h2>
+          <h2 className="text-center mb-4">Crear Cuentas</h2>
           <Nav tabs className="nav-link:hover">
             <NavItem>
               <NavLink
@@ -348,7 +348,7 @@ const Admin = () => {
             </TabPane>
             <TabPane tabId="2">
               <Container fluid className="sign-up-container">
-                <Form onSubmit={handleSubmit(onSubmitPacientes)}>
+                <Form onSubmit={handleSubmit(onSubmitDoc)}>
                   <Row form>
                     <Col md={4}>
                       <FormGroup>
