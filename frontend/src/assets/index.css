@@ -158,11 +158,25 @@
 
 
 /* FOOTER */
+/* Estilos del contenedor principal */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Estilos del contenido principal */
+.app-content {
+  flex: 1;
+}
+
 .footer {
+  bottom: 0;
   background-color: #f8f8f8;
   padding: 40px 0;
-  color: #555;
+  flex-shrink: 0;
 }
+
 
 .footer-content {
   display: flex;

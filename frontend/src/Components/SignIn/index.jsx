@@ -51,6 +51,16 @@ const SignIn = () => {
         if (nombreTipoUsuario === "Administrador") {
           navigate("/admin");
         }
+        if (nombreTipoUsuario === "Recepcionista") {
+          navigate("/recepcionista");
+        }
+        if (nombreTipoUsuario === "Doctor") {
+          navigate("/doctor");
+        }
+        if (nombreTipoUsuario === "Paciente") {
+          navigate("/paciente");
+        }
+        
       })
       .catch((error) => {
         Swal.fire({
