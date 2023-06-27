@@ -103,7 +103,7 @@ router.get("/getAllRecepcionistas", recepcionistasController.getAllRecepcionista
 
 // Rutas para Administradores 
 router.get("/queryAdminDatos", administradoresController.queryDatos);
-router.post("/updateAdminDatos", administradoresController.updateDatosDatos);
+router.post("/updateAdminDatos", administradoresController.updateDatos);
 router.post("/deleteAdmin", administradoresController.deleteAdministrador);
 router.post("/insertAdmin", administradoresController.insertAdministrador);
 router.get("/getAllAdmin", administradoresController.getAllAdministradores);
