@@ -11,6 +11,7 @@ import Consultorio from './Components/Consultorio';
 import AsignarConsultorio from './Components/AsignarConsultorio';
 import Receta from './Components/Receta';
 import Cita from './Components/Cita';
+import CrearCitas from './Components/CrearCitas';
 import { UserProvider } from "./Contexts/UserContext.jsx";
 
 
@@ -40,6 +41,7 @@ function App() {
               <Route path="/asignarconsultorio" element={<AsignarConsultorio />} />
               <Route path="/Receta" element={<Receta />} />
               <Route path="/cita" element={<Cita />} />
+              <Route path="/crearcitas" element={<CrearCitas />} />
 
 
 
