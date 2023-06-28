@@ -85,10 +85,9 @@ const Admin = () => {
   };
 
   const onSubmitAdmin = async (data) => {
-    setIsLoading(true);
-    setSubmitting(true);
+  
     try {
-      const response = await axios.post(API_URL + "/Admin", data);
+      const response = await axios.post(API_URL + "/insertAdministrador", data);
       console.log(response.data);
       Swal.fire({
         icon: "success",
@@ -109,10 +108,7 @@ const Admin = () => {
         },
       });
       console.error(error);
-    } finally {
-      setIsLoading(false);
-      setSubmitting(false);
-    }
+    } 
   };
 
   const onSubmitDoc = async (data) => {
@@ -268,7 +264,7 @@ const Admin = () => {
             <TabPane tabId="1">
               <Container fluid className="sign-up-container">
                 <Row className="justify-content-center align-items-center">
-                  <Form onSubmit={handleSubmit(onSubmitAdmin)}>
+                  <Form >
                     <FormGroup>
                       <Label for="firstName">Nombre(s)</Label>
                       <Input
@@ -380,10 +376,9 @@ const Admin = () => {
                       color="success"
                       block
                       className="custom-button"
-                      type="submit"
-                      disabled={submitting}
+                      onClick={handleSubmit(onSubmitAdmin)}
                     >
-                      {submitting ? "Creando cuenta..." : "Crear cuenta"}
+                      Crear Cuenta
                     </Button>
                     <div style={{ marginTop: "20px" }}></div>
                   </Form>

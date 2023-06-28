@@ -104,7 +104,7 @@ const Consultorios = () => {
                 )}
               </FormGroup>
               <FormGroup>
-                <Label for="lastName">Paciente</Label>
+                <Label for="lastName">Doctor</Label>
                 <Input
                   type="text"
                   id="lastName"

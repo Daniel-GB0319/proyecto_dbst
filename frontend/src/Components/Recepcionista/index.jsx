@@ -18,11 +18,8 @@ import {
   Button,
 } from "reactstrap";
 import "../../assets/index.css";
-import { useContext } from "react";
-import { UserContext } from "../../Contexts/UserContext.jsx";
 
 const Recepcionista = () => {
-  const { updateUserContext } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("1");
 
@@ -53,12 +50,12 @@ const Recepcionista = () => {
     setIsLoading(true);
     setSubmitting(true);
     try {
-      const response = await axios.post(API_URL + "/Admin", data);
+      const response = await axios.post(API_URL + "/insertPaciente", data);
       console.log(response.data);
       Swal.fire({
         icon: "success",
         title: "¡Cuenta creada!",
-        text: "Tu cuenta se ha creado exitosamente.",
+        text: "Se ha creado un paciente exitosamente.",
         customClass: {
           confirmButton: "custom-confirm-button",
         },
@@ -68,7 +65,7 @@ const Recepcionista = () => {
       Swal.fire({
         icon: "error",
         title: "¡Error!",
-        text: "Correo o contraseña no válidos",
+        text: "No se creó la cuenta",
         customClass: {
           confirmButton: "custom-confirm-button",
         },
@@ -94,7 +91,7 @@ const Recepcionista = () => {
           </div>
         )}
         <Col md={6} lg={8}>
-        <Button
+          <Button
             type="submit"
             className="custom-button float-left"
             onClick={handleButtonClick}
@@ -208,10 +205,20 @@ const Recepcionista = () => {
                       <FormGroup>
                         <Label for="tipo_sangre">Tipo de Sangre</Label>
                         <Input
-                          type="text"
+                          type="select"
                           id="tipo_sangre"
                           {...register("tipo_sangre")}
-                        />
+                        >
+                          <option value="">Seleccionar tipo de sangre</option>
+                          <option value="A+">A+</option>
+                          <option value="A-">A-</option>
+                          <option value="B+">B+</option>
+                          <option value="B-">B-</option>
+                          <option value="AB+">AB+</option>
+                          <option value="AB-">AB-</option>
+                          <option value="O+">O+</option>
+                          <option value="O-">O-</option>
+                        </Input>
                       </FormGroup>
                     </Col>
                   </Row>
@@ -290,23 +297,55 @@ const Recepcionista = () => {
                       </FormGroup>
                     </Col>
                     <Col md={4}>
-                      <FormGroup>
-                        <Label for="entidad_federativa">
-                          Entidad Federativa
-                        </Label>
-                        <Input
-                          type="text"
-                          id="entidad_federativa"
-                          {...register("entidad_federativa", {
-                            required: "Este campo es requerido",
-                          })}
-                        />
-                        {errors.entidad_federativa && (
-                          <span className="error-message">
-                            {errors.entidad_federativa.message}
-                          </span>
-                        )}
-                      </FormGroup>
+                    <FormGroup>
+      <Label for="entidad_federativa">Entidad Federativa</Label>
+      <Input
+        type="select"
+        id="entidad_federativa"
+        {...register("entidad_federativa", {
+          required: "Este campo es requerido",
+        })}
+      >
+        <option value="">Seleccionar entidad federativa</option>
+        <option value="Aguascalientes">Aguascalientes</option>
+        <option value="Baja California">Baja California</option>
+        <option value="Baja California Sur">Baja California Sur</option>
+        <option value="Campeche">Campeche</option>
+        <option value="Chiapas">Chiapas</option>
+        <option value="Chihuahua">Chihuahua</option>
+        <option value="Coahuila">Coahuila</option>
+        <option value="Colima">Colima</option>
+        <option value="Colima">Ciudad de México</option>
+        <option value="Durango">Durango</option>
+        <option value="Estado de México">Estado de México</option>
+        <option value="Guanajuato">Guanajuato</option>
+        <option value="Guerrero">Guerrero</option>
+        <option value="Hidalgo">Hidalgo</option>
+        <option value="Jalisco">Jalisco</option>
+        <option value="Michoacán">Michoacán</option>
+        <option value="Morelos">Morelos</option>
+        <option value="Nayarit">Nayarit</option>
+        <option value="Nuevo León">Nuevo León</option>
+        <option value="Oaxaca">Oaxaca</option>
+        <option value="Puebla">Puebla</option>
+        <option value="Querétaro">Querétaro</option>
+        <option value="Quintana Roo">Quintana Roo</option>
+        <option value="San Luis Potosí">San Luis Potosí</option>
+        <option value="Sinaloa">Sinaloa</option>
+        <option value="Sonora">Sonora</option>
+        <option value="Tabasco">Tabasco</option>
+        <option value="Tamaulipas">Tamaulipas</option>
+        <option value="Tlaxcala">Tlaxcala</option>
+        <option value="Veracruz">Veracruz</option>
+        <option value="Yucatán">Yucatán</option>
+        <option value="Zacatecas">Zacatecas</option>
+      </Input>
+      {errors.entidad_federativa && (
+        <span className="error-message">
+          {errors.entidad_federativa.message}
+        </span>
+      )}
+    </FormGroup>
                     </Col>
                   </Row>
                   <Row form>
@@ -377,71 +416,71 @@ const Recepcionista = () => {
                       </FormGroup>
                     </Col>
                     <Col md={4}>
-                    <FormGroup>
-                      <Label for="email">Correo electrónico</Label>
-                      <Input
-                        type="email"
-                        id="email"
-                        {...register("email", {
-                          required: "Este campo es requerido",
-                        })}
-                        onChange={(e) => setValue("email", e.target.value)}
-                      />
-                      {errors.email && (
-                        <span className="error-message">
-                          {errors.email.message}
-                        </span>
-                      )}
-                    </FormGroup>
+                      <FormGroup>
+                        <Label for="email">Correo electrónico</Label>
+                        <Input
+                          type="email"
+                          id="email"
+                          {...register("email", {
+                            required: "Este campo es requerido",
+                          })}
+                          onChange={(e) => setValue("email", e.target.value)}
+                        />
+                        {errors.email && (
+                          <span className="error-message">
+                            {errors.email.message}
+                          </span>
+                        )}
+                      </FormGroup>
                     </Col>
                   </Row>
                   <Row form>
                     <Col md={4}>
-                    <FormGroup>
-                      <Label for="password">Contraseña</Label>
-                      <Input
-                        type="password"
-                        id="password"
-                        {...register("password", {
-                          required: "Este campo es requerido",
-                        })}
-                        onChange={(e) => setValue("password", e.target.value)}
-                      />
-                      {errors.password && (
-                        <span className="error-message">
-                          {errors.password.message}
-                        </span>
-                      )}
-                    </FormGroup>
-                    </Col>
-                    <Col md={4}>
-                    <FormGroup>
-                      <Label for="confirmPassword">Repetir contraseña</Label>
-                      <Input
-                        type="password"
-                        id="confirmPassword"
-                        {...register("confirmPassword", {
-                          required: "Este campo es requerido",
-                          validate: (value) =>
-                            value === password ||
-                            "Las contraseñas no coinciden",
-                        })}
-                        onChange={(e) =>
-                          setValue("confirmPassword", e.target.value)
-                        }
-                      />
-                      {errors.confirmPassword && (
-                        <span className="error-message">
-                          {errors.confirmPassword.message}
-                        </span>
-                      )}
-                      {confirmPassword !== password &&
-                        !errors.confirmPassword && (
+                      <FormGroup>
+                        <Label for="password">Contraseña</Label>
+                        <Input
+                          type="password"
+                          id="password"
+                          {...register("password", {
+                            required: "Este campo es requerido",
+                          })}
+                          onChange={(e) => setValue("password", e.target.value)}
+                        />
+                        {errors.password && (
                           <span className="error-message">
-                            Las contraseñas no coinciden
+                            {errors.password.message}
                           </span>
                         )}
-                    </FormGroup>
+                      </FormGroup>
+                    </Col>
+                    <Col md={4}>
+                      <FormGroup>
+                        <Label for="confirmPassword">Repetir contraseña</Label>
+                        <Input
+                          type="password"
+                          id="confirmPassword"
+                          {...register("confirmPassword", {
+                            required: "Este campo es requerido",
+                            validate: (value) =>
+                              value === password ||
+                              "Las contraseñas no coinciden",
+                          })}
+                          onChange={(e) =>
+                            setValue("confirmPassword", e.target.value)
+                          }
+                        />
+                        {errors.confirmPassword && (
+                          <span className="error-message">
+                            {errors.confirmPassword.message}
+                          </span>
+                        )}
+                        {confirmPassword !== password &&
+                          !errors.confirmPassword && (
+                            <span className="error-message">
+                              Las contraseñas no coinciden
+                            </span>
+                          )}
+                      </FormGroup>
                     </Col>
                   </Row>
                   <Button

@@ -73,21 +73,32 @@ export const deleteAdministrador = async (req, res) => {
 
 // Función para insertar un administrador
 export const insertAdministrador = async (req, res) => {
-  const { nombre, ap_paterno, ap_materno, usuario_id_usuario } = req.body;
+  const { nombre, ap_paterno, ap_materno, password, correo } = req.body;
 
   // Verificar que todos los campos requeridos existan en el JSON
-  if (!nombre || !ap_paterno || !ap_materno || !usuario_id_usuario) {
+  if (!nombre || !ap_paterno || !ap_materno || !password || !correo  ) {
     return res.status(400).json({ message: "Faltan campos requeridos para insertar al administrador" });
   }
 
   try {
     // Insertar al administrador
+
+    await pool.query(
+      "INSERT INTO db_usuario (tipo_usuario, correo, password) VALUES (?, ?, ?)",
+      [1, correo, password]
+    );
+
+    const [usuario_id_usuario] = await pool.query(
+      "SELECT * FROM db_usuario WHERE correo = ?",
+      [correo]
+    );
+
     await pool.query(
       "INSERT INTO db_administrador (nombre, ap_paterno, ap_materno, usuario_id_usuario) VALUES (?, ?, ?, ?)",
       [nombre, ap_paterno, ap_materno, usuario_id_usuario]
     );
 
-    return res.status(201).json({ message: "Administrador insertado con éxito" });
+    return res.status(201).json({ message: "Administrador creado con éxito" });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }

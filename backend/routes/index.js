@@ -105,7 +105,7 @@ router.get("/getAllRecepcionistas", recepcionistasController.getAllRecepcionista
 router.get("/queryAdminDatos", administradoresController.queryDatos);
 router.post("/updateAdminDatos", administradoresController.updateDatos);
 router.post("/deleteAdmin", administradoresController.deleteAdministrador);
-router.post("/insertAdmin", administradoresController.insertAdministrador);
+router.post("/insertAdministrador", administradoresController.insertAdministrador);
 router.get("/getAllAdmin", administradoresController.getAllAdministradores);
 
 // Rutas para Recetas

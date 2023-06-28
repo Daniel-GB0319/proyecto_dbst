@@ -119,12 +119,6 @@ const AppNavbar = () => {
                 <Input type="text" name="apMaterno" id="apMaterno" value={apMaterno} onChange={(e) => setApMaterno(e.target.value)} />
               </Col>
             </FormGroup>
-            <FormGroup row>
-              <Label for="horarioIdHorario" sm={2} className="text-right">Horario</Label>
-              <Col sm={10}>
-                <Input type="number" name="horarioIdHorario" id="horarioIdHorario" value={horarioIdHorario} onChange={(e) => setHorarioIdHorario(e.target.value)} />
-              </Col>
-            </FormGroup>
           </Form>
         </ModalBody>
         <ModalFooter >
