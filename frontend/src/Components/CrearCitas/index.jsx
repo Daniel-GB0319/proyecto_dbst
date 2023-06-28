@@ -49,7 +49,7 @@ const Cita = () => {
 
   const onSubmitGenerar = async (data) => {
     try {
-      const response = await axios.post(API_URL + "/insertCita", data);
+      const response = await axios.post(API_URL + "/createCita", data);
       console.log(response.data);
       Swal.fire({
         icon: "success",
