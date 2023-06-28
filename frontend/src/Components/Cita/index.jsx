@@ -31,28 +31,40 @@ const Cita = () => {
     setValue,
   } = useForm();
 
-  const onSubmit = (formData) => {
-    // Realizar la solicitud a la API REST
-    axios
-      .post(API_URL + "/loginUsuarios", formData)
-      .then((response) => {
-        // Obtener los datos de la respuesta
-        const responseData = response.data;
+  const {
+    register: registerGenerar,
+    handleSubmit: handleSubmitGenerar,
+    formState: { errors: generarErrors },
+    setValue: setGenerarValue,
+    reset: resetGenerar,
+  } = useForm();
 
-        // Actualizar los datos en el estado
-        setData(responseData);
-      })
-      .catch((error) => {
-        Swal.fire({
-          icon: "error",
-          title: "¡Error!",
-          text: "",
-          customClass: {
-            confirmButton: "custom-confirm-button",
-          },
-        });
-        console.error(error);
+
+
+  const onSubmitGenerar = async (data) => {
+    try {
+      const response = await axios.post(API_URL + "/insertCita", data);
+      console.log(response.data);
+      Swal.fire({
+        icon: "success",
+        title: "¡Cuenta creada!",
+        text: "La cita fue creada exitosamente.",
+        customClass: {
+          confirmButton: "custom-confirm-button",
+        },
       });
+      resetGenerar();
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "¡Error!",
+        text: "La cita no fue creada",
+        customClass: {
+          confirmButton: "custom-confirm-button",
+        },
+      });
+      console.error(error);
+    }
   };
 
   const handleCancel = (index) => {
@@ -70,105 +82,110 @@ const Cita = () => {
       <Row className="justify-content-center align-items-center">
         <Col md={12} lg={10}>
           <h2 className="text-center mb-4">Generar cita</h2>
-          <Form onSubmit={handleSubmit(onSubmit)}>
-            <Row form>
-              <Col md={6}>
-                <FormGroup>
-                  <Label for="curp_doctor">CURP del Doctor</Label>
-                  <Input
-                    type="text"
-                    id="curp_doctor"
-                    {...register("curp_doctor", {
-                      required: "Este campo es requerido",
-                    })}
-                  />
-                  {errors.curp_doctor && (
-                    <span className="error-message">
-                      {errors.curp_doctor.message}
-                    </span>
-                  )}
-                </FormGroup>
-              </Col>
-              <Col md={6}>
-                <FormGroup>
-                  <Label for="fecha">Fecha</Label>
-                  <Input
-                    type="date"
-                    id="fecha"
-                    {...register("fecha", {
-                      required: "Este campo es requerido",
-                    })}
-                  />
-                  {errors.fecha && (
-                    <span className="error-message">
-                      {errors.fecha.message}
-                    </span>
-                  )}
-                </FormGroup>
-              </Col>
-            </Row>
-            <Row form>
-              <Col md={6}>
-                <FormGroup>
-                  <Label for="costo">Costo</Label>
-                  <Input
-                    type="number"
-                    id="costo"
-                    {...register("costo", {
-                      required: "Este campo es requerido",
-                    })}
-                  />
-                  {errors.costo && (
-                    <span className="error-message">
-                      {errors.costo.message}
-                    </span>
-                  )}
-                </FormGroup>
-              </Col>
-              <Col md={6}>
-                <FormGroup>
-                  <Label for="dia">Día</Label>
-                  <Input
-                    type="text"
-                    id="dia"
-                    {...register("dia", {
-                      required: "Este campo es requerido",
-                    })}
-                  />
-                  {errors.dia && (
-                    <span className="error-message">
-                      {errors.dia.message}
-                    </span>
-                  )}
-                </FormGroup>
-              </Col>
-            </Row>
-            <Row form>
-              <Col md={6}>
-                <FormGroup>
-                  <Label for="horario">Horario</Label>
-                  <Input
-                    type="number"
-                    id="horario"
-                    {...register("horario", {
-                      required: "Este campo es requerido",
-                    })}
-                  />
-                  {errors.horario && (
-                    <span className="error-message">
-                      {errors.horario.message}
-                    </span>
-                  )}
-                </FormGroup>
-              </Col>
-            </Row>
-            <Button color="primary" type="submit" className="custom-button">
-              Generar Cita
-            </Button>
-          </Form>
+          <Form onSubmit={handleSubmitGenerar(onSubmitGenerar)}>
+  <Row form>
+    <Col md={6}>
+      <FormGroup>
+        <Label for="curp_doctor">CURP del Doctor</Label>
+        <Input
+          type="text"
+          id="curp_doctor"
+          {...registerGenerar("curp_doctor", {
+            required: "Este campo es requerido",
+          })}
+          onChange={(e) => setGenerarValue("curp_doctor", e.target.value)}
+        />
+        {generarErrors.curp_doctor && (
+          <span className="error-message">
+            {generarErrors.curp_doctor.message}
+          </span>
+        )}
+      </FormGroup>
+    </Col>
+    <Col md={6}>
+      <FormGroup>
+        <Label for="fecha">Fecha</Label>
+        <Input
+          type="date"
+          id="fecha"
+          {...registerGenerar("fecha", {
+            required: "Este campo es requerido",
+          })}
+          onChange={(e) => setGenerarValue("fecha", e.target.value)}
+        />
+        {generarErrors.fecha && (
+          <span className="error-message">
+            {generarErrors.fecha.message}
+          </span>
+        )}
+      </FormGroup>
+    </Col>
+  </Row>
+  <Row form>
+    <Col md={6}>
+      <FormGroup>
+        <Label for="costo">Costo</Label>
+        <Input
+          type="number"
+          id="costo"
+          {...registerGenerar("costo", {
+            required: "Este campo es requerido",
+          })}
+          onChange={(e) => setGenerarValue("costo", e.target.value)}
+        />
+        {generarErrors.costo && (
+          <span className="error-message">
+            {generarErrors.costo.message}
+          </span>
+        )}
+      </FormGroup>
+    </Col>
+    <Col md={6}>
+      <FormGroup>
+        <Label for="dia">Día</Label>
+        <Input
+          type="text"
+          id="dia"
+          {...registerGenerar("dia", {
+            required: "Este campo es requerido",
+          })}
+          onChange={(e) => setGenerarValue("dia", e.target.value)}
+        />
+        {generarErrors.dia && (
+          <span className="error-message">
+            {generarErrors.dia.message}
+          </span>
+        )}
+      </FormGroup>
+    </Col>
+  </Row>
+  <Row form>
+    <Col md={6}>
+      <FormGroup>
+        <Label for="horario">Horario</Label>
+        <Input
+          type="number"
+          id="horario"
+          {...registerGenerar("horario", {
+            required: "Este campo es requerido",
+          })}
+          onChange={(e) => setGenerarValue("horario", e.target.value)}
+        />
+        {generarErrors.horario && (
+          <span className="error-message">
+            {generarErrors.horario.message}
+          </span>
+        )}
+      </FormGroup>
+    </Col>
+  </Row>
+  <Button color="primary" type="submit" className="custom-button">
+    Generar Cita
+  </Button>
+</Form>
 
           <h2 className="text-center mb-4">Consultar cita</h2>
-          <Form onSubmit={handleSubmit(onSubmit)}>
+          <Form onSubmit={handleSubmit(onSubmitGenerar)}>
             <Row form>
               <Col md={6}>
                 <FormGroup>
