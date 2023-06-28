@@ -85,12 +85,12 @@ export const insertAdministrador = async (req, res) => {
     // Insertar al administrador
 
     await pool.query(
-      "INSERT INTO db_usuario (tipo_usuario, correo, password) VALUES (?, ?, ?)",
+      "INSERT INTO db_usuario (tipo_usuario, correo, password, ultimo_acceso) VALUES (?, ?, ?, NOW())",
       [numero, correo, password]
     );
 
     const [usuario_id_usuario] = await pool.query(
-      "SELECT * FROM db_usuario WHERE correo = ?",
+      "SELECT id_usuario FROM db_usuario WHERE correo = ?",
       [correo]
     );
 
