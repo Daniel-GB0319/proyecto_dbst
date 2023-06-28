@@ -110,6 +110,148 @@ const Doctor = () => {
               </tbody>
             </Table>
           </div>
+          <h2 className="text-center mb-4">Generar recetas</h2>
+          <Form>
+            <Row form>
+              <Col md={6}>
+                <FormGroup>
+                  <Label for="fecha_expedicion">Fecha de Expedición</Label>
+                  <Input
+                    type="datetime-local"
+                    id="fecha_expedicion"
+                    {...register("fecha_expedicion", {
+                      required: "Este campo es requerido",
+                    })}
+                  />
+                  {errors.fecha_expedicion && (
+                    <span className="error-message">
+                      {errors.fecha_expedicion.message}
+                    </span>
+                  )}
+                </FormGroup>
+              </Col>
+              <Col md={6}>
+                <FormGroup>
+                  <Label for="observaciones">Observaciones</Label>
+                  <Input
+                    type="text"
+                    id="observaciones"
+                    {...register("observaciones")}
+                  />
+                </FormGroup>
+              </Col>
+            </Row>
+            <Row form>
+              <Col md={6}>
+                <FormGroup>
+                  <Label for="diagnostico">Diagnóstico</Label>
+                  <Input
+                    type="text"
+                    id="diagnostico"
+                    {...register("diagnostico", {
+                      required: "Este campo es requerido",
+                    })}
+                  />
+                  {errors.diagnostico && (
+                    <span className="error-message">
+                      {errors.diagnostico.message}
+                    </span>
+                  )}
+                </FormGroup>
+              </Col>
+              <Col md={6}>
+                <FormGroup>
+                  <Label for="costo_total">Costo Total</Label>
+                  <Input
+                    type="number"
+                    id="costo_total"
+                    {...register("costo_total", {
+                      required: "Este campo es requerido",
+                    })}
+                  />
+                  {errors.costo_total && (
+                    <span className="error-message">
+                      {errors.costo_total.message}
+                    </span>
+                  )}
+                </FormGroup>
+              </Col>
+            </Row>
+            <Button color="primary" type="submit" className="custom-button">
+              Generar Receta
+            </Button>
+          </Form>
+          <h2 className="text-center mb-4">Consultar recetas</h2>
+          <Form>
+            <Row form>
+              <Col md={6}>
+                <FormGroup>
+                  <Label for="fecha_expedicion">Fecha de Expedición</Label>
+                  <Input
+                    type="datetime-local"
+                    id="fecha_expedicion"
+                    {...register("fecha_expedicion", {
+                      required: "Este campo es requerido",
+                    })}
+                  />
+                  {errors.fecha_expedicion && (
+                    <span className="error-message">
+                      {errors.fecha_expedicion.message}
+                    </span>
+                  )}
+                </FormGroup>
+              </Col>
+              <Col md={6}>
+                <FormGroup>
+                  <Label for="observaciones">Observaciones</Label>
+                  <Input
+                    type="text"
+                    id="observaciones"
+                    {...register("observaciones")}
+                  />
+                </FormGroup>
+              </Col>
+            </Row>
+            <Row form>
+              <Col md={6}>
+                <FormGroup>
+                  <Label for="diagnostico">Diagnóstico</Label>
+                  <Input
+                    type="text"
+                    id="diagnostico"
+                    {...register("diagnostico", {
+                      required: "Este campo es requerido",
+                    })}
+                  />
+                  {errors.diagnostico && (
+                    <span className="error-message">
+                      {errors.diagnostico.message}
+                    </span>
+                  )}
+                </FormGroup>
+              </Col>
+              <Col md={6}>
+                <FormGroup>
+                  <Label for="costo_total">Costo Total</Label>
+                  <Input
+                    type="number"
+                    id="costo_total"
+                    {...register("costo_total", {
+                      required: "Este campo es requerido",
+                    })}
+                  />
+                  {errors.costo_total && (
+                    <span className="error-message">
+                      {errors.costo_total.message}
+                    </span>
+                  )}
+                </FormGroup>
+              </Col>
+            </Row>
+            <Button color="primary" type="submit" className="custom-button">
+              Consultar recetas
+            </Button>
+          </Form>
         </Col>
       </Row>
     </Container>
@@ -117,9 +259,5 @@ const Doctor = () => {
 };
 
 export default Doctor;
-
-
-
-
 
 
