@@ -1195,20 +1195,20 @@ const Admin = () => {
                     </Col>
                     <Col md={4}>
                       <FormGroup>
-                        <Label for="email">Correo electrónico</Label>
+                        <Label for="correo">Correo electrónico</Label>
                         <Input
                           type="email"
-                          id="email"
-                          {...registerPaci("email", {
+                          id="correo"
+                          {...registerPaci("correo", {
                             required: "Este campo es requerido",
                           })}
                           onChange={(e) =>
-                            setPaciValue("email", e.target.value)
+                            setPaciValue("correo", e.target.value)
                           }
                         />
-                        {paciErrors.email && (
+                        {paciErrors.correo && (
                           <span className="error-message">
-                            {paciErrors.email.message}
+                            {paciErrors.correo.message}
                           </span>
                         )}
                       </FormGroup>
