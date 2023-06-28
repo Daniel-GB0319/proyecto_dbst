@@ -14,25 +14,27 @@ import "bootstrap/dist/css/bootstrap.css";
 const Consultorios = () => {
   const [data, setData] = useState([]);
 
-  const handleCancel = async (idConsultorio) => {
+  const handleCancel = async (id_consultorio) => {
     try {
-      const response = await axios.post(API_URL + "/deleteConsultorio");
+      const response = await axios.post(`${API_URL}/deleteConsultorio`, { id_consultorio });
       console.log(response.data);
-
+  
       // Realiza cualquier otra lógica necesaria después de eliminar el consultorio
-
+  
       // Actualiza el estado "data" para reflejar el cambio en la tabla
-      setData(prevData => prevData.map(consultorio => {
-        if (consultorio.id_consultorio === idConsultorio) {
-          // Puedes modificar alguna propiedad del consultorio aquí si es necesario
-          return {
-            ...consultorio,
-            estado: "Cancelado"
-          };
-        }
-        return consultorio;
-      }));
-
+      setData((prevData) =>
+        prevData.map((consultorio) => {
+          if (consultorio.id_consultorio === id_consultorio) {
+            // Puedes modificar alguna propiedad del consultorio aquí si es necesario
+            return {
+              ...consultorio,
+              estado: "Cancelado",
+            };
+          }
+          return consultorio;
+        })
+      );
+  
       Swal.fire({
         icon: "success",
         title: "Consultorio cancelado",
@@ -53,6 +55,7 @@ const Consultorios = () => {
       console.error(error);
     }
   };
+  
 
   useEffect(() => {
     const fetchData = async () => {
