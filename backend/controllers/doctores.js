@@ -136,6 +136,7 @@ export const updateEspecialidadDoctor = async (req, res) => {
   }
 };
 
+//   Insertar doctor
 export const insertDoctor = async (req, res) => {
   const {
     curp,
@@ -152,12 +153,14 @@ export const insertDoctor = async (req, res) => {
     fecha_nac,
     sexo,
     aseguradora,
-    usuario_id_usuario,
+    correo,
+    password,
     consultorio_id_consultorio,
     horario_id_horario,
     especialidad_id_especialidad,
   } = req.body;
 
+  // Verificar que todos los campos requeridos existan en el JSON
   if (
     !curp ||
     !nombre ||
@@ -170,18 +173,60 @@ export const insertDoctor = async (req, res) => {
     !entidad_federativa ||
     !fecha_nac ||
     !sexo ||
-    !aseguradora||
-    !usuario_id_usuario ||
-    !consultorio_id_consultorio ||
-    !horario_id_horario ||
+    !aseguradora ||
+    !correo ||
+    !password||
+    !consultorio_id_consultorio||
+    !horario_id_horario||
     !especialidad_id_especialidad
   ) {
-    return res.status(400).json({ message: "Faltan campos requeridos para registrar el doctor" });
+    return res.status(400).json({ message: "Faltan campos requeridos para insertar al doctor" });
   }
 
   try {
+
+    // Verificar si el correo ya existe en la tabla db_usuario
+    const [existingUsuario] = await pool.query("SELECT id_usuario FROM db_usuario WHERE correo = ?", [correo]);
+    console.log("Verificando correo");
+
+    if (existingUsuario.length > 0) {
+      return res.status(409).json({ message: "El correo ya está registrado" });
+    }
+
+    console.log("Correo verificado" [correo]);
+
+    // Insertar al doctor en la tabla db_usuario
+    const tipoUsuarioId = 3; // ID para el tipo de usuario "Doctor"
+    console.log("Insertando el usuario a db_usuario");
+
+    const { insertId: usuarioId } = await pool.query(
+      "INSERT INTO db_usuario (tipo_usuario, correo, password) VALUES (?, ?, ?)",
+      [tipoUsuarioId, correo, password]
+    );
+    
+    const [usuarioIdCheck] = await pool.query("SELECT id_usuario FROM db_usuario WHERE correo = ?", [correo]);
+
+    console.log("Checa que el usuario exista", usuarioIdCheck);
+
+    const usuarioIdExtract = usuarioIdCheck[0].id_usuario;
+    const usuarioIdEntero = parseInt(usuarioIdExtract);
+
+    console.log("Id usuario entero", usuarioIdExtract);
+
+    console.log("Verificar si el consultorio asignado esta disponible");
+
+    const [estadoConsultorio] = await pool.query("SELECT estado FROM db_consultorio WHERE id_consultorio = ?", [consultorio_id_consultorio]);
+
+    if(estadoConsultorio == "No disponible") {
+      console.log("Consultorio no disponible");
+      return res.status(400).json({ message: "Seleccione un consultorio disponible" });
+    }
+
+    console.log("Consultorio disponible");
+    
+    console.log("Agregando doctor a db_doctor");
     await pool.query(
-      "INSERT INTO db_doctor (CURP, nombre, ap_paterno, ap_materno, edad, calle, num_ext, num_int, colonia, delegacion, entidad_federativa, fecha_nac, sexo, aseguradora, usuario_id_usuario, consultorio_id_consultorio, horario_id_horario, especialidad_id_especialidad) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      "INSERT INTO db_doctor (CURP, nombre, ap_paterno, ap_materno, edad, calle, num_ext, num_int, colonia, delegacion, entidad_federativa, fecha_nac, sexo, aseguradora, usuario_id_usuario, consultorio_id_consultorio, horario_id_horario, especialidad_id_especialidad) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,? ,? ,?)",
       [
         curp,
         nombre,
@@ -196,19 +241,22 @@ export const insertDoctor = async (req, res) => {
         entidad_federativa,
         fecha_nac,
         sexo,
-        aseguradora ? aseguradora : null, // Verificar si aseguradora es nulo y pasar null en ese caso
-        usuario_id_usuario,
+        aseguradora ? aseguradora : null, 
+        usuarioIdExtract,
         consultorio_id_consultorio,
         horario_id_horario,
-        especialidad_id_especialidad,
+        especialidad_id_especialidad
       ]
     );
-
-    return res.status(200).json({ message: "Doctor registrado con éxito" });
+    console.log("Actualizando estado de consultorio");
+    await pool.query("UPDATE db_consultorio SET estado = 'No disponible' WHERE id_consultorio = ?", [consultorio_id_consultorio]);
+    return res.status(201).json({ message: "Doctor creado con éxito" });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
 };
+
+
 
 
 export const getAllDoctores = async (req, res) => {
