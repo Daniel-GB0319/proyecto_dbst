@@ -62,6 +62,7 @@ export const updateDatosPersonales = async (req, res) => {
   }
 };
 
+
 export const deleteDoctor = async (req, res) => {
   try {
     const { id_doctor } = req.body;
@@ -75,9 +76,11 @@ export const deleteDoctor = async (req, res) => {
       return res.status(401).json({ message: "No existe el doctor seleccionado para eliminar" });
     } else {
       const citasEstado = await pool.query("SELECT ComprobarCitasDoctor(?) AS estado", [doctor.CURP]);
+      console.log("CURP " [doctor.CURP]);
       const estado = citasEstado[0].estado;
-
-      if (estado === 1) {
+      const estadoInt = parseInt(estado);
+      console.log("Estado ", estadoInt);
+      if (estadoInt === 1) {
         return res.status(403).json({ message: "El doctor tiene citas programadas y no se puede eliminar" });
       }
 

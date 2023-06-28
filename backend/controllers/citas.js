@@ -2,31 +2,46 @@ import { pool } from "../db.js";
 
 // Crear una nueva consulta
 export const createCita = async (req, res) => {
-  const { hora, fecha, costo, paciente_id, doctor_id, horario } = req.body;
-
-  // Verificar que la fecha no sea pasada ni exceda los 3 meses
+  const { fecha, costo, dia, paciente_id, doctor_id, horario } = req.body;
   const currentDate = new Date();
   const maxDate = new Date();
   maxDate.setMonth(maxDate.getMonth() + 3);
+
+  const [pacienteID] = await pool.query("SELECT id_paciente FROM db_paciente WHERE CURP = ?", [paciente_id]);
+
+  const pacienteIdExtract = pacienteID[0].id_paciente;
+  const pacienteIdEntero = parseInt(pacienteIdExtract);
+
+  console.log("ID paciente: ", pacienteIdEntero);
 
   if (new Date(fecha) < currentDate || new Date(fecha) > maxDate) {
     return res.status(400).json({ message: "La fecha de la consulta no es válida" });
   }
 
-  // Verificar que no exista una consulta en la misma fecha y hora
+  // Verificar que no exista una consulta en la misma fecha y horario
   const existingConsulta = await pool.query(
-    "SELECT * FROM db_consulta WHERE fecha = ? AND hora = ?",
-    [fecha, hora]
+    "SELECT * FROM db_consulta WHERE fecha = ? AND horario = ?",
+    [fecha, horario]
   );
 
   if (existingConsulta.length > 0) {
-    return res.status(400).json({ message: "Ya existe una consulta programada en la misma fecha y hora" });
+    return res.status(400).json({ message: "Ya existe una consulta programada en la misma fecha y horario" });
+  }
+
+  // Verificar que el horario esté disponible en la tabla db_horario_consulta
+  const existingHorario = await pool.query(
+    "SELECT * FROM db_horario_consulta WHERE id_horario_consulta = ?",
+    [horario]
+  );
+
+  if (existingHorario.length === 0) {
+    return res.status(400).json({ message: "El horario seleccionado no es válido" });
   }
 
   try {
     await pool.query(
-      "INSERT INTO db_consulta (hora, fecha, costo, paciente_id_paciente, doctor_id_doctor, horario) VALUES (?, ?, ?, ?, ?, ?)",
-      [hora, fecha, costo, paciente_id, doctor_id, horario]
+      "INSERT INTO db_consulta (dia, fecha, costo, paciente_id_paciente, doctor_id_doctor, horario) VALUES (?, ?, ?, ?, ?, ?)",
+      [dia, fecha, costo, pacienteIdEntero, doctor_id, horario]
     );
 
     return res.status(200).json({ message: "Consulta creada con éxito" });
@@ -34,6 +49,7 @@ export const createCita = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
 
 // Modificar los datos de una consulta
 export const updateCita = async (req, res) => {

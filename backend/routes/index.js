@@ -90,7 +90,7 @@ router.post("/updateAlergia", alergiasController.updateAlergia);
 router.post("/deleteAlergia", alergiasController.deleteAlergia);
 
 // Rutas para citas
-router.post("/insertCita", citasController.createCita);
+router.post("/createCita", citasController.createCita);
 router.post("/updateCita", citasController.updateCita);
 router.get("/queryCita", citasController.queryCita);
 router.post("/deleteCita", citasController.deleteCita);
