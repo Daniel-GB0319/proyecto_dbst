@@ -156,7 +156,7 @@ export const loginUsuarios = async (req, res) => {
     WHERE u.correo = ? AND u.password = ?
     `;
     const params = [correo, password];
-    const [rows] = await pool.execute(query, params);
+    const [rows] = await pool.query(query, params);
 
     if (rows.length === 0) {
       return res.status(401).json({ message: "Credenciales inválidas" });
