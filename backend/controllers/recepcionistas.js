@@ -1,11 +1,11 @@
 import { pool } from "../db.js";
 //Falta el horario
 export const insertRecepcionista = async (req, res) => {
-  const { nombre, ap_paterno, ap_materno, password, correo } = req.body;
+  const { nombre, ap_paterno, ap_materno, horario_id_horario, password, correo } = req.body;
 
   // Verificar que todos los campos requeridos existan en el JSON
-  if (!nombre || !ap_paterno || !ap_materno || !password || !correo) {
-    return res.status(400).json({ message: "Faltan campos requeridos para insertar Recepcionista" });
+  if (!nombre || !ap_paterno || !ap_materno || !horario_id_horario || !password || !correo) {
+    return res.status(400).json({ message: "Faltan campos requeridos para insertar al administrador" });
   }
 
   try {
@@ -38,15 +38,15 @@ export const insertRecepcionista = async (req, res) => {
 
     console.log("Id usuario entero", usuarioIdExtract);
 
-    // Insertar recepcionista en la tabla db_recepcionista
+    // Insertar al administrador en la tabla db_administrador
     await pool.query(
-      "INSERT INTO db_recepcionista (nombre, ap_paterno, ap_materno, usuario_id_usuario) VALUES (?, ?, ?, ?)",
-      [nombre, ap_paterno, ap_materno, usuarioIdEntero]
+      "INSERT INTO db_recepcionista (nombre, ap_paterno, ap_materno, horario_id_horario, usuario_id_usuario) VALUES (?, ?, ?, ?, ?)",
+      [nombre, ap_paterno, ap_materno, horario_id_horario, usuarioIdEntero]
     );
 
     console.log("Recepcionista agregado");
 
-    return res.status(201).json({ message: "Administrador creado con éxito" });
+    return res.status(201).json({ message: "Recepcionista creado con éxito" });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
