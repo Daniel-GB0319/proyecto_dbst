@@ -1,15 +1,11 @@
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 import {
   Table,
-  FormGroup,
-  Label,
-  Input,
   Button,
   Container,
   Row,
   Col,
 } from "reactstrap";
-import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import axios from "axios";
 import { API_URL } from "../../../constants.js";
@@ -18,18 +14,44 @@ import "bootstrap/dist/css/bootstrap.css";
 const Consultorios = () => {
   const [data, setData] = useState([]);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    setValue,
-    reset,
-  } = useForm();
+  const handleCancel = async (idConsultorio) => {
+    try {
+      const response = await axios.post(API_URL + "/deleteConsultorio");
+      console.log(response.data);
 
-  const handleCancel = (index) => {
-    // Realizar la lógica para cancelar la consulta
-    // Puedes enviar una solicitud a la API para actualizar el estado de la consulta
-    // Una vez actualizado, puedes actualizar el estado "data" para reflejar el cambio en la tabla
+      // Realiza cualquier otra lógica necesaria después de eliminar el consultorio
+
+      // Actualiza el estado "data" para reflejar el cambio en la tabla
+      setData(prevData => prevData.map(consultorio => {
+        if (consultorio.id_consultorio === idConsultorio) {
+          // Puedes modificar alguna propiedad del consultorio aquí si es necesario
+          return {
+            ...consultorio,
+            estado: "Cancelado"
+          };
+        }
+        return consultorio;
+      }));
+
+      Swal.fire({
+        icon: "success",
+        title: "Consultorio cancelado",
+        text: "El consultorio ha sido cancelado exitosamente.",
+        customClass: {
+          confirmButton: "custom-confirm-button",
+        },
+      });
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Error al cancelar el consultorio",
+        text: "Hubo un error al cancelar el consultorio. Por favor, inténtalo nuevamente.",
+        customClass: {
+          confirmButton: "custom-confirm-button",
+        },
+      });
+      console.error(error);
+    }
   };
 
   useEffect(() => {
@@ -46,32 +68,6 @@ const Consultorios = () => {
 
     fetchData();
   }, []);
-
-  const onSubmitRecep = async (data) => {
-    try {
-      const response = await axios.post(API_URL + "/Admin", data);
-      console.log(response.data);
-      Swal.fire({
-        icon: "success",
-        title: "¡Cuenta creada!",
-        text: "Tu cuenta se ha creado exitosamente.",
-        customClass: {
-          confirmButton: "custom-confirm-button",
-        },
-      });
-      reset();
-    } catch (error) {
-      Swal.fire({
-        icon: "error",
-        title: "¡Error!",
-        text: "Correo o contraseña no válidos",
-        customClass: {
-          confirmButton: "custom-confirm-button",
-        },
-      });
-      console.error(error);
-    }
-  };
 
   return (
     <Container fluid className="sign-up-container">
@@ -94,11 +90,11 @@ const Consultorios = () => {
                       <td>{consultorio.numero}</td>
                       <td>{consultorio.estado}</td>
                       <td>
-                        <Button
+                      <Button
                           color="danger"
-                          onClick={() => handleCancel(index)}
+                          onClick={() => handleCancel(consultorio.id_consultorio)}
                         >
-                          Cancelar
+                          Eliminar
                         </Button>
                       </td>
                     </tr>
