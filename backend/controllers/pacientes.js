@@ -97,7 +97,7 @@ export const deletePaciente = async (req, res) => {
 // Funcion para insertar pacientes
 export const insertPaciente = async (req, res) => {
   const {
-    CURP,
+    curp,
     nombre,
     ap_paterno,
     ap_materno,
@@ -114,12 +114,13 @@ export const insertPaciente = async (req, res) => {
     altura,
     sexo,
     aseguradora,
-    usuario_id_usuario,
+    correo,
+    password
   } = req.body;
 
   // Verificar que todos los campos requeridos existan en el JSON
   if (
-    !CURP ||
+    !curp ||
     !nombre ||
     !ap_paterno ||
     !ap_materno ||
@@ -133,25 +134,48 @@ export const insertPaciente = async (req, res) => {
     !peso ||
     !altura ||
     !sexo ||
-    !usuario_id_usuario
+    !aseguradora ||
+    !correo ||
+    !password
   ) {
     return res.status(400).json({ message: "Faltan campos requeridos para insertar al paciente" });
   }
 
   try {
-    // Verificar si el paciente ya existe
-    const [existingPaciente] = await pool.query("SELECT * FROM db_paciente WHERE CURP = ?", [CURP]);
 
-    // Comprobar si el paciente ya existe
-    if (existingPaciente.length > 0) {
-      return res.status(409).json({ message: "El paciente ya existe" });
+    // Verificar si el correo ya existe en la tabla db_usuario
+    const [existingUsuario] = await pool.query("SELECT id_usuario FROM db_usuario WHERE correo = ?", [correo]);
+    console.log("Verificando correo");
+
+    if (existingUsuario.length > 0) {
+      return res.status(409).json({ message: "El correo ya está registrado" });
     }
 
-    // Insertar al paciente
+    console.log("Correo verificado" [correo]);
+
+    // Insertar al paciente en la tabla db_usuario
+    const tipoUsuarioId = 4; // ID para el tipo de usuario "Paciente"
+    console.log("Insertando el usuario a db_usuario");
+
+    const { insertId: usuarioId } = await pool.query(
+      "INSERT INTO db_usuario (tipo_usuario, correo, password) VALUES (?, ?, ?)",
+      [tipoUsuarioId, correo, password]
+    );
+    
+    const [usuarioIdCheck] = await pool.query("SELECT id_usuario FROM db_usuario WHERE correo = ?", [correo]);
+
+    console.log("Checa que el usuario exista", usuarioIdCheck);
+
+    const usuarioIdExtract = usuarioIdCheck[0].id_usuario;
+    const usuarioIdEntero = parseInt(usuarioIdExtract);
+
+    console.log("Id usuario entero", usuarioIdExtract);
+    
+    console.log("Agregando paciente a db_paciente");
     await pool.query(
-      "CALL sp_InsertarPaciente(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      "INSERT INTO db_paciente (CURP, nombre, ap_paterno, ap_materno, edad, tipo_sangre, calle, num_ext, num_int, colonia, delegacion, entidad_federativa, fecha_nac, peso, altura, sexo, aseguradora, usuario_id_usuario) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,? ,? ,?)",
       [
-        CURP,
+        curp,
         nombre,
         ap_paterno,
         ap_materno,
@@ -167,12 +191,11 @@ export const insertPaciente = async (req, res) => {
         peso,
         altura,
         sexo,
-        aseguradora,
-        usuario_id_usuario,
+        aseguradora ? aseguradora : null, 
+        usuarioIdExtract,
       ]
     );
-
-    return res.status(201).json({ message: "Paciente insertado con éxito" });
+    return res.status(201).json({ message: "Paciente creado con éxito" });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
