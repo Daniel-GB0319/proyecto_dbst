@@ -219,6 +219,7 @@ const Admin = () => {
           >
             Modificar asignación de consultorios
           </Button>
+          <div style={{ marginTop: "20px" }}></div>
           <h2 className="text-center mb-4">Crear Cuentas</h2>
           <Nav tabs className="nav-link:hover">
             <NavItem>
@@ -720,9 +721,9 @@ const Admin = () => {
                           setDocValue("correo", e.target.value)
                         }
                       />
-                      {adminErrors.correo && (
+                      {docErrors.correo && (
                         <span className="error-message">
-                          {adminErrors.correo.message}
+                          {docErrors.correo.message}
                         </span>
                       )}
                     </FormGroup>
@@ -740,9 +741,9 @@ const Admin = () => {
                           setDocValue("password", e.target.value)
                         }
                       />
-                      {adminErrors.password && (
+                      {docErrors.password && (
                         <span className="error-message">
-                          {adminErrors.password.message}
+                          {docErrors.password.message}
                         </span>
                       )}
                     </FormGroup></Col>
@@ -828,9 +829,9 @@ const Admin = () => {
                             setRecepValue("horario_id_horario", e.target.value)
                           }
                         />
-                        {docErrors.horario_id_horario && (
+                        {recepErrors.horario_id_horario && (
                           <span className="error-message">
-                            {docErrors.horario_id_horario.message}
+                            {recepErrors.horario_id_horario.message}
                           </span>
                         )}
                       </FormGroup>

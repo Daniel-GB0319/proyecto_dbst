@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { useState, useEffect, useContext } from "react";
 import Swal from "sweetalert2";
 import "sweetalert2/dist/sweetalert2.min.css";
 import axios from "axios";
@@ -10,55 +9,32 @@ import {
   Container,
   Row,
   Col,
-  Form,
-  FormGroup,
-  Label,
-  Input,
   Button,
   Table,
 } from "reactstrap";
 import "../../assets/index.css";
-import { useContext } from "react";
 import { UserContext } from "../../Contexts/UserContext.jsx";
 
 const Doctor = () => {
   const { updateUserContext } = useContext(UserContext);
   const [data, setData] = useState([]);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    setValue,
-  } = useForm();
-
-  const onSubmit = (formData) => {
-    // Realizar la solicitud a la API REST
-    axios
-      .post(API_URL + "/loginUsuarios", formData)
-      .then((response) => {
-        // Obtener los datos de la respuesta
-        const responseData = response.data;
-
-        // Actualizar los datos en el estado
-        setData(responseData);
-      })
-      .catch((error) => {
-        Swal.fire({
-          icon: "error",
-          title: "¡Error!",
-          text: "",
-          customClass: {
-            confirmButton: "custom-confirm-button",
-          },
-        });
-        console.error(error);
-      });
-  };
 
   useEffect(() => {
-    // Aquí puedes realizar una solicitud inicial a la API para obtener los datos y mostrarlos en la tabla al cargar el componente
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(API_URL + "/queryDoctorCitasProx");
+        console.log("Response data:", response.data);
+
+        setData(response.data); // Asegúrate de que response.data sea un array
+      } catch (error) {
+        console.log("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
   }, []);
+
 
   const handleCancel = (index) => {
     // Realizar la lógica para cancelar la consulta
@@ -75,7 +51,7 @@ const Doctor = () => {
     <Container fluid className="sign-up-container">
       <Row className="justify-content-center align-items-center">
         <Col md={12} lg={10}>
-        <Button
+          <Button
             type="submit"
             className="custom-button float-left"
             onClick={handleButtonClick}
@@ -83,9 +59,6 @@ const Doctor = () => {
             Recetas
           </Button>
           <h2 className="text-center mb-4">Historial de citas</h2>
-          <Form onSubmit={handleSubmit(onSubmit)}>
-            {/* Formulario de inicio de sesión */}
-          </Form>
           <div className="table-responsive">
             <Table className="mt-4 table">
               <thead>
@@ -101,25 +74,25 @@ const Doctor = () => {
                 </tr>
               </thead>
               <tbody>
-                {data.map((item, index) => (
-                  <tr key={index}>
-                    <td>{item.nombreDoctor}</td>
-                    <td>{item.fechaConsulta}</td>
-                    <td>{item.horaInicio}</td>
-                    <td>{item.horaFin}</td>
-                    <td>{item.costoConsulta}</td>
-                    <td>{item.consultorio}</td>
-                    <td>{item.estatus}</td>
-                    <td>
-                      <Button
-                        color="danger"
-                        onClick={() => handleCancel(index)}
-                      >
-                        Cancelar
-                      </Button>
-                    </td>
-                  </tr>
-                ))}
+              {Array.isArray(data) && data.map((item, index) => (
+    <tr key={index}>
+      <td>{item.nombreDoctor}</td>
+      <td>{item.fechaConsulta}</td>
+      <td>{item.horaInicio}</td>
+      <td>{item.horaFin}</td>
+      <td>{item.costoConsulta}</td>
+      <td>{item.consultorio}</td>
+      <td>{item.estatus}</td>
+      <td>
+        <Button
+          color="danger"
+          onClick={() => handleCancel(index)}
+        >
+          Cancelar
+        </Button>
+      </td>
+    </tr>
+  ))}
               </tbody>
             </Table>
           </div>
