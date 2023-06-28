@@ -804,6 +804,24 @@ const Admin = () => {
                         </span>
                       )}
                     </FormGroup>
+                      <FormGroup>
+                        <Label for="horario_id_horario">Horario </Label>
+                        <Input
+                          type="number"
+                          id="horario_id_horario"
+                          {...registerRecep("horario_id_horario", {
+                            required: "Este campo es requerido",
+                          })}
+                          onChange={(e) =>
+                            setRecepValue("horario_id_horario", e.target.value)
+                          }
+                        />
+                        {docErrors.horario_id_horario && (
+                          <span className="error-message">
+                            {docErrors.horario_id_horario.message}
+                          </span>
+                        )}
+                      </FormGroup>
                     <FormGroup>
                       <Label for="email">Correo electrónico</Label>
                       <Input
