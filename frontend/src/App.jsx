@@ -7,12 +7,15 @@ import AppFooter from './Components/Footer';
 import Recepcionista from './Components/Recepcionista';
 import Paciente from './Components/Paciente';
 import Doctor from './Components/Doctor';
+import Consultorio from './Components/Consultorio';
+import Receta from './Components/Receta';
+import Cita from './Components/Cita';
 import { UserProvider } from "./Contexts/UserContext.jsx";
 
 
 
 
-import Prescription from "./Components/Prescription";
+
 import Appointment from "./Components/Appointment";
 
 
@@ -32,8 +35,12 @@ function App() {
               <Route path="/recepcionista" element={<Recepcionista />} />
               <Route path="/paciente" element={<Paciente />} />
               <Route path="/doctor" element={<Doctor />} />
+              <Route path="/consultorio" element={<Consultorio />} />
+              <Route path="/Receta" element={<Receta />} />
+              <Route path="/cita" element={<Cita />} />
 
-              <Route path="/receta" element={<Prescription />} />
+
+
               <Route path="/Appointment" element={<Appointment/>} />
             </Routes>
           </div>

@@ -6,6 +6,7 @@ import "sweetalert2/dist/sweetalert2.min.css";
 import axios from "axios";
 import { API_URL } from "../../../constants.js";
 import "bootstrap/dist/css/bootstrap.css";
+import { useNavigate } from "react-router-dom";
 import {
   Container,
   Row,
@@ -41,6 +42,12 @@ const Recepcionista = () => {
   } = useForm();
 
   const [submitting, setSubmitting] = useState(false);
+
+  const navigate = useNavigate();
+
+  const handleButtonClick = () => {
+    navigate("/cita");
+  };
 
   const onSubmitPacientes = async (data) => {
     setIsLoading(true);
@@ -87,6 +94,13 @@ const Recepcionista = () => {
           </div>
         )}
         <Col md={6} lg={8}>
+        <Button
+            type="submit"
+            className="custom-button float-left"
+            onClick={handleButtonClick}
+          >
+            Citas
+          </Button>
           <h2 className="text-center mb-4">Crear Cuentas</h2>
           <Nav tabs className="nav-link:hover">
             <NavItem>

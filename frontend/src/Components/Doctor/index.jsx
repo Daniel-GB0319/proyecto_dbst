@@ -5,6 +5,7 @@ import "sweetalert2/dist/sweetalert2.min.css";
 import axios from "axios";
 import { API_URL } from "../../../constants.js";
 import "bootstrap/dist/css/bootstrap.css";
+import { useNavigate } from "react-router-dom";
 import {
   Container,
   Row,
@@ -65,10 +66,22 @@ const Doctor = () => {
     // Una vez actualizado, puedes actualizar el estado "data" para reflejar el cambio en la tabla
   };
 
+  const navigate = useNavigate();
+  const handleButtonClick = () => {
+    navigate("/receta");
+  };
+
   return (
     <Container fluid className="sign-up-container">
       <Row className="justify-content-center align-items-center">
         <Col md={12} lg={10}>
+        <Button
+            type="submit"
+            className="custom-button float-left"
+            onClick={handleButtonClick}
+          >
+            Recetas
+          </Button>
           <h2 className="text-center mb-4">Historial de citas</h2>
           <Form onSubmit={handleSubmit(onSubmit)}>
             {/* Formulario de inicio de sesión */}
@@ -110,148 +123,6 @@ const Doctor = () => {
               </tbody>
             </Table>
           </div>
-          <h2 className="text-center mb-4">Generar recetas</h2>
-          <Form>
-            <Row form>
-              <Col md={6}>
-                <FormGroup>
-                  <Label for="fecha_expedicion">Fecha de Expedición</Label>
-                  <Input
-                    type="datetime-local"
-                    id="fecha_expedicion"
-                    {...register("fecha_expedicion", {
-                      required: "Este campo es requerido",
-                    })}
-                  />
-                  {errors.fecha_expedicion && (
-                    <span className="error-message">
-                      {errors.fecha_expedicion.message}
-                    </span>
-                  )}
-                </FormGroup>
-              </Col>
-              <Col md={6}>
-                <FormGroup>
-                  <Label for="observaciones">Observaciones</Label>
-                  <Input
-                    type="text"
-                    id="observaciones"
-                    {...register("observaciones")}
-                  />
-                </FormGroup>
-              </Col>
-            </Row>
-            <Row form>
-              <Col md={6}>
-                <FormGroup>
-                  <Label for="diagnostico">Diagnóstico</Label>
-                  <Input
-                    type="text"
-                    id="diagnostico"
-                    {...register("diagnostico", {
-                      required: "Este campo es requerido",
-                    })}
-                  />
-                  {errors.diagnostico && (
-                    <span className="error-message">
-                      {errors.diagnostico.message}
-                    </span>
-                  )}
-                </FormGroup>
-              </Col>
-              <Col md={6}>
-                <FormGroup>
-                  <Label for="costo_total">Costo Total</Label>
-                  <Input
-                    type="number"
-                    id="costo_total"
-                    {...register("costo_total", {
-                      required: "Este campo es requerido",
-                    })}
-                  />
-                  {errors.costo_total && (
-                    <span className="error-message">
-                      {errors.costo_total.message}
-                    </span>
-                  )}
-                </FormGroup>
-              </Col>
-            </Row>
-            <Button color="primary" type="submit" className="custom-button">
-              Generar Receta
-            </Button>
-          </Form>
-          <h2 className="text-center mb-4">Consultar recetas</h2>
-          <Form>
-            <Row form>
-              <Col md={6}>
-                <FormGroup>
-                  <Label for="fecha_expedicion">Fecha de Expedición</Label>
-                  <Input
-                    type="datetime-local"
-                    id="fecha_expedicion"
-                    {...register("fecha_expedicion", {
-                      required: "Este campo es requerido",
-                    })}
-                  />
-                  {errors.fecha_expedicion && (
-                    <span className="error-message">
-                      {errors.fecha_expedicion.message}
-                    </span>
-                  )}
-                </FormGroup>
-              </Col>
-              <Col md={6}>
-                <FormGroup>
-                  <Label for="observaciones">Observaciones</Label>
-                  <Input
-                    type="text"
-                    id="observaciones"
-                    {...register("observaciones")}
-                  />
-                </FormGroup>
-              </Col>
-            </Row>
-            <Row form>
-              <Col md={6}>
-                <FormGroup>
-                  <Label for="diagnostico">Diagnóstico</Label>
-                  <Input
-                    type="text"
-                    id="diagnostico"
-                    {...register("diagnostico", {
-                      required: "Este campo es requerido",
-                    })}
-                  />
-                  {errors.diagnostico && (
-                    <span className="error-message">
-                      {errors.diagnostico.message}
-                    </span>
-                  )}
-                </FormGroup>
-              </Col>
-              <Col md={6}>
-                <FormGroup>
-                  <Label for="costo_total">Costo Total</Label>
-                  <Input
-                    type="number"
-                    id="costo_total"
-                    {...register("costo_total", {
-                      required: "Este campo es requerido",
-                    })}
-                  />
-                  {errors.costo_total && (
-                    <span className="error-message">
-                      {errors.costo_total.message}
-                    </span>
-                  )}
-                </FormGroup>
-              </Col>
-            </Row>
-            <Button color="primary" type="submit" className="custom-button">
-              Consultar recetas
-            </Button>
-          </Form>
         </Col>
       </Row>
     </Container>

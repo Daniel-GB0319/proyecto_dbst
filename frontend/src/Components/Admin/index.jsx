@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { TabContent, TabPane, Nav, NavItem, NavLink } from "reactstrap";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import "sweetalert2/dist/sweetalert2.min.css";
 import axios from "axios";
 import { API_URL } from "../../../constants.js";
 import "bootstrap/dist/css/bootstrap.css";
+import { useNavigate } from "react-router-dom";
 import {
   Container,
   Row,
@@ -15,6 +15,11 @@ import {
   Label,
   Input,
   Button,
+  TabContent,
+  TabPane,
+  Nav,
+  NavItem,
+  NavLink,
 } from "reactstrap";
 import "../../assets/index.css";
 import { useContext } from "react";
@@ -24,6 +29,7 @@ const Admin = () => {
   const { updateUserContext } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("1");
+  const [data, setData] = useState([]);
 
   const toggleTab = (tab) => {
     if (activeTab !== tab) {
@@ -41,6 +47,42 @@ const Admin = () => {
   } = useForm();
 
   const [submitting, setSubmitting] = useState(false);
+
+  const onSubmit = (formData) => {
+    // Realizar la solicitud a la API REST
+    axios
+      .post(API_URL + "/loginUsuarios", formData)
+      .then((response) => {
+        // Obtener los datos de la respuesta
+        const responseData = response.data;
+
+        // Actualizar los datos en el estado
+        setData(responseData);
+      })
+      .catch((error) => {
+        Swal.fire({
+          icon: "error",
+          title: "¡Error!",
+          text: "",
+          customClass: {
+            confirmButton: "custom-confirm-button",
+          },
+        });
+        console.error(error);
+      });
+  };
+
+  const navigate = useNavigate();
+
+  const handleButtonClick = () => {
+    navigate("/consultorio");
+  };
+
+  const handleCancel = (index) => {
+    // Realizar la lógica para cancelar la consulta
+    // Puedes enviar una solicitud a la API para actualizar el estado de la consulta
+    // Una vez actualizado, puedes actualizar el estado "data" para reflejar el cambio en la tabla
+  };
 
   const onSubmitAdmin = async (data) => {
     setIsLoading(true);
@@ -180,6 +222,13 @@ const Admin = () => {
           </div>
         )}
         <Col md={6} lg={8}>
+          <Button
+            type="submit"
+            className="custom-button float-left"
+            onClick={handleButtonClick}
+          >
+            Consultorios
+          </Button>
           <h2 className="text-center mb-4">Crear Cuentas</h2>
           <Nav tabs className="nav-link:hover">
             <NavItem>
@@ -336,6 +385,7 @@ const Admin = () => {
                     >
                       {submitting ? "Creando cuenta..." : "Crear cuenta"}
                     </Button>
+                    <div style={{ marginTop: "20px" }}></div>
                   </Form>
                 </Row>
               </Container>
@@ -662,71 +712,71 @@ const Admin = () => {
                       </FormGroup>
                     </Col>
                     <Col md={4}>
-                    <FormGroup>
-                      <Label for="email">Correo electrónico</Label>
-                      <Input
-                        type="email"
-                        id="email"
-                        {...register("email", {
-                          required: "Este campo es requerido",
-                        })}
-                        onChange={(e) => setValue("email", e.target.value)}
-                      />
-                      {errors.email && (
-                        <span className="error-message">
-                          {errors.email.message}
-                        </span>
-                      )}
-                    </FormGroup>
+                      <FormGroup>
+                        <Label for="email">Correo electrónico</Label>
+                        <Input
+                          type="email"
+                          id="email"
+                          {...register("email", {
+                            required: "Este campo es requerido",
+                          })}
+                          onChange={(e) => setValue("email", e.target.value)}
+                        />
+                        {errors.email && (
+                          <span className="error-message">
+                            {errors.email.message}
+                          </span>
+                        )}
+                      </FormGroup>
                     </Col>
                   </Row>
                   <Row form>
                     <Col md={4}>
-                    <FormGroup>
-                      <Label for="password">Contraseña</Label>
-                      <Input
-                        type="password"
-                        id="password"
-                        {...register("password", {
-                          required: "Este campo es requerido",
-                        })}
-                        onChange={(e) => setValue("password", e.target.value)}
-                      />
-                      {errors.password && (
-                        <span className="error-message">
-                          {errors.password.message}
-                        </span>
-                      )}
-                    </FormGroup>
-                    </Col>
-                    <Col md={4}>
-                    <FormGroup>
-                      <Label for="confirmPassword">Repetir contraseña</Label>
-                      <Input
-                        type="password"
-                        id="confirmPassword"
-                        {...register("confirmPassword", {
-                          required: "Este campo es requerido",
-                          validate: (value) =>
-                            value === password ||
-                            "Las contraseñas no coinciden",
-                        })}
-                        onChange={(e) =>
-                          setValue("confirmPassword", e.target.value)
-                        }
-                      />
-                      {errors.confirmPassword && (
-                        <span className="error-message">
-                          {errors.confirmPassword.message}
-                        </span>
-                      )}
-                      {confirmPassword !== password &&
-                        !errors.confirmPassword && (
+                      <FormGroup>
+                        <Label for="password">Contraseña</Label>
+                        <Input
+                          type="password"
+                          id="password"
+                          {...register("password", {
+                            required: "Este campo es requerido",
+                          })}
+                          onChange={(e) => setValue("password", e.target.value)}
+                        />
+                        {errors.password && (
                           <span className="error-message">
-                            Las contraseñas no coinciden
+                            {errors.password.message}
                           </span>
                         )}
-                    </FormGroup>
+                      </FormGroup>
+                    </Col>
+                    <Col md={4}>
+                      <FormGroup>
+                        <Label for="confirmPassword">Repetir contraseña</Label>
+                        <Input
+                          type="password"
+                          id="confirmPassword"
+                          {...register("confirmPassword", {
+                            required: "Este campo es requerido",
+                            validate: (value) =>
+                              value === password ||
+                              "Las contraseñas no coinciden",
+                          })}
+                          onChange={(e) =>
+                            setValue("confirmPassword", e.target.value)
+                          }
+                        />
+                        {errors.confirmPassword && (
+                          <span className="error-message">
+                            {errors.confirmPassword.message}
+                          </span>
+                        )}
+                        {confirmPassword !== password &&
+                          !errors.confirmPassword && (
+                            <span className="error-message">
+                              Las contraseñas no coinciden
+                            </span>
+                          )}
+                      </FormGroup>
                     </Col>
                   </Row>
                   <Button
@@ -1128,71 +1178,71 @@ const Admin = () => {
                       </FormGroup>
                     </Col>
                     <Col md={4}>
-                    <FormGroup>
-                      <Label for="email">Correo electrónico</Label>
-                      <Input
-                        type="email"
-                        id="email"
-                        {...register("email", {
-                          required: "Este campo es requerido",
-                        })}
-                        onChange={(e) => setValue("email", e.target.value)}
-                      />
-                      {errors.email && (
-                        <span className="error-message">
-                          {errors.email.message}
-                        </span>
-                      )}
-                    </FormGroup>
+                      <FormGroup>
+                        <Label for="email">Correo electrónico</Label>
+                        <Input
+                          type="email"
+                          id="email"
+                          {...register("email", {
+                            required: "Este campo es requerido",
+                          })}
+                          onChange={(e) => setValue("email", e.target.value)}
+                        />
+                        {errors.email && (
+                          <span className="error-message">
+                            {errors.email.message}
+                          </span>
+                        )}
+                      </FormGroup>
                     </Col>
                   </Row>
                   <Row form>
                     <Col md={4}>
-                    <FormGroup>
-                      <Label for="password">Contraseña</Label>
-                      <Input
-                        type="password"
-                        id="password"
-                        {...register("password", {
-                          required: "Este campo es requerido",
-                        })}
-                        onChange={(e) => setValue("password", e.target.value)}
-                      />
-                      {errors.password && (
-                        <span className="error-message">
-                          {errors.password.message}
-                        </span>
-                      )}
-                    </FormGroup>
-                    </Col>
-                    <Col md={4}>
-                    <FormGroup>
-                      <Label for="confirmPassword">Repetir contraseña</Label>
-                      <Input
-                        type="password"
-                        id="confirmPassword"
-                        {...register("confirmPassword", {
-                          required: "Este campo es requerido",
-                          validate: (value) =>
-                            value === password ||
-                            "Las contraseñas no coinciden",
-                        })}
-                        onChange={(e) =>
-                          setValue("confirmPassword", e.target.value)
-                        }
-                      />
-                      {errors.confirmPassword && (
-                        <span className="error-message">
-                          {errors.confirmPassword.message}
-                        </span>
-                      )}
-                      {confirmPassword !== password &&
-                        !errors.confirmPassword && (
+                      <FormGroup>
+                        <Label for="password">Contraseña</Label>
+                        <Input
+                          type="password"
+                          id="password"
+                          {...register("password", {
+                            required: "Este campo es requerido",
+                          })}
+                          onChange={(e) => setValue("password", e.target.value)}
+                        />
+                        {errors.password && (
                           <span className="error-message">
-                            Las contraseñas no coinciden
+                            {errors.password.message}
                           </span>
                         )}
-                    </FormGroup>
+                      </FormGroup>
+                    </Col>
+                    <Col md={4}>
+                      <FormGroup>
+                        <Label for="confirmPassword">Repetir contraseña</Label>
+                        <Input
+                          type="password"
+                          id="confirmPassword"
+                          {...register("confirmPassword", {
+                            required: "Este campo es requerido",
+                            validate: (value) =>
+                              value === password ||
+                              "Las contraseñas no coinciden",
+                          })}
+                          onChange={(e) =>
+                            setValue("confirmPassword", e.target.value)
+                          }
+                        />
+                        {errors.confirmPassword && (
+                          <span className="error-message">
+                            {errors.confirmPassword.message}
+                          </span>
+                        )}
+                        {confirmPassword !== password &&
+                          !errors.confirmPassword && (
+                            <span className="error-message">
+                              Las contraseñas no coinciden
+                            </span>
+                          )}
+                      </FormGroup>
                     </Col>
                   </Row>
                   <Button
