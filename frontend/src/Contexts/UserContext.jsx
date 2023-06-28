@@ -13,21 +13,23 @@ export const UserProvider = ({ children }) => {
     const storedNombreTipoUsuario = localStorage.getItem("nombreTipoUsuario");
     const storedidUsuario = localStorage.getItem("idUsuario");
 
-    if (storedTipoUsuario && storedNombreTipoUsuario) {
+    if (storedTipoUsuario && storedNombreTipoUsuario && storedidUsuario) {
       setTipoUsuario(storedTipoUsuario);
       setNombreTipoUsuario(storedNombreTipoUsuario);
       setIdUsuario(storedidUsuario);
     }
   }, []);
 
-  const updateUserContext = (newTipoUsuario, newNombreTipoUsuario) => {
+  const updateUserContext = (newTipoUsuario, newNombreTipoUsuario, newidUsuario) => {
     // Actualiza el estado del contexto
     setTipoUsuario(newTipoUsuario);
     setNombreTipoUsuario(newNombreTipoUsuario);
+    setIdUsuario(newidUsuario);
 
     // Almacena los valores en el almacenamiento local
     localStorage.setItem("tipoUsuario", newTipoUsuario);
     localStorage.setItem("nombreTipoUsuario", newNombreTipoUsuario);
+    localStorage.setItem("idUsuario", newidUsuario);
   };
 
   return (

@@ -12,15 +12,14 @@ import { UserContext } from "../../Contexts/UserContext.jsx";
 const Doctor = () => {
   const { idUsuario } = useContext(UserContext);
   const [data, setData] = useState([]);
-
+  
   useEffect(() => {
-
     const fetchData = async () => {
       try {
-        const response = await axios.get(API_URL + "/queryDoctorCitasProx", { "id_doctor": "1" },
-        );
+        const response = await axios.get(API_URL + "/queryDoctorCitasProx", {
+          params: { id_doctor: "1" },
+        });
         console.log("Response data:", response.data);
-  
         setData(response.data); // Asegúrate de que response.data sea un array
       } catch (error) {
         console.log("Error fetching data:", error);
@@ -29,6 +28,8 @@ const Doctor = () => {
   
     fetchData();
   }, []);
+  
+
   
 
   const handleCancel = (index) => {
