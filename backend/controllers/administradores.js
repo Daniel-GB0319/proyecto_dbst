@@ -71,38 +71,64 @@ export const deleteAdministrador = async (req, res) => {
   }
 };
 
-// Función para insertar un administrador
+
 export const insertAdministrador = async (req, res) => {
   const { nombre, ap_paterno, ap_materno, password, correo } = req.body;
 
   // Verificar que todos los campos requeridos existan en el JSON
-  if (!nombre || !ap_paterno || !ap_materno || !password || !correo  ) {
+  if (!nombre || !ap_paterno || !ap_materno || !password || !correo) {
     return res.status(400).json({ message: "Faltan campos requeridos para insertar al administrador" });
   }
 
   try {
-    // Insertar al administrador
+    // Verificar si el correo ya existe en la tabla db_usuario
+    const [existingUsuario] = await pool.query("SELECT id_usuario FROM db_usuario WHERE correo = ?", [correo]);
 
-    await pool.query(
+    console.log("Verifica el correo " [correo]);
+
+    if (existingUsuario.length > 0) {
+      return res.status(409).json({ message: "El correo ya está registrado" });
+    }
+
+    // Insertar al administrador en la tabla db_usuario
+    const tipoUsuarioId = 1; // ID para el tipo de usuario "Administrador"
+
+    console.log("Insertando el usuario en db_usuario");
+
+    const { insertId: usuarioId } = await pool.query(
       "INSERT INTO db_usuario (tipo_usuario, correo, password) VALUES (?, ?, ?)",
-      [1, correo, password]
+      [tipoUsuarioId, correo, password]
     );
+    
 
-    const [usuario_id_usuario] = await pool.query(
-      "SELECT * FROM db_usuario WHERE correo = ?",
-      [correo]
-    );
+    const [usuarioIdCheck] = await pool.query("SELECT id_usuario FROM db_usuario WHERE correo = ?", [correo]);
 
+    console.log("Checa que el usuario exista", usuarioIdCheck);
+
+    const usuarioIdExtract = usuarioIdCheck[0].id_usuario;
+    const usuarioIdEntero = parseInt(usuarioIdExtract);
+
+    console.log("Id usuario entero", usuarioIdExtract);
+
+    // Insertar al administrador en la tabla db_administrador
     await pool.query(
       "INSERT INTO db_administrador (nombre, ap_paterno, ap_materno, usuario_id_usuario) VALUES (?, ?, ?, ?)",
-      [nombre, ap_paterno, ap_materno, usuario_id_usuario]
+      [nombre, ap_paterno, ap_materno, usuarioIdEntero]
     );
+
+    console.log("Administrador agregado");
 
     return res.status(201).json({ message: "Administrador creado con éxito" });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
 };
+
+
+
+
+
+
 
 // Consulta todos los registros de administradores existentes
 export const getAllAdministradores = async (req, res) => {
