@@ -77,7 +77,7 @@ const AsignarConsultorios = () => {
     <Container fluid className="sign-up-container">
       <Row className="justify-content-center align-items-center">
         <Col md={6} lg={4}>
-          <h2 className="text-center mb-4">Asignar Consultorios</h2>
+          <h2 className="text-center mb-4">Modificar Asignación De Consultorios</h2>
           <div className="table-responsive">
             <form onSubmit={handleSubmit(onSubmitRecep)}>
               <FormGroup>

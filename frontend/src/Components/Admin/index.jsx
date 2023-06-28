@@ -217,7 +217,7 @@ const Admin = () => {
             className="custom-button float-left"
             onClick={handleButtonClick2}
           >
-            Asignar Consultorios
+            Modificar asignación de consultorios
           </Button>
           <h2 className="text-center mb-4">Crear Cuentas</h2>
           <Nav tabs className="nav-link:hover">
