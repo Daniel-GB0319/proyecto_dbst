@@ -38,39 +38,38 @@ const Admin = () => {
   };
 
   const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    setValue,
-    watch,
-    reset,
+    register: registerAdmin,
+    handleSubmit: handleSubmitAdmin,
+    formState: { errors: adminErrors },
+    setValue: setAdminValue,
+    reset: resetAdmin,
+  } = useForm();
+
+  const {
+    register: registerDoc,
+    handleSubmit: handleSubmitDoc,
+    formState: { errors: docErrors },
+    setValue: setDocValue,
+    reset: resetDoc,
+  } = useForm();
+
+  const {
+    register: registerRecep,
+    handleSubmit: handleSubmitRecep,
+    formState: { errors: recepErrors },
+    setValue: setRecepValue,
+    reset: resetRecep,
+  } = useForm();
+
+  const {
+    register: registerPaci,
+    handleSubmit: handleSubmitPaci,
+    formState: { errors: paciErrors },
+    setValue: setPaciValue,
+    reset: resetPaci,
   } = useForm();
 
   const [submitting, setSubmitting] = useState(false);
-
-  const onSubmit = (formData) => {
-    // Realizar la solicitud a la API REST
-    axios
-      .post(API_URL + "/loginUsuarios", formData)
-      .then((response) => {
-        // Obtener los datos de la respuesta
-        const responseData = response.data;
-
-        // Actualizar los datos en el estado
-        setData(responseData);
-      })
-      .catch((error) => {
-        Swal.fire({
-          icon: "error",
-          title: "¡Error!",
-          text: "",
-          customClass: {
-            confirmButton: "custom-confirm-button",
-          },
-        });
-        console.error(error);
-      });
-  };
 
   const navigate = useNavigate();
 
@@ -85,52 +84,50 @@ const Admin = () => {
   };
 
   const onSubmitAdmin = async (data) => {
-  
     try {
       const response = await axios.post(API_URL + "/insertAdministrador", data);
       console.log(response.data);
       Swal.fire({
         icon: "success",
         title: "¡Cuenta creada!",
-        text: "Tu cuenta se ha creado exitosamente.",
+        text: "La cuenta administrador fue creada exitosamente.",
         customClass: {
           confirmButton: "custom-confirm-button",
         },
       });
-      reset();
+      resetAdmin();
     } catch (error) {
       Swal.fire({
         icon: "error",
         title: "¡Error!",
-        text: "Correo o contraseña no válidos",
+        text: "La cuenta administrador no fue creada",
         customClass: {
           confirmButton: "custom-confirm-button",
         },
       });
       console.error(error);
-    } 
+    }
   };
 
   const onSubmitDoc = async (data) => {
     setIsLoading(true);
-    setSubmitting(true);
     try {
-      const response = await axios.post(API_URL + "/Admin", data);
+      const response = await axios.post(API_URL + "/insertDoctor", data);
       console.log(response.data);
       Swal.fire({
         icon: "success",
         title: "¡Cuenta creada!",
-        text: "Tu cuenta se ha creado exitosamente.",
+        text: "La cuenta Doctor fue creada exitosamente.",
         customClass: {
           confirmButton: "custom-confirm-button",
         },
       });
-      reset();
+      resetDoc();
     } catch (error) {
       Swal.fire({
         icon: "error",
         title: "¡Error!",
-        text: "Correo o contraseña no válidos",
+        text: "La cuenta doctor no fue creada",
         customClass: {
           confirmButton: "custom-confirm-button",
         },
@@ -138,7 +135,6 @@ const Admin = () => {
       console.error(error);
     } finally {
       setIsLoading(false);
-      setSubmitting(false);
     }
   };
 
@@ -146,22 +142,22 @@ const Admin = () => {
     setIsLoading(true);
     setSubmitting(true);
     try {
-      const response = await axios.post(API_URL + "/Admin", data);
+      const response = await axios.post(API_URL + "/insertRecepcionista", data);
       console.log(response.data);
       Swal.fire({
         icon: "success",
         title: "¡Cuenta creada!",
-        text: "Tu cuenta se ha creado exitosamente.",
+        text: "La cuenta Recepcionista fue creada exitosamente.",
         customClass: {
           confirmButton: "custom-confirm-button",
         },
       });
-      reset();
+      resetRecep();
     } catch (error) {
       Swal.fire({
         icon: "error",
         title: "¡Error!",
-        text: "Correo o contraseña no válidos",
+        text: "La cuenta Recepcionista no fue creada",
         customClass: {
           confirmButton: "custom-confirm-button",
         },
@@ -187,7 +183,7 @@ const Admin = () => {
           confirmButton: "custom-confirm-button",
         },
       });
-      reset();
+      resetPaci();
     } catch (error) {
       Swal.fire({
         icon: "error",
@@ -203,9 +199,6 @@ const Admin = () => {
       setSubmitting(false);
     }
   };
-
-  const password = watch("password");
-  const confirmPassword = watch("confirmPassword");
 
   return (
     <Container fluid className="sign-up-container">
@@ -264,20 +257,22 @@ const Admin = () => {
             <TabPane tabId="1">
               <Container fluid className="sign-up-container">
                 <Row className="justify-content-center align-items-center">
-                  <Form >
+                  <Form onSubmit={handleSubmitAdmin(onSubmitAdmin)}>
                     <FormGroup>
                       <Label for="firstName">Nombre(s)</Label>
                       <Input
                         type="text"
-                        id="firstName"
-                        {...register("firstName", {
+                        id="firstNamee"
+                        {...registerAdmin("nombre", {
                           required: "Este campo es requerido",
                         })}
-                        onChange={(e) => setValue("firstName", e.target.value)}
+                        onChange={(e) =>
+                          setAdminValue("nombre", e.target.value)
+                        }
                       />
-                      {errors.firstName && (
+                      {adminErrors.nombre && (
                         <span className="error-message">
-                          {errors.firstName.message}
+                          {adminErrors.nombre.message}
                         </span>
                       )}
                     </FormGroup>
@@ -285,15 +280,17 @@ const Admin = () => {
                       <Label for="lastName">Apellido Paterno</Label>
                       <Input
                         type="text"
-                        id="lastName"
-                        {...register("lastName", {
+                        id="lastNamee"
+                        {...registerAdmin("ap_paterno", {
                           required: "Este campo es requerido",
                         })}
-                        onChange={(e) => setValue("lastName", e.target.value)}
+                        onChange={(e) =>
+                          setAdminValue("ap_paterno", e.target.value)
+                        }
                       />
-                      {errors.lastName && (
+                      {adminErrors.ap_paterno && (
                         <span className="error-message">
-                          {errors.lastName.message}
+                          {adminErrors.ap_paterno.message}
                         </span>
                       )}
                     </FormGroup>
@@ -301,31 +298,35 @@ const Admin = () => {
                       <Label for="middleName">Apellido Materno</Label>
                       <Input
                         type="text"
-                        id="middleName"
-                        {...register("middleName", {
+                        id="middleNamee"
+                        {...registerAdmin("ap_materno", {
                           required: "Este campo es requerido",
                         })}
-                        onChange={(e) => setValue("middleName", e.target.value)}
+                        onChange={(e) =>
+                          setAdminValue("ap_materno", e.target.value)
+                        }
                       />
-                      {errors.middleName && (
+                      {adminErrors.ap_materno && (
                         <span className="error-message">
-                          {errors.middleName.message}
+                          {adminErrors.ap_materno.message}
                         </span>
                       )}
                     </FormGroup>
                     <FormGroup>
-                      <Label for="email">Correo electrónico</Label>
+                      <Label for="correo">Correo electrónico</Label>
                       <Input
                         type="email"
-                        id="email"
-                        {...register("email", {
+                        id="correo"
+                        {...registerAdmin("correo", {
                           required: "Este campo es requerido",
                         })}
-                        onChange={(e) => setValue("email", e.target.value)}
+                        onChange={(e) =>
+                          setAdminValue("correo", e.target.value)
+                        }
                       />
-                      {errors.email && (
+                      {adminErrors.correo && (
                         <span className="error-message">
-                          {errors.email.message}
+                          {adminErrors.correo.message}
                         </span>
                       )}
                     </FormGroup>
@@ -333,50 +334,25 @@ const Admin = () => {
                       <Label for="password">Contraseña</Label>
                       <Input
                         type="password"
-                        id="password"
-                        {...register("password", {
+                        id="passwordd"
+                        {...registerAdmin("password", {
                           required: "Este campo es requerido",
-                        })}
-                        onChange={(e) => setValue("password", e.target.value)}
-                      />
-                      {errors.password && (
-                        <span className="error-message">
-                          {errors.password.message}
-                        </span>
-                      )}
-                    </FormGroup>
-                    <FormGroup>
-                      <Label for="confirmPassword">Repetir contraseña</Label>
-                      <Input
-                        type="password"
-                        id="confirmPassword"
-                        {...register("confirmPassword", {
-                          required: "Este campo es requerido",
-                          validate: (value) =>
-                            value === password ||
-                            "Las contraseñas no coinciden",
                         })}
                         onChange={(e) =>
-                          setValue("confirmPassword", e.target.value)
+                          setAdminValue("password", e.target.value)
                         }
                       />
-                      {errors.confirmPassword && (
+                      {adminErrors.password && (
                         <span className="error-message">
-                          {errors.confirmPassword.message}
+                          {adminErrors.password.message}
                         </span>
                       )}
-                      {confirmPassword !== password &&
-                        !errors.confirmPassword && (
-                          <span className="error-message">
-                            Las contraseñas no coinciden
-                          </span>
-                        )}
                     </FormGroup>
                     <Button
                       color="success"
                       block
                       className="custom-button"
-                      onClick={handleSubmit(onSubmitAdmin)}
+                      type="submit"
                     >
                       Crear Cuenta
                     </Button>
@@ -387,7 +363,7 @@ const Admin = () => {
             </TabPane>
             <TabPane tabId="2">
               <Container fluid className="sign-up-container">
-                <Form onSubmit={handleSubmit(onSubmitDoc)}>
+                <Form onSubmit={handleSubmitDoc(onSubmitDoc)}>
                   <Row form>
                     <Col md={4}>
                       <FormGroup>
@@ -395,14 +371,15 @@ const Admin = () => {
                         <Input
                           type="text"
                           id="curp"
-                          {...register("curp", {
+                          {...registerDoc("curp", {
                             required: "Este campo es requerido",
                             maxLength: 18,
                           })}
+                          onChange={(e) => setDocValue("curp", e.target.value)}
                         />
-                        {errors.curp && (
+                        {docErrors.curp && (
                           <span className="error-message">
-                            {errors.curp.message}
+                            {docErrors.curp.message}
                           </span>
                         )}
                       </FormGroup>
@@ -413,13 +390,16 @@ const Admin = () => {
                         <Input
                           type="text"
                           id="nombre"
-                          {...register("nombre", {
+                          {...registerDoc("nombre", {
                             required: "Este campo es requerido",
                           })}
+                          onChange={(e) =>
+                            setDocValue("nombre", e.target.value)
+                          }
                         />
-                        {errors.nombre && (
+                        {docErrors.nombre && (
                           <span className="error-message">
-                            {errors.nombre.message}
+                            {docErrors.nombre.message}
                           </span>
                         )}
                       </FormGroup>
@@ -430,13 +410,16 @@ const Admin = () => {
                         <Input
                           type="text"
                           id="ap_paterno"
-                          {...register("ap_paterno", {
+                          {...registerDoc("ap_paterno", {
                             required: "Este campo es requerido",
                           })}
+                          onChange={(e) =>
+                            setDocValue("ap_paterno", e.target.value)
+                          }
                         />
-                        {errors.ap_paterno && (
+                        {docErrors.ap_paterno && (
                           <span className="error-message">
-                            {errors.ap_paterno.message}
+                            {docErrors.ap_paterno.message}
                           </span>
                         )}
                       </FormGroup>
@@ -449,13 +432,16 @@ const Admin = () => {
                         <Input
                           type="text"
                           id="ap_materno"
-                          {...register("ap_materno", {
+                          {...registerDoc("ap_materno", {
                             required: "Este campo es requerido",
                           })}
+                          onChange={(e) =>
+                            setDocValue("ap_materno", e.target.value)
+                          }
                         />
-                        {errors.ap_materno && (
+                        {docErrors.ap_materno && (
                           <span className="error-message">
-                            {errors.ap_materno.message}
+                            {docErrors.ap_materno.message}
                           </span>
                         )}
                       </FormGroup>
@@ -466,13 +452,14 @@ const Admin = () => {
                         <Input
                           type="number"
                           id="edad"
-                          {...register("edad", {
+                          {...registerDoc("edad", {
                             required: "Este campo es requerido",
                           })}
+                          onChange={(e) => setDocValue("edad", e.target.value)}
                         />
-                        {errors.edad && (
+                        {docErrors.edad && (
                           <span className="error-message">
-                            {errors.edad.message}
+                            {docErrors.edad.message}
                           </span>
                         )}
                       </FormGroup>
@@ -483,7 +470,10 @@ const Admin = () => {
                         <Input
                           type="text"
                           id="tipo_sangre"
-                          {...register("tipo_sangre")}
+                          {...registerDoc("tipo_sangre")}
+                          onChange={(e) =>
+                            setDocValue("tipo_sangre", e.target.value)
+                          }
                         />
                       </FormGroup>
                     </Col>
@@ -495,13 +485,14 @@ const Admin = () => {
                         <Input
                           type="text"
                           id="calle"
-                          {...register("calle", {
+                          {...registerDoc("calle", {
                             required: "Este campo es requerido",
                           })}
+                          onChange={(e) => setDocValue("calle", e.target.value)}
                         />
-                        {errors.calle && (
+                        {docErrors.calle && (
                           <span className="error-message">
-                            {errors.calle.message}
+                            {docErrors.calle.message}
                           </span>
                         )}
                       </FormGroup>
@@ -512,7 +503,10 @@ const Admin = () => {
                         <Input
                           type="number"
                           id="num_ext"
-                          {...register("num_ext")}
+                          {...registerDoc("num_ext")}
+                          onChange={(e) =>
+                            setDocValue("num_ext", e.target.value)
+                          }
                         />
                       </FormGroup>
                     </Col>
@@ -522,7 +516,10 @@ const Admin = () => {
                         <Input
                           type="number"
                           id="num_int"
-                          {...register("num_int")}
+                          {...registerDoc("num_int")}
+                          onChange={(e) =>
+                            setDocValue("num_int", e.target.value)
+                          }
                         />
                       </FormGroup>
                     </Col>
@@ -534,13 +531,16 @@ const Admin = () => {
                         <Input
                           type="text"
                           id="colonia"
-                          {...register("colonia", {
+                          {...registerDoc("colonia", {
                             required: "Este campo es requerido",
                           })}
+                          onChange={(e) =>
+                            setDocValue("colonia", e.target.value)
+                          }
                         />
-                        {errors.colonia && (
+                        {docErrors.colonia && (
                           <span className="error-message">
-                            {errors.colonia.message}
+                            {docErrors.colonia.message}
                           </span>
                         )}
                       </FormGroup>
@@ -551,13 +551,16 @@ const Admin = () => {
                         <Input
                           type="text"
                           id="delegacion"
-                          {...register("delegacion", {
+                          {...registerDoc("delegacion", {
                             required: "Este campo es requerido",
                           })}
+                          onChange={(e) =>
+                            setDocValue("delegacion", e.target.value)
+                          }
                         />
-                        {errors.delegacion && (
+                        {docErrors.delegacion && (
                           <span className="error-message">
-                            {errors.delegacion.message}
+                            {docErrors.delegacion.message}
                           </span>
                         )}
                       </FormGroup>
@@ -570,13 +573,16 @@ const Admin = () => {
                         <Input
                           type="text"
                           id="entidad_federativa"
-                          {...register("entidad_federativa", {
+                          {...registerDoc("entidad_federativa", {
                             required: "Este campo es requerido",
                           })}
+                          onChange={(e) =>
+                            setDocValue("entidad_federativa", e.target.value)
+                          }
                         />
-                        {errors.entidad_federativa && (
+                        {docErrors.entidad_federativa && (
                           <span className="error-message">
-                            {errors.entidad_federativa.message}
+                            {docErrors.entidad_federativa.message}
                           </span>
                         )}
                       </FormGroup>
@@ -589,13 +595,16 @@ const Admin = () => {
                         <Input
                           type="date"
                           id="fecha_nac"
-                          {...register("fecha_nac", {
+                          {...registerDoc("fecha_nac", {
                             required: "Este campo es requerido",
                           })}
+                          onChange={(e) =>
+                            setDocValue("fecha_nac", e.target.value)
+                          }
                         />
-                        {errors.fecha_nac && (
+                        {docErrors.fecha_nac && (
                           <span className="error-message">
-                            {errors.fecha_nac.message}
+                            {docErrors.fecha_nac.message}
                           </span>
                         )}
                       </FormGroup>
@@ -603,7 +612,12 @@ const Admin = () => {
                     <Col md={4}>
                       <FormGroup>
                         <Label for="peso">Peso</Label>
-                        <Input type="number" id="peso" {...register("peso")} />
+                        <Input
+                          type="number"
+                          id="peso"
+                          {...registerDoc("peso")}
+                          onChange={(e) => setDocValue("peso", e.target.value)}
+                        />
                       </FormGroup>
                     </Col>
                     <Col md={4}>
@@ -612,7 +626,10 @@ const Admin = () => {
                         <Input
                           type="number"
                           id="altura"
-                          {...register("altura")}
+                          {...registerDoc("altura")}
+                          onChange={(e) =>
+                            setDocValue("altura", e.target.value)
+                          }
                         />
                       </FormGroup>
                     </Col>
@@ -624,17 +641,18 @@ const Admin = () => {
                         <Input
                           type="select"
                           id="sexo"
-                          {...register("sexo", {
+                          {...registerDoc("sexo", {
                             required: "Este campo es requerido",
                           })}
+                          onChange={(e) => setDocValue("sexo", e.target.value)}
                         >
                           <option value="">Seleccionar</option>
                           <option value="M">Masculino</option>
                           <option value="F">Femenino</option>
                         </Input>
-                        {errors.sexo && (
+                        {docErrors.sexo && (
                           <span className="error-message">
-                            {errors.sexo.message}
+                            {docErrors.sexo.message}
                           </span>
                         )}
                       </FormGroup>
@@ -645,7 +663,10 @@ const Admin = () => {
                         <Input
                           type="text"
                           id="aseguradora"
-                          {...register("aseguradora")}
+                          {...registerDoc("aseguradora")}
+                          onChange={(e) =>
+                            setDocValue("aseguradora", e.target.value)
+                          }
                         />
                       </FormGroup>
                     </Col>
@@ -657,13 +678,19 @@ const Admin = () => {
                         <Input
                           type="number"
                           id="consultorio_id_consultorio"
-                          {...register("consultorio_id_consultorio", {
+                          {...registerDoc("consultorio_id_consultorio", {
                             required: "Este campo es requerido",
                           })}
+                          onChange={(e) =>
+                            setDocValue(
+                              "consultorio_id_consultorio",
+                              e.target.value
+                            )
+                          }
                         />
-                        {errors.consultorio_id_consultorio && (
+                        {docErrors.consultorio_id_consultorio && (
                           <span className="error-message">
-                            {errors.consultorio_id_consultorio.message}
+                            {docErrors.consultorio_id_consultorio.message}
                           </span>
                         )}
                       </FormGroup>
@@ -676,13 +703,16 @@ const Admin = () => {
                         <Input
                           type="number"
                           id="horario_id_horario"
-                          {...register("horario_id_horario", {
+                          {...registerDoc("horario_id_horario", {
                             required: "Este campo es requerido",
                           })}
+                          onChange={(e) =>
+                            setDocValue("horario_id_horario", e.target.value)
+                          }
                         />
-                        {errors.horario_id_horario && (
+                        {docErrors.horario_id_horario && (
                           <span className="error-message">
-                            {errors.horario_id_horario.message}
+                            {docErrors.horario_id_horario.message}
                           </span>
                         )}
                       </FormGroup>
@@ -695,82 +725,21 @@ const Admin = () => {
                         <Input
                           type="number"
                           id="especialidad_id_especialidad"
-                          {...register("especialidad_id_especialidad", {
+                          {...registerDoc("especialidad_id_especialidad", {
                             required: "Este campo es requerido",
-                          })}
-                        />
-                        {errors.especialidad_id_especialidad && (
-                          <span className="error-message">
-                            {errors.especialidad_id_especialidad.message}
-                          </span>
-                        )}
-                      </FormGroup>
-                    </Col>
-                    <Col md={4}>
-                      <FormGroup>
-                        <Label for="email">Correo electrónico</Label>
-                        <Input
-                          type="email"
-                          id="email"
-                          {...register("email", {
-                            required: "Este campo es requerido",
-                          })}
-                          onChange={(e) => setValue("email", e.target.value)}
-                        />
-                        {errors.email && (
-                          <span className="error-message">
-                            {errors.email.message}
-                          </span>
-                        )}
-                      </FormGroup>
-                    </Col>
-                  </Row>
-                  <Row form>
-                    <Col md={4}>
-                      <FormGroup>
-                        <Label for="password">Contraseña</Label>
-                        <Input
-                          type="password"
-                          id="password"
-                          {...register("password", {
-                            required: "Este campo es requerido",
-                          })}
-                          onChange={(e) => setValue("password", e.target.value)}
-                        />
-                        {errors.password && (
-                          <span className="error-message">
-                            {errors.password.message}
-                          </span>
-                        )}
-                      </FormGroup>
-                    </Col>
-                    <Col md={4}>
-                      <FormGroup>
-                        <Label for="confirmPassword">Repetir contraseña</Label>
-                        <Input
-                          type="password"
-                          id="confirmPassword"
-                          {...register("confirmPassword", {
-                            required: "Este campo es requerido",
-                            validate: (value) =>
-                              value === password ||
-                              "Las contraseñas no coinciden",
                           })}
                           onChange={(e) =>
-                            setValue("confirmPassword", e.target.value)
+                            setDocValue(
+                              "especialidad_id_especialidad",
+                              e.target.value
+                            )
                           }
                         />
-                        {errors.confirmPassword && (
+                        {docErrors.especialidad_id_especialidad && (
                           <span className="error-message">
-                            {errors.confirmPassword.message}
+                            {docErrors.especialidad_id_especialidad.message}
                           </span>
                         )}
-                        {confirmPassword !== password &&
-                          !errors.confirmPassword && (
-                            <span className="error-message">
-                              Las contraseñas no coinciden
-                            </span>
-                          )}
                       </FormGroup>
                     </Col>
                   </Row>
@@ -788,20 +757,22 @@ const Admin = () => {
             <TabPane tabId="3">
               <Container fluid className="sign-up-container">
                 <Row className="justify-content-center align-items-center">
-                  <Form onSubmit={handleSubmit(onSubmitRecep)}>
+                  <Form onSubmit={handleSubmitRecep(onSubmitRecep)}>
                     <FormGroup>
                       <Label for="firstName">Nombre(s)</Label>
                       <Input
                         type="text"
                         id="firstName"
-                        {...register("firstName", {
+                        {...registerRecep("nombre", {
                           required: "Este campo es requerido",
                         })}
-                        onChange={(e) => setValue("firstName", e.target.value)}
+                        onChange={(e) =>
+                          setRecepValue("nombre", e.target.value)
+                        }
                       />
-                      {errors.firstName && (
+                      {recepErrors.nombre && (
                         <span className="error-message">
-                          {errors.firstName.message}
+                          {recepErrors.nombre.message}
                         </span>
                       )}
                     </FormGroup>
@@ -810,14 +781,16 @@ const Admin = () => {
                       <Input
                         type="text"
                         id="lastName"
-                        {...register("lastName", {
+                        {...registerRecep("ap_paterno", {
                           required: "Este campo es requerido",
                         })}
-                        onChange={(e) => setValue("lastName", e.target.value)}
+                        onChange={(e) =>
+                          setRecepValue("ap_paterno", e.target.value)
+                        }
                       />
-                      {errors.lastName && (
+                      {recepErrors.ap_paterno && (
                         <span className="error-message">
-                          {errors.lastName.message}
+                          {recepErrors.ap_paterno.message}
                         </span>
                       )}
                     </FormGroup>
@@ -826,14 +799,16 @@ const Admin = () => {
                       <Input
                         type="text"
                         id="middleName"
-                        {...register("middleName", {
+                        {...registerRecep("ap_materno", {
                           required: "Este campo es requerido",
                         })}
-                        onChange={(e) => setValue("middleName", e.target.value)}
+                        onChange={(e) =>
+                          setRecepValue("ap_materno", e.target.value)
+                        }
                       />
-                      {errors.middleName && (
+                      {recepErrors.ap_materno && (
                         <span className="error-message">
-                          {errors.middleName.message}
+                          {recepErrors.ap_materno.message}
                         </span>
                       )}
                     </FormGroup>
@@ -842,14 +817,16 @@ const Admin = () => {
                       <Input
                         type="email"
                         id="email"
-                        {...register("email", {
+                        {...registerRecep("correo", {
                           required: "Este campo es requerido",
                         })}
-                        onChange={(e) => setValue("email", e.target.value)}
+                        onChange={(e) =>
+                          setRecepValue("correo", e.target.value)
+                        }
                       />
-                      {errors.email && (
+                      {recepErrors.correo && (
                         <span className="error-message">
-                          {errors.email.message}
+                          {recepErrors.correo.message}
                         </span>
                       )}
                     </FormGroup>
@@ -858,43 +835,18 @@ const Admin = () => {
                       <Input
                         type="password"
                         id="password"
-                        {...register("password", {
+                        {...registerRecep("password", {
                           required: "Este campo es requerido",
-                        })}
-                        onChange={(e) => setValue("password", e.target.value)}
-                      />
-                      {errors.password && (
-                        <span className="error-message">
-                          {errors.password.message}
-                        </span>
-                      )}
-                    </FormGroup>
-                    <FormGroup>
-                      <Label for="confirmPassword">Repetir contraseña</Label>
-                      <Input
-                        type="password"
-                        id="confirmPassword"
-                        {...register("confirmPassword", {
-                          required: "Este campo es requerido",
-                          validate: (value) =>
-                            value === password ||
-                            "Las contraseñas no coinciden",
                         })}
                         onChange={(e) =>
-                          setValue("confirmPassword", e.target.value)
+                          setRecepValue("password", e.target.value)
                         }
                       />
-                      {errors.confirmPassword && (
+                      {recepErrors.password && (
                         <span className="error-message">
-                          {errors.confirmPassword.message}
+                          {recepErrors.password.message}
                         </span>
                       )}
-                      {confirmPassword !== password &&
-                        !errors.confirmPassword && (
-                          <span className="error-message">
-                            Las contraseñas no coinciden
-                          </span>
-                        )}
                     </FormGroup>
                     <Button
                       color="success"
@@ -911,7 +863,7 @@ const Admin = () => {
             </TabPane>
             <TabPane tabId="4">
               <Container fluid className="sign-up-container">
-                <Form onSubmit={handleSubmit(onSubmitPacientes)}>
+                <Form onSubmit={handleSubmitPaci(onSubmitPacientes)}>
                   <Row form>
                     <Col md={4}>
                       <FormGroup>
@@ -919,13 +871,14 @@ const Admin = () => {
                         <Input
                           type="text"
                           id="curp"
-                          {...register("curp", {
+                          {...registerPaci("curp", {
                             required: "Este campo es requerido",
                           })}
+                          onChange={(e) => setPaciValue("curp", e.target.value)}
                         />
-                        {errors.curp && (
+                        {paciErrors.curp && (
                           <span className="error-message">
-                            {errors.curp.message}
+                            {paciErrors.curp.message}
                           </span>
                         )}
                       </FormGroup>
@@ -936,13 +889,16 @@ const Admin = () => {
                         <Input
                           type="text"
                           id="nombre"
-                          {...register("nombre", {
+                          {...registerPaci("nombre", {
                             required: "Este campo es requerido",
                           })}
+                          onChange={(e) =>
+                            setPaciValue("nombre", e.target.value)
+                          }
                         />
-                        {errors.nombre && (
+                        {paciErrors.nombre && (
                           <span className="error-message">
-                            {errors.nombre.message}
+                            {paciErrors.nombre.message}
                           </span>
                         )}
                       </FormGroup>
@@ -953,13 +909,16 @@ const Admin = () => {
                         <Input
                           type="text"
                           id="ap_paterno"
-                          {...register("ap_paterno", {
+                          {...registerPaci("ap_paterno", {
                             required: "Este campo es requerido",
                           })}
+                          onChange={(e) =>
+                            setPaciValue("ap_paterno", e.target.value)
+                          }
                         />
-                        {errors.ap_paterno && (
+                        {paciErrors.ap_paterno && (
                           <span className="error-message">
-                            {errors.ap_paterno.message}
+                            {paciErrors.ap_paterno.message}
                           </span>
                         )}
                       </FormGroup>
@@ -972,13 +931,16 @@ const Admin = () => {
                         <Input
                           type="text"
                           id="ap_materno"
-                          {...register("ap_materno", {
+                          {...registerPaci("ap_materno", {
                             required: "Este campo es requerido",
                           })}
+                          onChange={(e) =>
+                            setPaciValue("ap_materno", e.target.value)
+                          }
                         />
-                        {errors.ap_materno && (
+                        {paciErrors.ap_materno && (
                           <span className="error-message">
-                            {errors.ap_materno.message}
+                            {paciErrors.ap_materno.message}
                           </span>
                         )}
                       </FormGroup>
@@ -989,13 +951,14 @@ const Admin = () => {
                         <Input
                           type="number"
                           id="edad"
-                          {...register("edad", {
+                          {...registerPaci("edad", {
                             required: "Este campo es requerido",
                           })}
+                          onChange={(e) => setPaciValue("edad", e.target.value)}
                         />
-                        {errors.edad && (
+                        {paciErrors.edad && (
                           <span className="error-message">
-                            {errors.edad.message}
+                            {paciErrors.edad.message}
                           </span>
                         )}
                       </FormGroup>
@@ -1006,7 +969,10 @@ const Admin = () => {
                         <Input
                           type="text"
                           id="tipo_sangre"
-                          {...register("tipo_sangre")}
+                          {...registerPaci("tipo_sangre")}
+                          onChange={(e) =>
+                            setPaciValue("tipo_sangre", e.target.value)
+                          }
                         />
                       </FormGroup>
                     </Col>
@@ -1018,13 +984,16 @@ const Admin = () => {
                         <Input
                           type="text"
                           id="calle"
-                          {...register("calle", {
+                          {...registerPaci("calle", {
                             required: "Este campo es requerido",
                           })}
+                          onChange={(e) =>
+                            setPaciValue("calle", e.target.value)
+                          }
                         />
-                        {errors.calle && (
+                        {paciErrors.calle && (
                           <span className="error-message">
-                            {errors.calle.message}
+                            {paciErrors.calle.message}
                           </span>
                         )}
                       </FormGroup>
@@ -1035,7 +1004,10 @@ const Admin = () => {
                         <Input
                           type="number"
                           id="num_ext"
-                          {...register("num_ext")}
+                          {...registerPaci("num_ext")}
+                          onChange={(e) =>
+                            setPaciValue("num_ext", e.target.value)
+                          }
                         />
                       </FormGroup>
                     </Col>
@@ -1045,7 +1017,10 @@ const Admin = () => {
                         <Input
                           type="number"
                           id="num_int"
-                          {...register("num_int")}
+                          {...registerPaci("num_int")}
+                          onChange={(e) =>
+                            setPaciValue("num_int", e.target.value)
+                          }
                         />
                       </FormGroup>
                     </Col>
@@ -1057,13 +1032,16 @@ const Admin = () => {
                         <Input
                           type="text"
                           id="colonia"
-                          {...register("colonia", {
+                          {...registerPaci("colonia", {
                             required: "Este campo es requerido",
                           })}
+                          onChange={(e) =>
+                            setPaciValue("colonia", e.target.value)
+                          }
                         />
-                        {errors.colonia && (
+                        {paciErrors.colonia && (
                           <span className="error-message">
-                            {errors.colonia.message}
+                            {paciErrors.colonia.message}
                           </span>
                         )}
                       </FormGroup>
@@ -1074,13 +1052,16 @@ const Admin = () => {
                         <Input
                           type="text"
                           id="delegacion"
-                          {...register("delegacion", {
+                          {...registerPaci("delegacion", {
                             required: "Este campo es requerido",
                           })}
+                          onChange={(e) =>
+                            setPaciValue("delegacion", e.target.value)
+                          }
                         />
-                        {errors.delegacion && (
+                        {paciErrors.delegacion && (
                           <span className="error-message">
-                            {errors.delegacion.message}
+                            {paciErrors.delegacion.message}
                           </span>
                         )}
                       </FormGroup>
@@ -1093,13 +1074,16 @@ const Admin = () => {
                         <Input
                           type="text"
                           id="entidad_federativa"
-                          {...register("entidad_federativa", {
+                          {...registerPaci("entidad_federativa", {
                             required: "Este campo es requerido",
                           })}
+                          onChange={(e) =>
+                            setPaciValue("entidad_federativa", e.target.value)
+                          }
                         />
-                        {errors.entidad_federativa && (
+                        {paciErrors.entidad_federativa && (
                           <span className="error-message">
-                            {errors.entidad_federativa.message}
+                            {paciErrors.entidad_federativa.message}
                           </span>
                         )}
                       </FormGroup>
@@ -1112,13 +1096,16 @@ const Admin = () => {
                         <Input
                           type="date"
                           id="fecha_nac"
-                          {...register("fecha_nac", {
+                          {...registerPaci("fecha_nac", {
                             required: "Este campo es requerido",
                           })}
+                          onChange={(e) =>
+                            setPaciValue("fecha_nac", e.target.value)
+                          }
                         />
-                        {errors.fecha_nac && (
+                        {paciErrors.fecha_nac && (
                           <span className="error-message">
-                            {errors.fecha_nac.message}
+                            {paciErrors.fecha_nac.message}
                           </span>
                         )}
                       </FormGroup>
@@ -1126,7 +1113,12 @@ const Admin = () => {
                     <Col md={4}>
                       <FormGroup>
                         <Label for="peso">Peso</Label>
-                        <Input type="number" id="peso" {...register("peso")} />
+                        <Input
+                          type="number"
+                          id="peso"
+                          {...registerPaci("peso")}
+                          onChange={(e) => setPaciValue("peso", e.target.value)}
+                        />
                       </FormGroup>
                     </Col>
                     <Col md={4}>
@@ -1135,7 +1127,10 @@ const Admin = () => {
                         <Input
                           type="number"
                           id="altura"
-                          {...register("altura")}
+                          {...registerPaci("altura")}
+                          onChange={(e) =>
+                            setPaciValue("altura", e.target.value)
+                          }
                         />
                       </FormGroup>
                     </Col>
@@ -1147,17 +1142,18 @@ const Admin = () => {
                         <Input
                           type="select"
                           id="sexo"
-                          {...register("sexo", {
+                          {...registerPaci("sexo", {
                             required: "Este campo es requerido",
                           })}
+                          onChange={(e) => setPaciValue("sexo", e.target.value)}
                         >
                           <option value="">Seleccionar</option>
                           <option value="M">Masculino</option>
                           <option value="F">Femenino</option>
                         </Input>
-                        {errors.sexo && (
+                        {paciErrors.sexo && (
                           <span className="error-message">
-                            {errors.sexo.message}
+                            {paciErrors.sexo.message}
                           </span>
                         )}
                       </FormGroup>
@@ -1168,7 +1164,10 @@ const Admin = () => {
                         <Input
                           type="text"
                           id="aseguradora"
-                          {...register("aseguradora")}
+                          {...registerPaci("aseguradora")}
+                          onChange={(e) =>
+                            setPaciValue("aseguradora", e.target.value)
+                          }
                         />
                       </FormGroup>
                     </Col>
@@ -1178,14 +1177,16 @@ const Admin = () => {
                         <Input
                           type="email"
                           id="email"
-                          {...register("email", {
+                          {...registerPaci("email", {
                             required: "Este campo es requerido",
                           })}
-                          onChange={(e) => setValue("email", e.target.value)}
+                          onChange={(e) =>
+                            setPaciValue("email", e.target.value)
+                          }
                         />
-                        {errors.email && (
+                        {paciErrors.email && (
                           <span className="error-message">
-                            {errors.email.message}
+                            {paciErrors.email.message}
                           </span>
                         )}
                       </FormGroup>
@@ -1198,47 +1199,21 @@ const Admin = () => {
                         <Input
                           type="password"
                           id="password"
-                          {...register("password", {
+                          {...registerPaci("password", {
                             required: "Este campo es requerido",
-                          })}
-                          onChange={(e) => setValue("password", e.target.value)}
-                        />
-                        {errors.password && (
-                          <span className="error-message">
-                            {errors.password.message}
-                          </span>
-                        )}
-                      </FormGroup>
-                    </Col>
-                    <Col md={4}>
-                      <FormGroup>
-                        <Label for="confirmPassword">Repetir contraseña</Label>
-                        <Input
-                          type="password"
-                          id="confirmPassword"
-                          {...register("confirmPassword", {
-                            required: "Este campo es requerido",
-                            validate: (value) =>
-                              value === password ||
-                              "Las contraseñas no coinciden",
                           })}
                           onChange={(e) =>
-                            setValue("confirmPassword", e.target.value)
+                            setPaciValue("password", e.target.value)
                           }
                         />
-                        {errors.confirmPassword && (
+                        {paciErrors.password && (
                           <span className="error-message">
-                            {errors.confirmPassword.message}
+                            {paciErrors.password.message}
                           </span>
                         )}
-                        {confirmPassword !== password &&
-                          !errors.confirmPassword && (
-                            <span className="error-message">
-                              Las contraseñas no coinciden
-                            </span>
-                          )}
                       </FormGroup>
                     </Col>
+                    <Col md={4}></Col>
                   </Row>
                   <Button
                     color="success"
