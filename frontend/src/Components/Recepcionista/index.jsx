@@ -30,12 +30,11 @@ const Recepcionista = () => {
   };
 
   const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    setValue,
-    watch,
-    reset,
+    register: registerPaci,
+    handleSubmit: handleSubmitPaci,
+    formState: { errors: paciErrors },
+    setValue: setPaciValue,
+    reset: resetPaci,
   } = useForm();
 
   const [submitting, setSubmitting] = useState(false);
@@ -60,7 +59,7 @@ const Recepcionista = () => {
           confirmButton: "custom-confirm-button",
         },
       });
-      reset();
+      resetPaci();
     } catch (error) {
       Swal.fire({
         icon: "error",
@@ -77,8 +76,6 @@ const Recepcionista = () => {
     }
   };
 
-  const password = watch("password");
-  const confirmPassword = watch("confirmPassword");
 
   return (
     <Container fluid className="sign-up-container">
@@ -112,7 +109,7 @@ const Recepcionista = () => {
           <TabContent activeTab={activeTab}>
             <TabPane tabId="1">
               <Container fluid className="sign-up-container">
-                <Form onSubmit={handleSubmit(onSubmitPacientes)}>
+              <Form onSubmit={handleSubmitPaci(onSubmitPacientes)}>
                   <Row form>
                     <Col md={4}>
                       <FormGroup>
@@ -120,13 +117,14 @@ const Recepcionista = () => {
                         <Input
                           type="text"
                           id="curp"
-                          {...register("curp", {
+                          {...registerPaci("curp", {
                             required: "Este campo es requerido",
                           })}
+                          onChange={(e) => setPaciValue("curp", e.target.value)}
                         />
-                        {errors.curp && (
+                        {paciErrors.curp && (
                           <span className="error-message">
-                            {errors.curp.message}
+                            {paciErrors.curp.message}
                           </span>
                         )}
                       </FormGroup>
@@ -137,13 +135,16 @@ const Recepcionista = () => {
                         <Input
                           type="text"
                           id="nombre"
-                          {...register("nombre", {
+                          {...registerPaci("nombre", {
                             required: "Este campo es requerido",
                           })}
+                          onChange={(e) =>
+                            setPaciValue("nombre", e.target.value)
+                          }
                         />
-                        {errors.nombre && (
+                        {paciErrors.nombre && (
                           <span className="error-message">
-                            {errors.nombre.message}
+                            {paciErrors.nombre.message}
                           </span>
                         )}
                       </FormGroup>
@@ -154,13 +155,16 @@ const Recepcionista = () => {
                         <Input
                           type="text"
                           id="ap_paterno"
-                          {...register("ap_paterno", {
+                          {...registerPaci("ap_paterno", {
                             required: "Este campo es requerido",
                           })}
+                          onChange={(e) =>
+                            setPaciValue("ap_paterno", e.target.value)
+                          }
                         />
-                        {errors.ap_paterno && (
+                        {paciErrors.ap_paterno && (
                           <span className="error-message">
-                            {errors.ap_paterno.message}
+                            {paciErrors.ap_paterno.message}
                           </span>
                         )}
                       </FormGroup>
@@ -173,13 +177,16 @@ const Recepcionista = () => {
                         <Input
                           type="text"
                           id="ap_materno"
-                          {...register("ap_materno", {
+                          {...registerPaci("ap_materno", {
                             required: "Este campo es requerido",
                           })}
+                          onChange={(e) =>
+                            setPaciValue("ap_materno", e.target.value)
+                          }
                         />
-                        {errors.ap_materno && (
+                        {paciErrors.ap_materno && (
                           <span className="error-message">
-                            {errors.ap_materno.message}
+                            {paciErrors.ap_materno.message}
                           </span>
                         )}
                       </FormGroup>
@@ -190,13 +197,14 @@ const Recepcionista = () => {
                         <Input
                           type="number"
                           id="edad"
-                          {...register("edad", {
+                          {...registerPaci("edad", {
                             required: "Este campo es requerido",
                           })}
+                          onChange={(e) => setPaciValue("edad", e.target.value)}
                         />
-                        {errors.edad && (
+                        {paciErrors.edad && (
                           <span className="error-message">
-                            {errors.edad.message}
+                            {paciErrors.edad.message}
                           </span>
                         )}
                       </FormGroup>
@@ -205,20 +213,13 @@ const Recepcionista = () => {
                       <FormGroup>
                         <Label for="tipo_sangre">Tipo de Sangre</Label>
                         <Input
-                          type="select"
+                          type="text"
                           id="tipo_sangre"
-                          {...register("tipo_sangre")}
-                        >
-                          <option value="">Seleccionar tipo de sangre</option>
-                          <option value="A+">A+</option>
-                          <option value="A-">A-</option>
-                          <option value="B+">B+</option>
-                          <option value="B-">B-</option>
-                          <option value="AB+">AB+</option>
-                          <option value="AB-">AB-</option>
-                          <option value="O+">O+</option>
-                          <option value="O-">O-</option>
-                        </Input>
+                          {...registerPaci("tipo_sangre")}
+                          onChange={(e) =>
+                            setPaciValue("tipo_sangre", e.target.value)
+                          }
+                        />
                       </FormGroup>
                     </Col>
                   </Row>
@@ -229,13 +230,16 @@ const Recepcionista = () => {
                         <Input
                           type="text"
                           id="calle"
-                          {...register("calle", {
+                          {...registerPaci("calle", {
                             required: "Este campo es requerido",
                           })}
+                          onChange={(e) =>
+                            setPaciValue("calle", e.target.value)
+                          }
                         />
-                        {errors.calle && (
+                        {paciErrors.calle && (
                           <span className="error-message">
-                            {errors.calle.message}
+                            {paciErrors.calle.message}
                           </span>
                         )}
                       </FormGroup>
@@ -246,7 +250,10 @@ const Recepcionista = () => {
                         <Input
                           type="number"
                           id="num_ext"
-                          {...register("num_ext")}
+                          {...registerPaci("num_ext")}
+                          onChange={(e) =>
+                            setPaciValue("num_ext", e.target.value)
+                          }
                         />
                       </FormGroup>
                     </Col>
@@ -256,7 +263,10 @@ const Recepcionista = () => {
                         <Input
                           type="number"
                           id="num_int"
-                          {...register("num_int")}
+                          {...registerPaci("num_int")}
+                          onChange={(e) =>
+                            setPaciValue("num_int", e.target.value)
+                          }
                         />
                       </FormGroup>
                     </Col>
@@ -268,13 +278,16 @@ const Recepcionista = () => {
                         <Input
                           type="text"
                           id="colonia"
-                          {...register("colonia", {
+                          {...registerPaci("colonia", {
                             required: "Este campo es requerido",
                           })}
+                          onChange={(e) =>
+                            setPaciValue("colonia", e.target.value)
+                          }
                         />
-                        {errors.colonia && (
+                        {paciErrors.colonia && (
                           <span className="error-message">
-                            {errors.colonia.message}
+                            {paciErrors.colonia.message}
                           </span>
                         )}
                       </FormGroup>
@@ -285,67 +298,41 @@ const Recepcionista = () => {
                         <Input
                           type="text"
                           id="delegacion"
-                          {...register("delegacion", {
+                          {...registerPaci("delegacion", {
                             required: "Este campo es requerido",
                           })}
+                          onChange={(e) =>
+                            setPaciValue("delegacion", e.target.value)
+                          }
                         />
-                        {errors.delegacion && (
+                        {paciErrors.delegacion && (
                           <span className="error-message">
-                            {errors.delegacion.message}
+                            {paciErrors.delegacion.message}
                           </span>
                         )}
                       </FormGroup>
                     </Col>
                     <Col md={4}>
-                    <FormGroup>
-      <Label for="entidad_federativa">Entidad Federativa</Label>
-      <Input
-        type="select"
-        id="entidad_federativa"
-        {...register("entidad_federativa", {
-          required: "Este campo es requerido",
-        })}
-      >
-        <option value="">Seleccionar entidad federativa</option>
-        <option value="Aguascalientes">Aguascalientes</option>
-        <option value="Baja California">Baja California</option>
-        <option value="Baja California Sur">Baja California Sur</option>
-        <option value="Campeche">Campeche</option>
-        <option value="Chiapas">Chiapas</option>
-        <option value="Chihuahua">Chihuahua</option>
-        <option value="Coahuila">Coahuila</option>
-        <option value="Colima">Colima</option>
-        <option value="Colima">Ciudad de México</option>
-        <option value="Durango">Durango</option>
-        <option value="Estado de México">Estado de México</option>
-        <option value="Guanajuato">Guanajuato</option>
-        <option value="Guerrero">Guerrero</option>
-        <option value="Hidalgo">Hidalgo</option>
-        <option value="Jalisco">Jalisco</option>
-        <option value="Michoacán">Michoacán</option>
-        <option value="Morelos">Morelos</option>
-        <option value="Nayarit">Nayarit</option>
-        <option value="Nuevo León">Nuevo León</option>
-        <option value="Oaxaca">Oaxaca</option>
-        <option value="Puebla">Puebla</option>
-        <option value="Querétaro">Querétaro</option>
-        <option value="Quintana Roo">Quintana Roo</option>
-        <option value="San Luis Potosí">San Luis Potosí</option>
-        <option value="Sinaloa">Sinaloa</option>
-        <option value="Sonora">Sonora</option>
-        <option value="Tabasco">Tabasco</option>
-        <option value="Tamaulipas">Tamaulipas</option>
-        <option value="Tlaxcala">Tlaxcala</option>
-        <option value="Veracruz">Veracruz</option>
-        <option value="Yucatán">Yucatán</option>
-        <option value="Zacatecas">Zacatecas</option>
-      </Input>
-      {errors.entidad_federativa && (
-        <span className="error-message">
-          {errors.entidad_federativa.message}
-        </span>
-      )}
-    </FormGroup>
+                      <FormGroup>
+                        <Label for="entidad_federativa">
+                          Entidad Federativa
+                        </Label>
+                        <Input
+                          type="text"
+                          id="entidad_federativa"
+                          {...registerPaci("entidad_federativa", {
+                            required: "Este campo es requerido",
+                          })}
+                          onChange={(e) =>
+                            setPaciValue("entidad_federativa", e.target.value)
+                          }
+                        />
+                        {paciErrors.entidad_federativa && (
+                          <span className="error-message">
+                            {paciErrors.entidad_federativa.message}
+                          </span>
+                        )}
+                      </FormGroup>
                     </Col>
                   </Row>
                   <Row form>
@@ -355,13 +342,16 @@ const Recepcionista = () => {
                         <Input
                           type="date"
                           id="fecha_nac"
-                          {...register("fecha_nac", {
+                          {...registerPaci("fecha_nac", {
                             required: "Este campo es requerido",
                           })}
+                          onChange={(e) =>
+                            setPaciValue("fecha_nac", e.target.value)
+                          }
                         />
-                        {errors.fecha_nac && (
+                        {paciErrors.fecha_nac && (
                           <span className="error-message">
-                            {errors.fecha_nac.message}
+                            {paciErrors.fecha_nac.message}
                           </span>
                         )}
                       </FormGroup>
@@ -369,7 +359,12 @@ const Recepcionista = () => {
                     <Col md={4}>
                       <FormGroup>
                         <Label for="peso">Peso</Label>
-                        <Input type="number" id="peso" {...register("peso")} />
+                        <Input
+                          type="number"
+                          id="peso"
+                          {...registerPaci("peso")}
+                          onChange={(e) => setPaciValue("peso", e.target.value)}
+                        />
                       </FormGroup>
                     </Col>
                     <Col md={4}>
@@ -378,7 +373,10 @@ const Recepcionista = () => {
                         <Input
                           type="number"
                           id="altura"
-                          {...register("altura")}
+                          {...registerPaci("altura")}
+                          onChange={(e) =>
+                            setPaciValue("altura", e.target.value)
+                          }
                         />
                       </FormGroup>
                     </Col>
@@ -390,17 +388,18 @@ const Recepcionista = () => {
                         <Input
                           type="select"
                           id="sexo"
-                          {...register("sexo", {
+                          {...registerPaci("sexo", {
                             required: "Este campo es requerido",
                           })}
+                          onChange={(e) => setPaciValue("sexo", e.target.value)}
                         >
                           <option value="">Seleccionar</option>
                           <option value="M">Masculino</option>
                           <option value="F">Femenino</option>
                         </Input>
-                        {errors.sexo && (
+                        {paciErrors.sexo && (
                           <span className="error-message">
-                            {errors.sexo.message}
+                            {paciErrors.sexo.message}
                           </span>
                         )}
                       </FormGroup>
@@ -411,7 +410,10 @@ const Recepcionista = () => {
                         <Input
                           type="text"
                           id="aseguradora"
-                          {...register("aseguradora")}
+                          {...registerPaci("aseguradora")}
+                          onChange={(e) =>
+                            setPaciValue("aseguradora", e.target.value)
+                          }
                         />
                       </FormGroup>
                     </Col>
@@ -421,14 +423,16 @@ const Recepcionista = () => {
                         <Input
                           type="email"
                           id="email"
-                          {...register("email", {
+                          {...registerPaci("email", {
                             required: "Este campo es requerido",
                           })}
-                          onChange={(e) => setValue("email", e.target.value)}
+                          onChange={(e) =>
+                            setPaciValue("email", e.target.value)
+                          }
                         />
-                        {errors.email && (
+                        {paciErrors.email && (
                           <span className="error-message">
-                            {errors.email.message}
+                            {paciErrors.email.message}
                           </span>
                         )}
                       </FormGroup>
@@ -441,47 +445,21 @@ const Recepcionista = () => {
                         <Input
                           type="password"
                           id="password"
-                          {...register("password", {
+                          {...registerPaci("password", {
                             required: "Este campo es requerido",
-                          })}
-                          onChange={(e) => setValue("password", e.target.value)}
-                        />
-                        {errors.password && (
-                          <span className="error-message">
-                            {errors.password.message}
-                          </span>
-                        )}
-                      </FormGroup>
-                    </Col>
-                    <Col md={4}>
-                      <FormGroup>
-                        <Label for="confirmPassword">Repetir contraseña</Label>
-                        <Input
-                          type="password"
-                          id="confirmPassword"
-                          {...register("confirmPassword", {
-                            required: "Este campo es requerido",
-                            validate: (value) =>
-                              value === password ||
-                              "Las contraseñas no coinciden",
                           })}
                           onChange={(e) =>
-                            setValue("confirmPassword", e.target.value)
+                            setPaciValue("password", e.target.value)
                           }
                         />
-                        {errors.confirmPassword && (
+                        {paciErrors.password && (
                           <span className="error-message">
-                            {errors.confirmPassword.message}
+                            {paciErrors.password.message}
                           </span>
                         )}
-                        {confirmPassword !== password &&
-                          !errors.confirmPassword && (
-                            <span className="error-message">
-                              Las contraseñas no coinciden
-                            </span>
-                          )}
                       </FormGroup>
                     </Col>
+                    <Col md={4}></Col>
                   </Row>
                   <Button
                     color="success"
