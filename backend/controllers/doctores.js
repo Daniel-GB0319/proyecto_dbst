@@ -290,16 +290,19 @@ export const queryCitasProximas = async (req, res) => {
   try {
     const { id_doctor } = req.body;
 
-    const [citas] = await pool.query(
-      "CALL sp_VerCitasProximasDoctor(?)",
-      [id_doctor]
-    );
+    const [citas] = await pool.query("CALL sp_VerCitasProximasDoctor(?)", [id_doctor]);
+
+    if (citas.length === 0) {
+      return res.status(404).json({ message: "No se encontraron citas próximas para el doctor" });
+    }
 
     return res.status(200).json({ citas });
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    console.log("Error en queryCitasProximas:", error);
+    return res.status(500).json({ message: "Ocurrió un error al obtener las citas próximas" });
   }
 };
+
 
 // Función para visualizar las recetas emitidas por el doctor
 export const queryRecetasEmitidas = async (req, res) => {

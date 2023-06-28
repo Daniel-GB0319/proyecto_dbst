@@ -5,36 +5,31 @@ import axios from "axios";
 import { API_URL } from "../../../constants.js";
 import "bootstrap/dist/css/bootstrap.css";
 import { useNavigate } from "react-router-dom";
-import {
-  Container,
-  Row,
-  Col,
-  Button,
-  Table,
-} from "reactstrap";
+import { Container, Row, Col, Button, Table } from "reactstrap";
 import "../../assets/index.css";
 import { UserContext } from "../../Contexts/UserContext.jsx";
 
 const Doctor = () => {
-  const { updateUserContext } = useContext(UserContext);
+  const { idUsuario } = useContext(UserContext);
   const [data, setData] = useState([]);
 
-
   useEffect(() => {
+
     const fetchData = async () => {
       try {
-        const response = await axios.get(API_URL + "/queryDoctorCitasProx");
+        const response = await axios.get(API_URL + "/queryDoctorCitasProx", { "id_doctor": "1" },
+        );
         console.log("Response data:", response.data);
-
+  
         setData(response.data); // Asegúrate de que response.data sea un array
       } catch (error) {
         console.log("Error fetching data:", error);
       }
     };
-
+  
     fetchData();
   }, []);
-
+  
 
   const handleCancel = (index) => {
     // Realizar la lógica para cancelar la consulta
@@ -74,25 +69,26 @@ const Doctor = () => {
                 </tr>
               </thead>
               <tbody>
-              {Array.isArray(data) && data.map((item, index) => (
-    <tr key={index}>
-      <td>{item.nombreDoctor}</td>
-      <td>{item.fechaConsulta}</td>
-      <td>{item.horaInicio}</td>
-      <td>{item.horaFin}</td>
-      <td>{item.costoConsulta}</td>
-      <td>{item.consultorio}</td>
-      <td>{item.estatus}</td>
-      <td>
-        <Button
-          color="danger"
-          onClick={() => handleCancel(index)}
-        >
-          Cancelar
-        </Button>
-      </td>
-    </tr>
-  ))}
+                {Array.isArray(data) &&
+                  data.map((item, index) => (
+                    <tr key={index}>
+                      <td>{item.nombreDoctor}</td>
+                      <td>{item.fechaConsulta}</td>
+                      <td>{item.horaInicio}</td>
+                      <td>{item.horaFin}</td>
+                      <td>{item.costoConsulta}</td>
+                      <td>{item.consultorio}</td>
+                      <td>{item.estatus}</td>
+                      <td>
+                        <Button
+                          color="danger"
+                          onClick={() => handleCancel(index)}
+                        >
+                          Cancelar
+                        </Button>
+                      </td>
+                    </tr>
+                  ))}
               </tbody>
             </Table>
           </div>
@@ -103,5 +99,3 @@ const Doctor = () => {
 };
 
 export default Doctor;
-
-

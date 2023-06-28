@@ -150,10 +150,11 @@ export const loginUsuarios = async (req, res) => {
 
   try {
     const query = `
-      SELECT tu.id_tipoUsuario, tu.nombre_tipoUsuario
-      FROM db_usuario u
-      INNER JOIN tipo_usuario tu ON u.tipo_usuario = tu.id_tipoUsuario
-      WHERE u.correo = ? AND u.password = ?`;
+    SELECT u.id_usuario, tu.id_tipoUsuario, tu.nombre_tipoUsuario
+    FROM db_usuario u
+    INNER JOIN tipo_usuario tu ON u.tipo_usuario = tu.id_tipoUsuario
+    WHERE u.correo = ? AND u.password = ?
+    `;
     const params = [correo, password];
     const [rows] = await pool.execute(query, params);
 
@@ -164,6 +165,7 @@ export const loginUsuarios = async (req, res) => {
     const tipoUsuario = {
       tipoUsuario: rows[0].id_tipoUsuario,
       nombreTipoUsuario: rows[0].nombre_tipoUsuario,
+      idUsuario: rows[0].id_usuario,
     };
 
     // Actualizar la fecha de último acceso
