@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Table, FormGroup, Label, Input, Button, Container, Row, Col } from "reactstrap";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
