@@ -70,6 +70,7 @@ router.post("/createConsultorio", consultoriosController.createConsultorio);
 router.post("/updateConsultorio", consultoriosController.updateConsultorio);
 router.post("/deleteConsultorio", consultoriosController.deleteConsultorio);
 router.get("/queryConsultorio", consultoriosController.queryConsultorio);
+router.get("/getAllConsultorios", consultoriosController.getAllConsultorios);
 
 // Rutas para especialidades
 router.post("/createEspecialidad", especialidadesController.createEspecialidad);

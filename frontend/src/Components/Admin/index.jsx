@@ -73,6 +73,10 @@ const Admin = () => {
     navigate("/consultorio");
   };
 
+  const handleButtonClick2 = () => {
+    navigate("/asignarconsultorio");
+  };
+
   const onSubmitAdmin = async (data) => {
     try {
       const response = await axios.post(API_URL + "/insertAdministrador", data);
@@ -206,7 +210,14 @@ const Admin = () => {
             className="custom-button float-left"
             onClick={handleButtonClick}
           >
-            Consultorios
+            Consulta Consultorios
+          </Button>
+          <Button
+            type="submit"
+            className="custom-button float-left"
+            onClick={handleButtonClick2}
+          >
+            Asignar Consultorios
           </Button>
           <h2 className="text-center mb-4">Crear Cuentas</h2>
           <Nav tabs className="nav-link:hover">

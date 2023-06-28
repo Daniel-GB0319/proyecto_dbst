@@ -15,7 +15,7 @@ import axios from "axios";
 import { API_URL } from "../../../constants.js";
 import "bootstrap/dist/css/bootstrap.css";
 
-const Consultorios = () => {
+const AsignarConsultorios = () => {
   const [data, setData] = useState([]);
 
   const {
@@ -77,34 +77,50 @@ const Consultorios = () => {
     <Container fluid className="sign-up-container">
       <Row className="justify-content-center align-items-center">
         <Col md={6} lg={4}>
-          <h2 className="text-center mb-4">Consultorios</h2>
+          <h2 className="text-center mb-4">Asignar Consultorios</h2>
           <div className="table-responsive">
-            <Table className="mt-4 table">
-              <thead>
-                <tr>
-                  <th>Número Consultorio</th>
-                  <th>Estado</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                {data[0] &&
-                  data[0].map((consultorio, index) => (
-                    <tr key={index}>
-                      <td>{consultorio.numero}</td>
-                      <td>{consultorio.estado}</td>
-                      <td>
-                        <Button
-                          color="danger"
-                          onClick={() => handleCancel(index)}
-                        >
-                          Cancelar
-                        </Button>
-                      </td>
-                    </tr>
-                  ))}
-              </tbody>
-            </Table>
+            <form onSubmit={handleSubmit(onSubmitRecep)}>
+              <FormGroup>
+                <Label for="firstName">Consultorio</Label>
+                <Input
+                  type="text"
+                  id="firstName"
+                  {...register("firstName", {
+                    required: "Este campo es requerido",
+                  })}
+                  onChange={(e) => setValue("firstName", e.target.value)}
+                />
+                {errors.firstName && (
+                  <span className="error-message">
+                    {errors.firstName.message}
+                  </span>
+                )}
+              </FormGroup>
+              <FormGroup>
+                <Label for="lastName">Doctor</Label>
+                <Input
+                  type="text"
+                  id="lastName"
+                  {...register("lastName", {
+                    required: "Este campo es requerido",
+                  })}
+                  onChange={(e) => setValue("lastName", e.target.value)}
+                />
+                {errors.lastName && (
+                  <span className="error-message">
+                    {errors.lastName.message}
+                  </span>
+                )}
+              </FormGroup>
+              <Button
+                color="success"
+                block
+                className="custom-button"
+                type="submit"
+              >
+                Asignar
+              </Button>
+            </form>
           </div>
         </Col>
       </Row>
@@ -112,4 +128,4 @@ const Consultorios = () => {
   );
 };
 
-export default Consultorios;
+export default AsignarConsultorios;

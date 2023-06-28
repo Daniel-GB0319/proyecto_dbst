@@ -8,6 +8,7 @@ import Recepcionista from './Components/Recepcionista';
 import Paciente from './Components/Paciente';
 import Doctor from './Components/Doctor';
 import Consultorio from './Components/Consultorio';
+import AsignarConsultorio from './Components/AsignarConsultorio';
 import Receta from './Components/Receta';
 import Cita from './Components/Cita';
 import { UserProvider } from "./Contexts/UserContext.jsx";
@@ -36,6 +37,7 @@ function App() {
               <Route path="/paciente" element={<Paciente />} />
               <Route path="/doctor" element={<Doctor />} />
               <Route path="/consultorio" element={<Consultorio />} />
+              <Route path="/asignarconsultorio" element={<AsignarConsultorio />} />
               <Route path="/Receta" element={<Receta />} />
               <Route path="/cita" element={<Cita />} />
 
