@@ -80,12 +80,13 @@ export const insertAdministrador = async (req, res) => {
     return res.status(400).json({ message: "Faltan campos requeridos para insertar al administrador" });
   }
 
+  const numero = 1;
   try {
     // Insertar al administrador
 
     await pool.query(
       "INSERT INTO db_usuario (tipo_usuario, correo, password) VALUES (?, ?, ?)",
-      [1, correo, password]
+      [numero, correo, password]
     );
 
     const [usuario_id_usuario] = await pool.query(
