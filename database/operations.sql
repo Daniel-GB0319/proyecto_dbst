@@ -7,20 +7,44 @@ use proyecto_dbst;
 -- Registra la fecha y hora en la bitacora cuando se registra un nuevo usuario al sistema
 DELIMITER //
 CREATE TRIGGER RegistroNuevoUsuario
-AFTER INSERT
-ON db_usuario
+AFTER INSERT ON db_usuario
 FOR EACH ROW
 BEGIN
     DECLARE id_usuario VARCHAR(10);
     SET id_usuario = NEW.id_usuario;
-    INSERT INTO db_registro_usuarios (id_usuario, fecha_registro, hora_registro)
-    VALUES (id_usuario, CURRENT_DATE(), CURRENT_TIME());
+    INSERT INTO db_registro_usuarios (id_usuario, correo, fecha_registro, hora_registro)
+    VALUES (id_usuario, NEW.correo, CURRENT_DATE(), CURRENT_TIME());
 END //
 DELIMITER ;
 
--- Actualiza el historial cuando un paciente tiene una nueva consulta
+-- Borrado de usuario paciente
 DELIMITER //
-CREATE TRIGGER ActualizarHistorialConsultas
+CREATE TRIGGER BorradoCascadaPaciente
+BEFORE DELETE ON db_paciente
+FOR EACH ROW
+BEGIN
+	UPDATE db_historial_consulta SET paciente_id_paciente = NULL WHERE paciente_id_paciente = OLD.id_paciente;
+    DELETE FROM db_alergias_paciente WHERE paciente_id_paciente = OLD.id_paciente;
+    DELETE FROM db_consulta WHERE paciente_id_paciente = OLD.id_paciente;    
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE TRIGGER BorradoCascadaDoctor
+BEFORE DELETE ON db_doctor
+FOR EACH ROW
+BEGIN
+	UPDATE db_historial_consulta SET doctor_id_doctor = NULL WHERE doctor_id_doctor = OLD.id_doctor;
+    UPDATE db_receta SET doctor_id_doctor = NULL WHERE doctor_id_doctor = OLD.id_doctor;
+    DELETE FROM db_consulta WHERE doctor_id_doctor = OLD.id_doctor;
+END //
+DELIMITER ;
+
+DROP TRIGGER BorradoCascadaPaciente
+
+-- Actualiza el historial cuando un usuario tiene una nueva consulta
+DELIMITER //
+CREATE TRIGGER RegistroHistorialConsultas
 AFTER INSERT ON db_consulta
 FOR EACH ROW
 BEGIN
@@ -32,20 +56,55 @@ BEGIN
 END //
 DELIMITER ;
 
--- Actualiza el historial cuando un paciente tiene una nueva consulta
+-- Actualiza el historial cuando un usuario modifica una consulta
 DELIMITER //
-CREATE TRIGGER ActualizarHistorialMedico
+CREATE TRIGGER ActualizarHistorialConsultas
+AFTER UPDATE ON db_consulta
+FOR EACH ROW
+BEGIN
+	UPDATE db_historial_consulta SET consulta_id_consulta = NULL WHERE consulta_id_consulta = OLD.id_consulta;
+	
+	INSERT INTO db_historial_consulta (fecha_registro, hora_registro, consulta_id_consulta, paciente_id_paciente, doctor_id_doctor,
+    costo_consulta, fecha_consulta, hora_inicio, hora_fin) VALUES 
+    (CURDATE(), CURTIME(), OLD.id_consulta, NEW.paciente_id_paciente, NEW.doctor_id_doctor, NEW.costo, NEW.fecha, 
+    (SELECT inicio_consulta FROM db_horario_consulta WHERE id_horario_consulta = NEW.horario),
+    (SELECT fin_consulta FROM db_horario_consulta WHERE id_horario_consulta = NEW.horario));
+END //
+DELIMITER ;
+
+-- Actualiza el historial cuando un usuario modifica una consulta
+DELIMITER //
+CREATE TRIGGER BorradoHistorialConsultas
+BEFORE DELETE ON db_consulta
+FOR EACH ROW
+BEGIN
+	UPDATE db_historial_consulta SET consulta_id_consulta = NULL WHERE consulta_id_consulta = OLD.id_consulta;
+END //
+DELIMITER ;
+
+
+-- Actualiza el historial medico cuando se genera una receta y ha asistido a una consulta
+DELIMITER //
+CREATE TRIGGER RegistroHistorialMedico
 AFTER INSERT ON db_receta
 FOR EACH ROW
 BEGIN
 	DECLARE consulta INT;
     SELECT consulta_id_consulta INTO consulta FROM db_historial_consulta WHERE NEW.doctor_id_doctor = doctor_id_doctor AND fecha_consulta = DATE(NEW.fecha_expedicion) AND TIME(NEW.fecha_expedicion) BETWEEN hora_inicio AND hora_fin;
     
-    INSERT INTO db_historial_medico (fecha_registro, hora_registro, consulta_id_consulta, receta_id_receta, curp_doctor, curp_paciente, observaciones, diagnostico, total_servicio)
-    VALUES
+    INSERT INTO db_historial_medico (fecha_registro, hora_registro, consulta_id_consulta, receta_id_receta, curp_doctor, curp_paciente, observaciones, diagnostico, total_servicio) VALUES
     (CURDATE(), CURTIME(), consulta, NEW.id_receta, (SELECT CURP FROM db_receta INNER JOIN db_doctor ON doctor_id_doctor = id_doctor WHERE receta_id_receta = id_receta),
     (SELECT CURP FROM db_historial_consulta INNER JOIN db_paciente ON paciente_id_paciente = id_paciente WHERE consulta = consulta_id_consulta),
     NEW. observaciones, NEW.diagnostico, (SELECT costo_consulta FROM db_historial_consulta WHERE consulta = consulta_id_consulta) + NEW.costo_total);
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE TRIGGER ActualizarHistorialMedico
+AFTER UPDATE ON db_historial_consulta
+FOR EACH ROW
+BEGIN
+	UPDATE db_historial_medico SET consulta_id_consulta = NULL WHERE consulta_id_consulta = OLD.consulta_id_consulta;
 END //
 DELIMITER ;
 
@@ -55,11 +114,9 @@ CREATE TRIGGER ActualizarHistorialRecetas
 AFTER INSERT ON db_receta
 FOR EACH ROW
 BEGIN
-    
-    
-    
 END //
 DELIMITER ;*/
+
 
 /*			Funciones			*/
 
