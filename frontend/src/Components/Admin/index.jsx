@@ -173,12 +173,12 @@ const Admin = () => {
     setIsLoading(true);
     setSubmitting(true);
     try {
-      const response = await axios.post(API_URL + "/Admin", data);
+      const response = await axios.post(API_URL + "/insertPaciente", data);
       console.log(response.data);
       Swal.fire({
         icon: "success",
         title: "¡Cuenta creada!",
-        text: "Tu cuenta se ha creado exitosamente.",
+        text: "La cuenta paciente fue creada exitosamente.",
         customClass: {
           confirmButton: "custom-confirm-button",
         },
@@ -188,7 +188,7 @@ const Admin = () => {
       Swal.fire({
         icon: "error",
         title: "¡Error!",
-        text: "Correo o contraseña no válidos",
+        text: "La cuenta paciente no fue creada",
         customClass: {
           confirmButton: "custom-confirm-button",
         },
