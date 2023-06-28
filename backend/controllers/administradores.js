@@ -71,6 +71,7 @@ export const deleteAdministrador = async (req, res) => {
   }
 };
 
+//Funcion para insertar administrador 
 
 export const insertAdministrador = async (req, res) => {
   const { nombre, ap_paterno, ap_materno, password, correo } = req.body;
@@ -123,6 +124,7 @@ export const insertAdministrador = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
 
 
 
