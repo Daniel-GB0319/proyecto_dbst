@@ -170,47 +170,46 @@ export const insertDoctor = async (req, res) => {
     !entidad_federativa ||
     !fecha_nac ||
     !sexo ||
+    !aseguradora||
     !usuario_id_usuario ||
     !consultorio_id_consultorio ||
     !horario_id_horario ||
     !especialidad_id_especialidad
   ) {
-    return res
-      .status(400)
-      .json({ message: "Faltan campos requeridos para registrar el doctor" });
+    return res.status(400).json({ message: "Faltan campos requeridos para registrar el doctor" });
   }
 
   try {
-    const result = await query("CALL sp_InsertarDoctor(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", [
-      curp,
-      nombre,
-      ap_paterno,
-      ap_materno,
-      edad,
-      calle,
-      num_ext,
-      num_int,
-      colonia,
-      delegacion,
-      entidad_federativa,
-      fecha_nac,
-      sexo,
-      aseguradora,
-      usuario_id_usuario,
-      consultorio_id_consultorio,
-      horario_id_horario,
-      especialidad_id_especialidad,
-    ]);
-
-    if (result.affectedRows === 0) {
-      return res.status(400).json({ message: "El doctor ya existe" });
-    }
+    await pool.query(
+      "INSERT INTO db_doctor (CURP, nombre, ap_paterno, ap_materno, edad, calle, num_ext, num_int, colonia, delegacion, entidad_federativa, fecha_nac, sexo, aseguradora, usuario_id_usuario, consultorio_id_consultorio, horario_id_horario, especialidad_id_especialidad) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      [
+        curp,
+        nombre,
+        ap_paterno,
+        ap_materno,
+        edad,
+        calle,
+        num_ext,
+        num_int,
+        colonia,
+        delegacion,
+        entidad_federativa,
+        fecha_nac,
+        sexo,
+        aseguradora ? aseguradora : null, // Verificar si aseguradora es nulo y pasar null en ese caso
+        usuario_id_usuario,
+        consultorio_id_consultorio,
+        horario_id_horario,
+        especialidad_id_especialidad,
+      ]
+    );
 
     return res.status(200).json({ message: "Doctor registrado con éxito" });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
 };
+
 
 export const getAllDoctores = async (req, res) => {
   try {
