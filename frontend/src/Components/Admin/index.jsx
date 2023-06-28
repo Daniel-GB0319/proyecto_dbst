@@ -210,7 +210,7 @@ const Admin = () => {
             className="custom-button float-left"
             onClick={handleButtonClick}
           >
-            Consulta Consultorios
+            Consultar Consultorios
           </Button>
           <Button
             type="submit"
