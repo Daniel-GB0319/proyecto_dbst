@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import "sweetalert2/dist/sweetalert2.min.css";
@@ -22,14 +22,10 @@ import {
   NavLink,
 } from "reactstrap";
 import "../../assets/index.css";
-import { useContext } from "react";
-import { UserContext } from "../../Contexts/UserContext.jsx";
 
 const Admin = () => {
-  const { updateUserContext } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("1");
-  const [data, setData] = useState([]);
 
   const toggleTab = (tab) => {
     if (activeTab !== tab) {
@@ -75,12 +71,6 @@ const Admin = () => {
 
   const handleButtonClick = () => {
     navigate("/consultorio");
-  };
-
-  const handleCancel = (index) => {
-    // Realizar la lógica para cancelar la consulta
-    // Puedes enviar una solicitud a la API para actualizar el estado de la consulta
-    // Una vez actualizado, puedes actualizar el estado "data" para reflejar el cambio en la tabla
   };
 
   const onSubmitAdmin = async (data) => {
@@ -173,12 +163,12 @@ const Admin = () => {
     setIsLoading(true);
     setSubmitting(true);
     try {
-      const response = await axios.post(API_URL + "/Admin", data);
+      const response = await axios.post(API_URL + "/insertPaciente", data);
       console.log(response.data);
       Swal.fire({
         icon: "success",
         title: "¡Cuenta creada!",
-        text: "Tu cuenta se ha creado exitosamente.",
+        text: "La cuenta paciente fue creada exitosamente.",
         customClass: {
           confirmButton: "custom-confirm-button",
         },
@@ -188,7 +178,7 @@ const Admin = () => {
       Swal.fire({
         icon: "error",
         title: "¡Error!",
-        text: "Correo o contraseña no válidos",
+        text: "La cuenta paciente no fue creada",
         customClass: {
           confirmButton: "custom-confirm-button",
         },
@@ -464,19 +454,6 @@ const Admin = () => {
                         )}
                       </FormGroup>
                     </Col>
-                    <Col md={4}>
-                      <FormGroup>
-                        <Label for="tipo_sangre">Tipo de Sangre</Label>
-                        <Input
-                          type="text"
-                          id="tipo_sangre"
-                          {...registerDoc("tipo_sangre")}
-                          onChange={(e) =>
-                            setDocValue("tipo_sangre", e.target.value)
-                          }
-                        />
-                      </FormGroup>
-                    </Col>
                   </Row>
                   <Row form>
                     <Col md={4}>
@@ -607,30 +584,6 @@ const Admin = () => {
                             {docErrors.fecha_nac.message}
                           </span>
                         )}
-                      </FormGroup>
-                    </Col>
-                    <Col md={4}>
-                      <FormGroup>
-                        <Label for="peso">Peso</Label>
-                        <Input
-                          type="number"
-                          id="peso"
-                          {...registerDoc("peso")}
-                          onChange={(e) => setDocValue("peso", e.target.value)}
-                        />
-                      </FormGroup>
-                    </Col>
-                    <Col md={4}>
-                      <FormGroup>
-                        <Label for="altura">Altura</Label>
-                        <Input
-                          type="number"
-                          id="altura"
-                          {...registerDoc("altura")}
-                          onChange={(e) =>
-                            setDocValue("altura", e.target.value)
-                          }
-                        />
                       </FormGroup>
                     </Col>
                   </Row>
