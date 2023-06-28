@@ -465,8 +465,6 @@ const Admin = () => {
                         )}
                       </FormGroup>
                     </Col>
-                  </Row>
-                  <Row form>
                     <Col md={4}>
                       <FormGroup>
                         <Label for="calle">Calle</Label>
@@ -485,6 +483,8 @@ const Admin = () => {
                         )}
                       </FormGroup>
                     </Col>
+                  </Row>
+                  <Row form>
                     <Col md={4}>
                       <FormGroup>
                         <Label for="num_ext">Número Exterior</Label>
@@ -511,8 +511,6 @@ const Admin = () => {
                         />
                       </FormGroup>
                     </Col>
-                  </Row>
-                  <Row form>
                     <Col md={4}>
                       <FormGroup>
                         <Label for="colonia">Colonia</Label>
@@ -533,6 +531,8 @@ const Admin = () => {
                         )}
                       </FormGroup>
                     </Col>
+                  </Row>
+                  <Row form>
                     <Col md={4}>
                       <FormGroup>
                         <Label for="delegacion">Delegación</Label>
@@ -575,8 +575,6 @@ const Admin = () => {
                         )}
                       </FormGroup>
                     </Col>
-                  </Row>
-                  <Row form>
                     <Col md={4}>
                       <FormGroup>
                         <Label for="fecha_nac">Fecha de Nacimiento</Label>
@@ -597,45 +595,9 @@ const Admin = () => {
                         )}
                       </FormGroup>
                     </Col>
-                    <Col md={4}>
-                    <FormGroup>
-                      <Label for="correo">Correo electrónico</Label>
-                      <Input
-                        type="email"
-                        id="correo"
-                        {...registerAdmin("correo", {
-                          required: "Este campo es requerido",
-                        })}
-                        onChange={(e) =>
-                          setAdminValue("correo", e.target.value)
-                        }
-                      />
-                      {adminErrors.correo && (
-                        <span className="error-message">
-                          {adminErrors.correo.message}
-                        </span>
-                      )}
-                    </FormGroup>
-                    </Col>
-                    <Col md={4}>
-                    <FormGroup>
-                      <Label for="password">Contraseña</Label>
-                      <Input
-                        type="password"
-                        id="passwordd"
-                        {...registerAdmin("password", {
-                          required: "Este campo es requerido",
-                        })}
-                        onChange={(e) =>
-                          setAdminValue("password", e.target.value)
-                        }
-                      />
-                      {adminErrors.password && (
-                        <span className="error-message">
-                          {adminErrors.password.message}
-                        </span>
-                      )}
-                    </FormGroup></Col>
+                  </Row>
+                  <Row form>
+                    
                   </Row>
                   <Row form>
                     <Col md={4}>
@@ -745,6 +707,45 @@ const Admin = () => {
                         )}
                       </FormGroup>
                     </Col>
+                    <Col md={4}>
+                    <FormGroup>
+                      <Label for="correo">Correo electrónico</Label>
+                      <Input
+                        type="email"
+                        id="correo"
+                        {...registerDoc("correo", {
+                          required: "Este campo es requerido",
+                        })}
+                        onChange={(e) =>
+                          setDocValue("correo", e.target.value)
+                        }
+                      />
+                      {adminErrors.correo && (
+                        <span className="error-message">
+                          {adminErrors.correo.message}
+                        </span>
+                      )}
+                    </FormGroup>
+                    </Col>
+                    <Col md={4}>
+                    <FormGroup>
+                      <Label for="password">Contraseña</Label>
+                      <Input
+                        type="password"
+                        id="passwordd"
+                        {...registerDoc("password", {
+                          required: "Este campo es requerido",
+                        })}
+                        onChange={(e) =>
+                          setDocValue("password", e.target.value)
+                        }
+                      />
+                      {adminErrors.password && (
+                        <span className="error-message">
+                          {adminErrors.password.message}
+                        </span>
+                      )}
+                    </FormGroup></Col>
                   </Row>
                   <Button
                     color="success"
