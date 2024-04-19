@@ -1,11 +1,14 @@
 # proyecto_dbst
 Proyecto de la materia Data Base Selected Topics
 
+(NOTA; Reconfigurando proyecto para funcionar con la nueva versión 20.12.2 lts de node js, es posible que 
+algunas partes no funcionen correctamente por el momento debido a que fue inicialmente creado con la
+version 18.16.0 lts.)
 ## Frontend
 
 Asegúrate de tener los siguientes requisitos instalados en tu sistema:
 
-Node JS: A partir de la versión 18.16.0 LTS
+Node JS: A partir de la versión 20.12.2 LTS
 
 Sigue estos pasos para poner en marcha el proyecto:
 
